@@ -53,6 +53,7 @@ class _JobsScreenState extends State<JobsScreen> {
                       return AnimatedListBuilder(
                         index: index,
                         child: const BookingListTile(
+                          showCurrentLocation: true,
                           bottomMargin: 18,
                           isPastBooking: false,
                           location: "123, bellaforte, USA",
@@ -74,6 +75,7 @@ class _JobsScreenState extends State<JobsScreen> {
                       return AnimatedListBuilder(
                         index: index,
                         child: const BookingListTile(
+                          showCurrentLocation: true,
                           bottomMargin: 18,
                           isPastBooking: true,
                           location: "123, bellaforte, USA",

@@ -2,6 +2,8 @@ import 'package:binbeardriver/ui/assign_job_manually/assign_job_manually_screen.
 import 'package:binbeardriver/ui/base_components/base_map_header_shadow.dart';
 import 'package:binbeardriver/ui/base_components/base_outlined_button.dart';
 import 'package:binbeardriver/ui/bookings_tab/controller/bookings_controller.dart';
+import 'package:binbeardriver/ui/driver_exact_location/controller/driver_excate_location_controller.dart';
+import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:flutter/material.dart';
@@ -16,13 +18,14 @@ import '../base_components/base_container.dart';
 import '../base_components/base_text.dart';
 
 class DriverExactLocationScreen extends StatefulWidget {
-  const DriverExactLocationScreen({super.key});
+  final LatLng latLng;
+  const DriverExactLocationScreen({super.key, required this.latLng});
   @override
   State<DriverExactLocationScreen> createState() => _DriverExactLocationScreenState();
 }
 
 class _DriverExactLocationScreenState extends State<DriverExactLocationScreen> {
-  BookingsController controller = Get.find<BookingsController>();
+  DriverExactLocationController controller = Get.put(DriverExactLocationController());
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +45,21 @@ class _DriverExactLocationScreenState extends State<DriverExactLocationScreen> {
           children: [
             GoogleMap(
               mapType: MapType.normal,
-              initialCameraPosition: controller.kGooglePlex,
+              initialCameraPosition: controller.getInitialCameraPosition(latLng: widget.latLng),
               onMapCreated: (GoogleMapController googleMapController) {
-                controller.mapController.complete(googleMapController);
+                if (!(controller.mapController.isCompleted)) {
+                  controller.mapController.complete(googleMapController);
+                }
+              },
+              markers: {
+                Marker(
+                  markerId: const MarkerId("starting_marker"),
+                  position: widget.latLng,
+                  infoWindow: const InfoWindow(
+                    title: "Driver Location",
+                  ),
+                  icon: Get.find<BaseController>().icStartMarkerPin,
+                )
               },
             ),
             const BaseMapHeaderShadow()

@@ -15,9 +15,9 @@ class BookingListTile extends StatelessWidget {
   final double? tileWidth, startingLat, startingLong, endingLat, endingLong;
   final double? topMargin, bottomMargin, rightMargin, leftMargin;
   final String location, date, time, distance;
-  final bool isPastBooking, showAcceptRejectButtons;
+  final bool isPastBooking, showAcceptRejectButtons, showCurrentLocation;
   final bool? isAccepted, isCompleted;
-  const BookingListTile({super.key, this.tileWidth, required this.location, required this.date, required this.time, required this.distance, this.topMargin, this.bottomMargin, this.rightMargin, this.leftMargin, required this.isPastBooking, required this.showAcceptRejectButtons, this.isAccepted, this.isCompleted, this.startingLat, this.startingLong, this.endingLat, this.endingLong});
+  const BookingListTile({super.key, this.tileWidth, required this.location, required this.date, required this.time, required this.distance, this.topMargin, this.bottomMargin, this.rightMargin, this.leftMargin, required this.isPastBooking, required this.showAcceptRejectButtons, this.isAccepted, this.isCompleted, this.startingLat, this.startingLong, this.endingLat, this.endingLong, required this.showCurrentLocation});
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +35,7 @@ class BookingListTile extends StatelessWidget {
                 startingLong: startingLong??0,
                 endingLat: endingLat??0,
                 endingLong: endingLong??0,
+                showCurrentPosition: showCurrentLocation,
               );
             }
           },

@@ -46,7 +46,7 @@ class _DriversListingState extends State<DriversListing> {
                   isChecked: false,
                   showEditDeleteButtons: true,
                   onTap: () {
-                    Get.to(() => const DriverExactLocationScreen());
+                    Get.to(() => DriverExactLocationScreen(latLng: homeTabController.testingLatLngList[index]));
                   },
                   onEdit: (){
                     Get.to(() => const AddEditDriverScreen(isEditing: true));

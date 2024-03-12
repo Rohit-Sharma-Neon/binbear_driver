@@ -1,3 +1,4 @@
+import 'package:binbeardriver/ui/driver_exact_location/driver_exact_location_screen.dart';
 import 'package:binbeardriver/ui/drivers_listing/drivers_listing.dart';
 import 'package:binbeardriver/ui/home_tab/controller/home_tab_controller.dart';
 
@@ -217,6 +218,7 @@ class _HomeTabState extends State<HomeTab> {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index){
                       return const BookingListTile(
+                        showCurrentLocation: false,
                         isPastBooking: false,
                         rightMargin: 6,
                         location: "123, bellaforte, USA",
@@ -229,7 +231,7 @@ class _HomeTabState extends State<HomeTab> {
                   ),
                 ),
               ),
-              /// Services
+              /// Drivers
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Row(
@@ -271,6 +273,7 @@ class _HomeTabState extends State<HomeTab> {
                     return GestureDetector(
                       onTap: (){
                         triggerHapticFeedback();
+                        Get.to(() => DriverExactLocationScreen(latLng: homeTabController.testingLatLngList[index]));
                       },
                       child: Stack(
                         clipBehavior: Clip.hardEdge,

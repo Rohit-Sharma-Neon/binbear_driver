@@ -20,7 +20,8 @@ import '../base_components/base_text.dart';
 
 class ServiceProviderMapViewScreen extends StatefulWidget {
   final double? startingLat, startingLong, endingLat, endingLong;
-  const ServiceProviderMapViewScreen({super.key, this.startingLat, this.startingLong, this.endingLat, this.endingLong});
+  final bool showCurrentPosition;
+  const ServiceProviderMapViewScreen({super.key, this.startingLat, this.startingLong, this.endingLat, this.endingLong, required this.showCurrentPosition});
 
   @override
   State<ServiceProviderMapViewScreen> createState() => _ServiceProviderMapViewScreenState();
@@ -28,6 +29,15 @@ class ServiceProviderMapViewScreen extends StatefulWidget {
 
 class _ServiceProviderMapViewScreenState extends State<ServiceProviderMapViewScreen> {
   BookingsController controller = Get.find<BookingsController>();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addMarkers(
+        southwest: LatLng(widget.startingLat??0, widget.startingLong??0),
+        northeast: LatLng(widget.endingLat??0, widget.endingLong??0),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +54,17 @@ class _ServiceProviderMapViewScreenState extends State<ServiceProviderMapViewScr
         ),
         body: Stack(
           children: [
-            GoogleMap(
-              mapType: MapType.normal,
-              initialCameraPosition: controller.kGooglePlex,
-              onMapCreated: (GoogleMapController googleMapController) {
-                controller.mapController.complete(googleMapController);
+            GetBuilder<BookingsController>(
+              builder: (BookingsController controller) {
+                print("Widget Rebuild");
+                return GoogleMap(
+                  mapType: MapType.normal,
+                  myLocationEnabled: widget.showCurrentPosition,
+                  polylines: Set<Polyline>.of(controller.polylines.values),
+                  initialCameraPosition: controller.kGooglePlex,
+                  onMapCreated: controller.onMapCreated,
+                  markers: controller.markers,
+                );
               },
             ),
             const BaseMapHeaderShadow()
@@ -225,7 +241,7 @@ class _ServiceProviderMapViewScreenState extends State<ServiceProviderMapViewScr
                             fontWeight: FontWeight.w400,
                           ),
                         ],
-                      )
+                      ),
                   ),
                   const Spacer(),
                   Visibility(

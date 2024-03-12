@@ -11,6 +11,18 @@ import '../../base_components/base_text.dart';
 
 class DriverExactLocationController extends GetxController{
   RxString currentWorkStatus = "Pick-Up!".obs;
+  List<LatLng> testingLatLngList = [
+    const LatLng(26.854388241227724, 75.76720853834199),
+    const LatLng(26.85793580484039, 75.79552164216459),
+    const LatLng(26.839403843470524, 75.78264703981174),
+    const LatLng(26.830213316001327, 75.80556383199985),
+    const LatLng(26.849257634454656, 75.765309534498),
+    const LatLng(26.854388241227724, 75.76720853834199),
+    const LatLng(26.85793580484039, 75.79552164216459),
+    const LatLng(26.839403843470524, 75.78264703981174),
+    const LatLng(26.830213316001327, 75.80556383199985),
+    const LatLng(26.849257634454656, 75.765309534498),
+  ];
   final Completer<GoogleMapController> mapController = Completer<GoogleMapController>();
 
   @override
@@ -19,10 +31,12 @@ class DriverExactLocationController extends GetxController{
     super.onInit();
   }
 
-  CameraPosition kGooglePlex = const CameraPosition(
-    target: LatLng(26.8506252, 75.7616548),
-    zoom: 14.4746,
-  );
+  CameraPosition getInitialCameraPosition({required LatLng latLng}){
+    return CameraPosition(
+      target: latLng,
+      zoom: 14,
+    );
+  }
 
   Widget getButtonContent(){
     switch (currentWorkStatus.value) {

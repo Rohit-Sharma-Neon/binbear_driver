@@ -50,10 +50,10 @@ class _BookingsTabState extends State<BookingsTab> {
                       child: BookingListTile(
                         bottomMargin: 18,
                         isPastBooking: false,
-                        startingLat: 26.8404944,
-                        startingLong: 75.7800145,
-                        endingLat: 26.8425322,
-                        endingLong: 75.7656885,
+                        startingLat: 26.830627552927318,
+                        startingLong: 75.76585545592367,
+                        endingLat: 26.854497684441302,
+                        endingLong: 75.76668925715434,
                         location: "123, bellaforte, USA",
                         date: "01-16-2024",
                         time: "Between 6 PM prior evening to 6 AM Service Day",
@@ -61,6 +61,7 @@ class _BookingsTabState extends State<BookingsTab> {
                         showAcceptRejectButtons: true,
                         isAccepted: index == 1,
                         isCompleted: false,
+                        showCurrentLocation: false,
                       ),
                     );
                   },
@@ -76,6 +77,7 @@ class _BookingsTabState extends State<BookingsTab> {
                       index: index,
                       child: const BookingListTile(
                         bottomMargin: 18,
+                        showCurrentLocation: true,
                         isPastBooking: false,
                         startingLat: 26.8404944,
                         startingLong: 75.7800145,
@@ -101,6 +103,7 @@ class _BookingsTabState extends State<BookingsTab> {
                     return AnimatedListBuilder(
                       index: index,
                       child: const BookingListTile(
+                        showCurrentLocation: false,
                         bottomMargin: 18,
                         isPastBooking: true,
                         location: "123, bellaforte, USA",
