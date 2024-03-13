@@ -1,9 +1,12 @@
+import 'package:animate_do/animate_do.dart';
+import 'package:binbeardriver/ui/base_components/base_map_header_shadow.dart';
+import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:scaled_app/scaled_app.dart';
-
+import 'package:skeletonizer/skeletonizer.dart';
 import '../../utils/base_assets.dart';
 import '../../utils/base_colors.dart';
 import '../../utils/base_sizes.dart';
@@ -28,13 +31,15 @@ class MapViewScreen extends StatefulWidget {
 class _MapViewScreenState extends State<MapViewScreen> {
 
   final MapViewController controller = Get.find<MapViewController>();
+
   @override
   void initState() {
     super.initState();
     controller.addMarker(latitude: widget.lat??0, longitude: widget.long??0);
+    controller.searchController.clear();
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
     return MediaQuery(
       data: MediaQuery.of(context).scale(),
@@ -42,11 +47,29 @@ class _MapViewScreenState extends State<MapViewScreen> {
         extendBodyBehindAppBar: true,
         backgroundColor: Colors.white,
         extendBody: true,
-        appBar: const BaseAppBar(
+        appBar: BaseAppBar(
           title: "Select Delivery Location",
           contentColor: Colors.black,
           titleSize: 19,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
+          bottomWidgetHeight: 60,
+          bottomChild: FadeInDown(
+            duration: const Duration(milliseconds: 400),
+            child: AddressSearchField(
+              topMargin: 0,
+              controller: controller.searchController,
+              onCloseTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                controller.searchController.clear();
+                controller.searchResultList.clear();
+                controller.searchResultList.refresh();
+              }, onChanged: (val) {
+              if (val.isNotEmpty) {
+                controller.debouncer.run(()=> controller.onChanged());
+              }
+            },
+            ),
+          ),
         ),
         body: Stack(
           children: [
@@ -57,35 +80,78 @@ class _MapViewScreenState extends State<MapViewScreen> {
                   mapType: MapType.normal,
                   myLocationEnabled: true,
                   initialCameraPosition: controller.getInitialCameraPosition(lat: widget.lat??0, long: widget.long??0),
+                  markers: Set<Marker>.of(controller.markers),
+                  zoomControlsEnabled: false,
                   onMapCreated: (GoogleMapController googleMapController) {
                     controller.mapController.complete(googleMapController);
                   },
-                  markers: Set<Marker>.of(controller.markers),
                 );
               },
             ),
-            Container(
-              width: double.infinity,
-              height: 150,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(20)),
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.white.withOpacity(0.9),
-                    Colors.white.withOpacity(0.6),
-                    Colors.white.withOpacity(0.4),
-                    Colors.white.withOpacity(0.1),
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: const [0.2, 0.4, 0.6, 1],
+            const BaseMapHeaderShadow(),
+            Obx(()=>Visibility(
+                visible: controller.searchResultList.isNotEmpty,
+                child: Container(
+                  margin: const EdgeInsets.only(
+                    right: horizontalScreenPadding,
+                    left: horizontalScreenPadding,
+                    top: 160,
+                    bottom: 5,
+                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: BaseColors.secondaryColor, width: 0.9),
+                      boxShadow: [
+                        BoxShadow(
+                            blurRadius: 3,
+                            spreadRadius: 1.5,
+                            color: BaseColors.secondaryColor.withOpacity(0.4),
+                            offset: const Offset(0,2.5)
+                        ),
+                      ],
+                  ),
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    physics: const BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: controller.searchResultList.length,
+                    itemBuilder: (context, index) {
+                      return Obx(()=>Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: (){
+                                triggerHapticFeedback();
+                                FocusManager.instance.primaryFocus?.unfocus();
+                                controller.selectedLocation.value = controller.searchResultList[index]["description"];
+                                controller.searchController.text = controller.searchResultList[index]["description"];
+                                controller.searchResultList.value = [];
+                                controller.searchResultList.clear();
+                                controller.searchResultList.refresh();
+                                print("Search Result List Length: ");
+                                print(controller.searchResultList.length.toString());
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: SizedBox(
+                                  width: double.infinity,
+                                    child: Text(controller.searchResultList[index]["description"])),
+                              ),
+                            ),
+                            Visibility(
+                              visible: controller.searchResultList.length != (index+1),
+                                child: const Divider(height: 0,)),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-            Positioned(
-              child: AddressSearchField(topMargin: 85,
-              ),
-            ),
+            )
           ],
         ),
         bottomNavigationBar: Column(
@@ -112,6 +178,9 @@ class _MapViewScreenState extends State<MapViewScreen> {
                 ],
               ),
               onPressed: (){
+                FocusManager.instance.primaryFocus?.unfocus();
+                controller.searchController.clear();
+                controller.searchResultList.clear();
                 controller.locateToCurrentLocation();
               },
             ),
@@ -127,6 +196,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
               rightMargin: horizontalScreenPadding,
               leftMargin: horizontalScreenPadding,
               child: AnimatedColumn(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -150,11 +220,12 @@ class _MapViewScreenState extends State<MapViewScreen> {
                       ),
                     ],
                   ),
-                  const BaseText(
-                    value: "Mile Post, 96 NY State, Thruway, Ruby, NY 12475, United States",
-                    fontSize: 11.5,
-                    color: Color(0xffFBE6D3),
-                    fontWeight: FontWeight.w400,
+                  Obx(()=>BaseText(
+                      value: controller.selectedLocation.value,
+                      fontSize: 11.5,
+                      color: const Color(0xffFBE6D3),
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                   BaseButton(
                     title: "Confirm Location",

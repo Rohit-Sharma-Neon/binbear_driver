@@ -1,17 +1,16 @@
+import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
-
 import '../../../utils/base_assets.dart';
 import '../../../utils/base_colors.dart';
 import '../../../utils/base_sizes.dart';
-import '../controller/manual_address_controller.dart';
 
 class AddressSearchField extends StatelessWidget {
   final double? leftMargin, rightMargin, topMargin, bottomMargin;
-  AddressSearchField({super.key, this.leftMargin, this.rightMargin, this.topMargin, this.bottomMargin});
-
-  final ManualAddressController controller = Get.find<ManualAddressController>();
+  final TextEditingController controller;
+  final Function()? onCloseTap;
+  final Function(String)? onChanged;
+  const AddressSearchField({super.key, this.leftMargin, this.rightMargin, this.topMargin, this.bottomMargin, required this.controller, required this.onCloseTap, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +31,10 @@ class AddressSearchField extends StatelessWidget {
         ]
       ),
       child: TextField(
-        controller: controller.searchController,
+        controller: controller,
         style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 15),
         maxLines: 1,
+        onChanged: onChanged,
         decoration: InputDecoration(
           hintText: "Search...",
           hintStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
@@ -47,7 +47,8 @@ class AddressSearchField extends StatelessWidget {
           ),
           suffixIcon: GestureDetector(
             onTap: (){
-              controller.searchController.clear();
+              triggerHapticFeedback();
+              onCloseTap!();
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 15, left: 15, top: 10, bottom: 10),

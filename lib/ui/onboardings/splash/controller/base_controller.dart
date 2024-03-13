@@ -1,21 +1,82 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:ui' as ui;
+import 'package:binbeardriver/utils/base_debouncer.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:uuid/uuid.dart';
+import 'package:dio/dio.dart' as as_dio;
 
 class BaseController extends GetxController{
 
   late BitmapDescriptor defaultMarker;
   late BitmapDescriptor icStartMarkerPin;
   late BitmapDescriptor icEndMarkerPin;
+  /// Map AutoComplete Variables
+  BaseDebouncer debouncer = BaseDebouncer();
+  String sessionToken = "";
+  var uuid = const Uuid();
+  as_dio.Dio dio = as_dio.Dio();
+  RxList<dynamic> searchResultList = <dynamic>[].obs;
+  TextEditingController searchController = TextEditingController();
 
   @override
   void onInit() {
     super.onInit();
     loadMarkers();
+  }
+
+  getSuggestionsList(String input) {
+    if (input.isNotEmpty) {
+      debouncer.run(() async {
+        if (sessionToken.isEmpty) {
+          sessionToken = uuid.v4();
+        }
+        dio = Dio();
+        String mapApiKey = "AIzaSyCKM6nu9hXYksgFuz1flo2zQtPRC_lw7NM";
+        String baseURL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
+        String request = '$baseURL?input=$input&key=$mapApiKey&sessiontoken=$sessionToken';
+        print("Input: $input");
+        as_dio.Response response = await dio.get(request);
+        if (response.statusCode == 200) {
+          searchResultList.value = response.data['predictions'];
+        } else {
+          throw Exception('Failed to load predictions');
+        }
+      });
+    }else{
+      searchResultList.clear();
+      searchResultList.refresh();
+    }
+  }
+
+  CameraPosition setInitialMapPosition({required double lat, required double long, double? zoom}){
+    return CameraPosition(
+      target: LatLng(lat,long),
+      zoom: zoom??17,
+    );
+  }
+
+  Future<LatLng?> animateToCurrentLocation({required Completer<GoogleMapController> mapController, double? zoom}) async {
+    final GoogleMapController controller = await mapController.future;
+    Position? value = await getCurrentLocation();
+    if ((value?.latitude??0) != 0 && (value?.longitude??0) != 0) {
+      controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+          bearing: 0,
+          target: LatLng(value?.latitude??0, value?.longitude??0),
+          zoom: zoom??17,
+        ),
+      ));
+      return LatLng(value?.latitude??0, value?.longitude??0);
+    }else{
+      return LatLng(value?.latitude??0, value?.longitude??0);
+    }
   }
 
   Future<Position?> getCurrentLocation() async {

@@ -2,9 +2,11 @@ import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
 import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/manual_address/controller/manual_address_controller.dart';
 import 'package:binbeardriver/ui/map_view/controller/map_view_controller.dart';
+import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../utils/base_assets.dart';
 import '../../utils/base_colors.dart';
@@ -26,12 +28,16 @@ class _ManualAddressScreenState extends State<ManualAddressScreen> {
 
   ManualAddressController controller = Get.put(ManualAddressController());
   MapViewController mapViewController = Get.put(MapViewController());
+  BaseController baseController = Get.find<BaseController>();
 
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldBackground(
       child: Scaffold(
-        appBar: const BaseAppBar(),
+        appBar: const BaseAppBar(
+          fontWeight: FontWeight.w400,
+          showDrawerIcon: false,
+        ),
         body: BaseContainer(
           topMargin: 10,
           leftPadding: 0,
@@ -42,7 +48,19 @@ class _ManualAddressScreenState extends State<ManualAddressScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              AddressSearchField(),
+              AddressSearchField(
+                onCloseTap: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  baseController.searchController.clear();
+                  baseController.searchResultList.clear();
+                  baseController.searchResultList.refresh();
+                  setState(() {});
+                },
+                onChanged: (val) {
+                  baseController.getSuggestionsList(val);
+                },
+                controller: TextEditingController(),
+              ),
               BaseTextButton(
                 topMargin: 7,
                 btnPadding: const EdgeInsets.only(left: 18, top: 10, bottom: 10),
@@ -66,17 +84,25 @@ class _ManualAddressScreenState extends State<ManualAddressScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
+                      Obx(()=>baseController.searchResultList.isNotEmpty ?
                       ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: const EdgeInsets.only(left: horizontalScreenPadding, right: 18),
-                          itemCount: 3,
-                          itemBuilder: (context, index){
-                            return const ManualAddressListTile(
-                              title: 'Ruby Restaurant & Bar',
-                              subtitle: 'Mile Post, 96 NY State Thruway, Ruby, NY 12475, United States',
-                            );
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.only(left: horizontalScreenPadding, right: 18),
+                        itemCount: baseController.searchResultList.length,
+                        itemBuilder: (context, index){
+                          return ManualAddressListTile(
+                            title: baseController.searchResultList[index]["description"].toString().split(",").first,
+                            subtitle: baseController.searchResultList[index]["description"].toString().replaceAll("${baseController.searchResultList[index]["description"].toString().split(",").first}, ", ""),
+                          );
                           },
+                        ) : const BaseText(
+                        value: "Search Result Will Appear Here.",
+                        fontSize: 14,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                        bottomMargin: 18,
+                        ),
                       ),
                       Container(
                         width: double.infinity,
