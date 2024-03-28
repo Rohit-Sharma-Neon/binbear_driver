@@ -1,6 +1,10 @@
+import 'package:binbeardriver/ui/about_app/about_app_screen.dart';
+import 'package:binbeardriver/ui/contact_us/contact_us_screen.dart';
 import 'package:binbeardriver/ui/help_&_support/help_&_support_screen.dart';
+import 'package:binbeardriver/ui/onboardings/welcome_screen.dart';
 import 'package:binbeardriver/ui/transactions_screen/transactions_screen.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
+import 'package:binbeardriver/utils/get_storage.dart';
 import 'package:binbeardriver/utils/storage_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -29,7 +33,7 @@ class BaseDrawer extends StatelessWidget {
       ),
       child: Column(
         children: [
-          GetStorage().read(StorageKeys.isUserDriver) ?
+          GetStorage().read(StorageKeys.isUserDriver)??false ?
           Container(
               height: 100,
               width: 100,
@@ -57,15 +61,21 @@ class BaseDrawer extends StatelessWidget {
           ),
           drawerListTiles(
             title: 'Contact Us',
-            onTap: () {},
+            onTap: () {
+              Get.to(() => const ContactUsScreen());
+            },
           ),
           drawerListTiles(
             title: 'Privacy Policy',
-            onTap: () {},
+            onTap: () {
+              Get.to(() => const AboutAppScreen(type: "Privacy Policy"));
+            },
           ),
           drawerListTiles(
             title: 'Terms & Conditions',
-            onTap: () {},
+            onTap: () {
+              Get.to(() => const AboutAppScreen(type: "Terms & Conditions"));
+            },
           ),
           drawerListTiles(
             title: 'Help & Support',
@@ -77,8 +87,14 @@ class BaseDrawer extends StatelessWidget {
               Get.to(() => const TransactionsScreen());
             },
           ),
+          drawerListTiles(
+            title: 'About Us',
+            onTap: () {
+              Get.to(() => const AboutAppScreen(type: "About Us"));
+            },
+          ),
           Visibility(
-            visible: !(GetStorage().read(StorageKeys.isUserDriver)),
+            visible: !(GetStorage().read(StorageKeys.isUserDriver)??false),
             child: drawerListTiles(
               title: 'Help & Support',
               onTap: () {
@@ -89,7 +105,13 @@ class BaseDrawer extends StatelessWidget {
           const Spacer(),
           drawerListTiles(
             title: 'Log Out',
-            onTap: () {},
+            onTap: () {
+              BaseStorage.remove(StorageKeys.apiToken);
+              BaseStorage.remove(StorageKeys.userName);
+              BaseStorage.remove(StorageKeys.isUserDriver);
+              BaseStorage.remove(StorageKeys.profilePhoto);
+              Get.offAll(() => const WelcomeScreen());
+            },
           ),
         ],
       ),

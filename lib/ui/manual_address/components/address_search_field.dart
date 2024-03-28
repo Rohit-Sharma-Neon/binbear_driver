@@ -1,8 +1,8 @@
-import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../utils/base_assets.dart';
 import '../../../utils/base_colors.dart';
+import '../../../utils/base_functions.dart';
 import '../../../utils/base_sizes.dart';
 
 class AddressSearchField extends StatelessWidget {

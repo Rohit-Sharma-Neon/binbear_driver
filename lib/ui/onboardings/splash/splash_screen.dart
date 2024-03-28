@@ -1,8 +1,13 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:binbeardriver/ui/dashboard_module/dashboard_screen/dashboard_screen.dart';
+import 'package:binbeardriver/ui/driver/jobs_screen/jobs_screen.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
+import 'package:binbeardriver/utils/get_storage.dart';
+import 'package:binbeardriver/utils/storage_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../base_components/base_scaffold_background.dart';
 import '../../base_components/base_text.dart';
@@ -28,14 +33,29 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed( const Duration(milliseconds: 2700), () async {
-      setState(() {
-        showFooter = false;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await initGetStorage();
+      Future.delayed( const Duration(milliseconds: 2700), () async {
+        setState(() {
+          showFooter = false;
+        });
       });
+      Future.delayed( const Duration(seconds: 3), () async {
+      if ((BaseStorage.read(StorageKeys.apiToken)??"").toString().isNotEmpty && BaseStorage.read(StorageKeys.isUserDriver) != null) {
+        if (BaseStorage.read(StorageKeys.isUserDriver)) {
+          Get.offAll(() => const JobsScreen());
+        }else{
+          Get.offAll(() => const DashBoardScreen());
+        }
+      }else{
+        Get.offAll(() => const WelcomeScreen());
+      }
     });
-    Future.delayed( const Duration(seconds: 3), () async {
-      Get.offAll(() => const WelcomeScreen());
-    });
+  });
+  }
+
+  initGetStorage() async {
+    await GetStorage.init('MyStorage');
   }
 
   @override

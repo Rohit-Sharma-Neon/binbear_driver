@@ -3,7 +3,6 @@ import 'package:binbeardriver/ui/base_components/drivers_listing_tile.dart';
 import 'package:binbeardriver/ui/base_components/base_button.dart';
 import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/base_components/listview_builder_animation.dart';
-import 'package:binbeardriver/ui/base_payment_screen.dart';
 import 'package:binbeardriver/ui/home_tab/controller/home_tab_controller.dart';
 import 'package:binbeardriver/ui/onboardings/base_success_screen.dart';
 import 'package:binbeardriver/utils/base_functions.dart';

@@ -3,6 +3,7 @@ import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/base_sizes.dart';
+import 'package:binbeardriver/utils/get_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -16,7 +17,6 @@ import '../../base_components/base_text.dart';
 import '../../base_components/base_text_button.dart';
 import '../../base_components/base_textfield.dart';
 import '../../base_components/signup_user_type_selection.dart';
-import '../../dashboard_module/dashboard_screen/dashboard_screen.dart';
 import '../forgot_password/forgot_password_screen.dart';
 import 'controller/login_controller.dart';
 
@@ -75,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onTap: () {
                                   triggerHapticFeedback();
                                   controller.selectedUserType.value = "Service Provider";
-                                  controller.box.write(StorageKeys.isUserDriver, false);
+                                  BaseStorage.write(StorageKeys.isUserDriver, false);
                                 },
                               ),
                             ),
@@ -88,47 +88,73 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onTap: () {
                                   triggerHapticFeedback();
                                   controller.selectedUserType.value = "BinBears";
-                                  controller.box.write(StorageKeys.isUserDriver, true);
+                                  BaseStorage.write(StorageKeys.isUserDriver, true);
                                 },
                               ),
                             ),
                           ],
                         )),
-                      BaseTextField(
-                        topMargin: 25,
-                        controller: TextEditingController(),
-                        hintText: 'Email Address',
-                        labelText: 'Email Address',
-                        textInputType: TextInputType.emailAddress,
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(right: 13),
-                          child: SvgPicture.asset(BaseAssets.icEmail),
-                        ),
+                      GetBuilder<LoginController>(
+                        builder: (LoginController controller) {
+                          return BaseTextField(
+                            topMargin: 25,
+                            controller: controller.emailController,
+                            hintText: 'Email Address',
+                            labelText: 'Email Address',
+                            textInputType: TextInputType.emailAddress,
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.only(right: 13),
+                              child: SvgPicture.asset(BaseAssets.icEmail),
+                            ),
+                          );
+                        },
                       ),
-                      BaseTextField(
-                        topMargin: 14,
-                        controller: TextEditingController(),
-                        labelText: 'Password',
-                        hintText: 'Enter Password',
-                        textInputType: TextInputType.visiblePassword,
-                        textInputAction: TextInputAction.done,
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.only(right: 13),
-                          child: SvgPicture.asset(BaseAssets.icLock),
-                        ),
-                        suffixIcon: Padding(
-                          padding: const EdgeInsets.only(left: 3),
-                          child: SvgPicture.asset(BaseAssets.icEyeCrossed),
-                        ),
+                      GetBuilder<LoginController>(
+                        builder: (LoginController controller) {
+                          return BaseTextField(
+                            topMargin: 14,
+                            controller: controller.passwordController,
+                            labelText: 'Password',
+                            hintText: 'Enter Password',
+                            textInputType: TextInputType.visiblePassword,
+                            textInputAction: TextInputAction.done,
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.only(right: 13),
+                              child: SvgPicture.asset(BaseAssets.icLock),
+                            ),
+                            suffixIcon: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                GestureDetector(
+                                  onTap: (){
+                                    triggerHapticFeedback();
+                                    controller.obscurePassword = !(controller.obscurePassword);
+                                    controller.update();
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 3),
+                                    child: controller.obscurePassword ? const Icon(Icons.visibility_off, size: 24) : const Icon(Icons.visibility, size: 24),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
                       BaseButton(
                         topMargin: 24,
                         title: "Login",
                         onPressed: (){
-                          if (controller.box.read(StorageKeys.isUserDriver)) {
-                            Get.offAll(() => const JobsScreen());
+                          if(controller.emailController.text.isEmpty){
+                            showSnackBar(subtitle: "Please Enter Email");
+                          }else if (!GetUtils.isEmail(controller.emailController.text)) {
+                            showSnackBar(subtitle: "Please Enter Valid Email");
+                          }else if (controller.passwordController.text.isEmpty) {
+                            showSnackBar(subtitle: "Please Enter Password");
+                          }else if (controller.passwordController.text.length < 8) {
+                            showSnackBar(subtitle: "Password Length Can't Be Less Than 8");
                           }else{
-                            Get.offAll(() => const DashBoardScreen());
+                            controller.getResponse();
                           }
                         },
                       ),

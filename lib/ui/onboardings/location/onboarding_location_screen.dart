@@ -45,7 +45,7 @@ class OnboardingLocationScreen extends StatelessWidget {
                     ),
                     const BaseText(
                       topMargin: 10,
-                      value: "Please allow us to fetch your\nlocation, or you can add_edit_driver_screen your\nlocation manually.",
+                      value: "Please allow us to fetch your\nlocation, or you can add your\nlocation manually.",
                       fontSize: 15,
                       textAlign: TextAlign.center,
                       color: Colors.black,
@@ -66,10 +66,6 @@ class OnboardingLocationScreen extends StatelessWidget {
                         Get.to(() => const ManualAddressScreen());
                       },
                     ),
-                    // const BaseTextButton(
-                    //   topMargin: 12,
-                    //   title: "Skip",
-                    // ),
                   ],
                 ),
               ),

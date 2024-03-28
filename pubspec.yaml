@@ -19,20 +19,37 @@ dependencies:
   scaled_app: ^2.2.0
   pinput: ^4.0.0
   fluttertoast: ^8.2.4
-  flutter_rating_bar: ^4.0.1
   dotted_border: ^2.1.0
+  flutter_rating_bar: ^4.0.1
+  mask_text_input_formatter: ^2.9.0
   get_storage: ^2.1.1
+  curl_logger_dio_interceptor: ^1.0.0
+  connectivity_plus: ^5.0.2
+  loader_overlay: ^4.0.0
+  flutter_spinkit: ^5.2.0
+  logger: ^2.1.0
+  flutter_html: ^3.0.0-beta.2
+  chewie: ^1.7.5
+  video_player: ^2.8.3
+  video_thumbnail: ^0.5.3
+  path_provider: ^2.1.2
+  pull_to_refresh: ^2.0.0
+  image_cropper: ^5.0.1
+  carousel_slider: ^4.2.1
+  flutter_webview_plugin: ^0.4.0
+  # Map
   geolocator: ^11.0.0
   google_maps_flutter: ^2.6.0
   flutter_polyline_points: ^2.0.0
   uuid: ^4.3.3
+  geocoding: ^3.0.0
   # Animations Packages
   animate_do: ^3.3.4
   flutter_staggered_animations: ^1.1.1
-  shimmer: ^3.0.0
-  animations: ^2.0.11
   slide_countdown: ^1.5.2
-  skeletonizer: ^1.1.0
+  lottie: ^3.1.0
+  card_loading: ^0.3.2
+  animations: ^2.0.11
 
 dev_dependencies:
   flutter_test:

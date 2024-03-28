@@ -153,7 +153,7 @@ class _ProfileTabState extends State<ProfileTab> {
                   btnHeight: 60,
                   title: "Settings",
                   onPressed: (){
-                    Get.to(() => const SettingsScreen());
+                    Get.to(() => const SettingsScreen(isNotificationEnabled: true,));
                   },
                 ),
               ],

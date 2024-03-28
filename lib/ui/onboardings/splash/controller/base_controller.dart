@@ -1,14 +1,21 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:ui' as ui;
+import 'package:binbeardriver/backend/api_end_points.dart';
+import 'package:binbeardriver/backend/base_api_service.dart';
+import 'package:binbeardriver/backend/base_responses/autocomplete_api_response.dart';
+import 'package:binbeardriver/backend/base_responses/base_success_response.dart';
+import 'package:binbeardriver/ui/manual_address/model/saved_address_response.dart';
 import 'package:binbeardriver/utils/base_debouncer.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
-import 'package:dio/dio.dart';
+import 'package:binbeardriver/utils/base_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:uuid/uuid.dart';
 import 'package:dio/dio.dart' as as_dio;
 
@@ -22,8 +29,12 @@ class BaseController extends GetxController{
   String sessionToken = "";
   var uuid = const Uuid();
   as_dio.Dio dio = as_dio.Dio();
-  RxList<dynamic> searchResultList = <dynamic>[].obs;
+  RxList<AutoCompleteResult> searchResultList = <AutoCompleteResult>[].obs;
   TextEditingController searchController = TextEditingController();
+  RxBool isAddressSuggestionLoading = false.obs;
+  RxBool isSavedAddressLoading = false.obs;
+  RxList<SavedAddressListData>? savedAddressList = <SavedAddressListData>[].obs;
+  RefreshController savedAddressRefreshController = RefreshController(initialRefresh: false);
 
   @override
   void onInit() {
@@ -34,17 +45,20 @@ class BaseController extends GetxController{
   getSuggestionsList(String input) {
     if (input.isNotEmpty) {
       debouncer.run(() async {
+        isAddressSuggestionLoading.value = true;
         if (sessionToken.isEmpty) {
           sessionToken = uuid.v4();
         }
-        dio = Dio();
-        String mapApiKey = "AIzaSyCKM6nu9hXYksgFuz1flo2zQtPRC_lw7NM";
+        dio = as_dio.Dio();
         String baseURL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
-        String request = '$baseURL?input=$input&key=$mapApiKey&sessiontoken=$sessionToken';
+        String request = '$baseURL?input=$input&key=$googleApiKey&sessiontoken=$sessionToken';
         print("Input: $input");
+        print("API Key: $googleApiKey");
         as_dio.Response response = await dio.get(request);
-        if (response.statusCode == 200) {
-          searchResultList.value = response.data['predictions'];
+        AutoCompleteApiResponse autoCompleteApiResponse = AutoCompleteApiResponse.fromJson(response.data);
+        isAddressSuggestionLoading.value = false;
+        if ((autoCompleteApiResponse.status?.toString().toLowerCase()??"") == "ok") {
+          searchResultList.value = autoCompleteApiResponse.predictions??[];
         } else {
           throw Exception('Failed to load predictions');
         }
@@ -55,27 +69,12 @@ class BaseController extends GetxController{
     }
   }
 
-  CameraPosition setInitialMapPosition({required double lat, required double long, double? zoom}){
-    return CameraPosition(
-      target: LatLng(lat,long),
-      zoom: zoom??17,
-    );
-  }
-
-  Future<LatLng?> animateToCurrentLocation({required Completer<GoogleMapController> mapController, double? zoom}) async {
-    final GoogleMapController controller = await mapController.future;
-    Position? value = await getCurrentLocation();
-    if ((value?.latitude??0) != 0 && (value?.longitude??0) != 0) {
-      controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(
-          bearing: 0,
-          target: LatLng(value?.latitude??0, value?.longitude??0),
-          zoom: zoom??17,
-        ),
-      ));
-      return LatLng(value?.latitude??0, value?.longitude??0);
-    }else{
-      return LatLng(value?.latitude??0, value?.longitude??0);
+  Future<LatLng?> getLatLngFromAddress({required String address}) async {
+    var locations = await locationFromAddress(address);
+    if (locations.isNotEmpty) {
+      return LatLng(locations.first.latitude, locations.first.longitude);
+    }else {
+      return const LatLng(0, 0);
     }
   }
 
@@ -89,8 +88,8 @@ class BaseController extends GetxController{
         position = await Geolocator.getCurrentPosition();
         log(
             '\nCurrent Latitude -> ${(position.latitude).toString()}'
-            '\nCurrent Longitude -> ${(position.longitude).toString()}'
-            '\nCurrent Accuracy -> ${(position.accuracy).toString()}'
+                '\nCurrent Longitude -> ${(position.longitude).toString()}'
+                '\nCurrent Accuracy -> ${(position.accuracy).toString()}'
         );
       } catch (e) {
         log(e.toString());
@@ -99,6 +98,7 @@ class BaseController extends GetxController{
     dismissBaseLoader();
     return position;
   }
+
   Future<bool> checkLocationPermission() async {
     bool returnValue = true;
     LocationPermission permission;
@@ -118,6 +118,91 @@ class BaseController extends GetxController{
     return returnValue;
   }
 
+  getSavedAddress() async {
+    isSavedAddressLoading.value = true;
+    savedAddressList?.clear();
+    savedAddressList?.refresh();
+    update();
+    try {
+      await BaseApiService().get(apiEndPoint: ApiEndPoints().addressList, showLoader: false).then((value){
+        savedAddressRefreshController.refreshCompleted();
+        if (value?.statusCode ==  200) {
+          SavedAddressListResponse response = SavedAddressListResponse.fromJson(value?.data);
+          if (response.success??false) {
+            savedAddressList?.value = response.data??[];
+          }else{
+            showSnackBar(subtitle: response.message??"");
+          }
+        }else{
+          showSnackBar(subtitle: "Something went wrong, please try again");
+        }
+        isSavedAddressLoading.value = false;
+        update();
+      });
+    } on Exception catch (e) {
+      isSavedAddressLoading.value = false;
+      savedAddressRefreshController.refreshCompleted();
+      update();
+    }
+  }
+
+  Future<bool> setDefaultAddress({required String addressID}) async {
+    Map<String, String> data = {
+      "address_id":addressID.toString(),
+      "is_default":"1",
+    };
+    bool returnValue = false;
+    try {
+      await BaseApiService().post(apiEndPoint: ApiEndPoints().setDefaultAddress, data: data).then((value){
+        if (value?.statusCode ==  200) {
+          BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
+          if (response.success??false) {
+            returnValue = true;
+          }else{
+            showSnackBar(subtitle: response.message??"");
+          }
+        }else{
+          showSnackBar(subtitle: "Something went wrong, please try again");
+        }
+        return returnValue;
+      });
+
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+    return returnValue;
+  }
+
+  Future<bool> createBooking({required String serviceTypeId, String? subServiceId, String? noOfCans, String? price, String? addressId, String? couponId}) async {
+    Map<String, String> data = {
+      "category_id":serviceTypeId,
+      "sub_category_id":subServiceId??"",
+      "no_of_cane":noOfCans??"",
+      "price":price??"",
+      "address_id":addressId??"",
+      "coupon_id":couponId??"",
+    };
+    bool returnValue = false;
+    try {
+      await BaseApiService().post(apiEndPoint: ApiEndPoints().bookingCreate, data: data).then((value){
+        if (value?.statusCode ==  200) {
+          BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
+          if (response.success??false) {
+            returnValue = true;
+          }else{
+            showSnackBar(subtitle: response.message??"");
+          }
+        }else{
+          showSnackBar(subtitle: "Something went wrong, please try again");
+        }
+        return returnValue;
+      });
+
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+    return returnValue;
+  }
 
   /// Default Marker Pin
   Future<Uint8List?> getBytesFromAsset(String path, int width) async {

@@ -4,6 +4,7 @@ import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/base_sizes.dart';
+import 'package:binbeardriver/utils/get_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -17,17 +18,16 @@ import 'base_text.dart';
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   final Color? contentColor;
-  final bool? showNotification, showDrawerIcon, showSwitchButton;
+  final bool? showNotification, showDrawerIcon, showSwitchButton, showBackButton;
   final Function()? onBackPressed;
   final Widget? bottomChild;
   final double? bottomWidgetHeight, titleSize, titleSpacing;
   final FontWeight? fontWeight;
-  const BaseAppBar({super.key, this.title, this.onBackPressed, this.showNotification, this.showDrawerIcon, this.bottomChild, this.bottomWidgetHeight, this.contentColor, this.titleSize, this.fontWeight, this.showSwitchButton, this.titleSpacing});
+  const BaseAppBar({super.key, this.title, this.onBackPressed, this.showNotification, this.showDrawerIcon, this.bottomChild, this.bottomWidgetHeight, this.contentColor, this.titleSize, this.fontWeight, this.showSwitchButton, this.titleSpacing, this.showBackButton});
 
   @override
   Widget build(BuildContext context) {
     DashboardController dashboardController = Get.find<DashboardController>();
-    final GetStorage box = GetStorage();
     return AppBar(
       title: FadeInDown(
           duration: const Duration(milliseconds: 400),
@@ -46,7 +46,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
         ///   Drawer Icon
             ? GestureDetector(onTap: (){
               triggerHapticFeedback();
-          if (box.read(StorageKeys.isUserDriver)) {
+          if (BaseStorage.read(StorageKeys.isUserDriver)) {
             Get.find<JobsController>().jobsScaffoldKey.currentState?.openDrawer();
           }else{
             Get.find<DashboardController>().scaffoldKey.currentState?.openDrawer();
@@ -57,11 +57,14 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
         )
         ///   Back Icon
-            : GestureDetector(onTap: onBackPressed ?? (){
-              triggerHapticFeedback();
-              Get.back();
-            },child: Icon(Icons.arrow_back_sharp,
+            : Visibility(
+          visible: showBackButton??true,
+          child: GestureDetector(onTap: onBackPressed ?? (){
+            triggerHapticFeedback();
+            Get.back();
+          },child: Icon(Icons.arrow_back_sharp,
               color: contentColor??Colors.white,size: 30)),
+        ),
       ),
       actions: [
         Visibility(

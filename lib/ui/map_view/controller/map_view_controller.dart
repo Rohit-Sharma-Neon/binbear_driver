@@ -1,15 +1,16 @@
 import 'dart:async';
 import 'package:binbeardriver/utils/base_debouncer.dart';
+import 'package:binbeardriver/utils/base_strings.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:uuid/uuid.dart';
 import 'package:dio/dio.dart' as as_dio;
+import 'package:uuid/uuid.dart';
 import '../../onboardings/splash/controller/base_controller.dart';
 
 class MapViewController extends GetxController{
-  final Completer<GoogleMapController> mapController = Completer<GoogleMapController>();
+  Completer<GoogleMapController> mapController = Completer();
   final BaseController baseController = Get.find<BaseController>();
   List<Marker> markers = <Marker>[];
   RxString selectedLocation = "".obs;
@@ -29,9 +30,8 @@ class MapViewController extends GetxController{
 
   getSuggestion(String input) async {
     dio = Dio();
-    String mapApiKey = "AIzaSyCKM6nu9hXYksgFuz1flo2zQtPRC_lw7NM";
     String baseURL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
-    String request = '$baseURL?input=$input&key=$mapApiKey&sessiontoken=$sessionToken';
+    String request = '$baseURL?input=$input&key=$googleApiKey&sessiontoken=$sessionToken';
     print("Input: $input");
     as_dio.Response response = await dio.get(request);
     if (response.statusCode == 200) {
@@ -53,10 +53,6 @@ class MapViewController extends GetxController{
      markers.add(Marker(
        markerId: const MarkerId("default_marker"),
        position: LatLng(latitude, longitude),
-       infoWindow: const InfoWindow(
-         title: "Current Location",
-         snippet: 'Current',
-       ),
        icon: Get.find<BaseController>().defaultMarker,
      ));
   }
@@ -75,6 +71,21 @@ class MapViewController extends GetxController{
         addMarker(latitude: value?.latitude??0, longitude: value?.longitude??0);
       }
     });
+    update();
+  }
+
+  animateToLocation({required LatLng value}) async {
+    final GoogleMapController controller = await mapController.future;
+      if (value.latitude != 0 && value.longitude != 0) {
+        controller.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(
+            bearing: 0,
+            target: LatLng(value.latitude??0, value.longitude??0),
+            zoom: 17,
+          ),
+        ));
+        addMarker(latitude: value.latitude??0, longitude: value.longitude??0);
+      }
     update();
   }
 }
