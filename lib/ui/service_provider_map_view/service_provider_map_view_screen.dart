@@ -21,21 +21,29 @@ import '../base_components/base_text.dart';
 class ServiceProviderMapViewScreen extends StatefulWidget {
   final double? startingLat, startingLong, endingLat, endingLong;
   final bool showCurrentPosition;
-  const ServiceProviderMapViewScreen({super.key, this.startingLat, this.startingLong, this.endingLat, this.endingLong, required this.showCurrentPosition});
+  const ServiceProviderMapViewScreen(
+      {super.key,
+      this.startingLat,
+      this.startingLong,
+      this.endingLat,
+      this.endingLong,
+      required this.showCurrentPosition});
 
   @override
-  State<ServiceProviderMapViewScreen> createState() => _ServiceProviderMapViewScreenState();
+  State<ServiceProviderMapViewScreen> createState() =>
+      _ServiceProviderMapViewScreenState();
 }
 
-class _ServiceProviderMapViewScreenState extends State<ServiceProviderMapViewScreen> {
+class _ServiceProviderMapViewScreenState
+    extends State<ServiceProviderMapViewScreen> {
   BookingsController controller = Get.find<BookingsController>();
 
   @override
   void initState() {
     super.initState();
     controller.addMarkers(
-        southwest: LatLng(widget.startingLat??0, widget.startingLong??0),
-        northeast: LatLng(widget.endingLat??0, widget.endingLong??0),
+      southwest: LatLng(widget.startingLat ?? 0, widget.startingLong ?? 0),
+      northeast: LatLng(widget.endingLat ?? 0, widget.endingLong ?? 0),
     );
   }
 
@@ -110,13 +118,14 @@ class _ServiceProviderMapViewScreenState extends State<ServiceProviderMapViewScr
                         height: 4,
                         margin: const EdgeInsets.symmetric(horizontal: 9),
                         decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: BaseColors.primaryColor
-                        ),
+                            shape: BoxShape.circle,
+                            color: BaseColors.primaryColor),
                       ),
                       BaseText(
                         topMargin: 2,
-                        value: controller.tabController.index != 0 ? "Picked Up" : "Waiting for Driver Response",
+                        value: controller.tabController.index != 0
+                            ? "Picked Up"
+                            : "Waiting for Driver Response",
                         fontSize: 11,
                         color: const Color(0xffFBE6D3),
                         fontWeight: FontWeight.w400,
@@ -209,7 +218,8 @@ class _ServiceProviderMapViewScreenState extends State<ServiceProviderMapViewScr
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SvgPicture.asset(BaseAssets.icPin, color: BaseColors.secondaryColor, height: 12),
+                      SvgPicture.asset(BaseAssets.icPin,
+                          color: BaseColors.secondaryColor, height: 12),
                       const BaseText(
                         topMargin: 2,
                         leftMargin: 3.5,
@@ -221,27 +231,27 @@ class _ServiceProviderMapViewScreenState extends State<ServiceProviderMapViewScr
                     ],
                   ),
                   Visibility(
-                      visible: controller.tabController.index != 0,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          BaseText(
-                            topMargin: 10,
-                            value: "Driver Name",
-                            fontSize: 11.5,
-                            color: const Color(0xffFBE6D3).withOpacity(0.42),
-                            fontWeight: FontWeight.w400,
-                          ),
-                          const BaseText(
-                            topMargin: 2,
-                            value: "John Sinha",
-                            fontSize: 13,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ],
-                      ),
+                    visible: controller.tabController.index != 0,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        BaseText(
+                          topMargin: 10,
+                          value: "Driver Name",
+                          fontSize: 11.5,
+                          color: const Color(0xffFBE6D3).withOpacity(0.42),
+                          fontWeight: FontWeight.w400,
+                        ),
+                        const BaseText(
+                          topMargin: 2,
+                          value: "John Sinha",
+                          fontSize: 13,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ],
+                    ),
                   ),
                   const Spacer(),
                   Visibility(
@@ -250,7 +260,7 @@ class _ServiceProviderMapViewScreenState extends State<ServiceProviderMapViewScr
                       title: "Assign Job Manually",
                       topMargin: 11,
                       bottomMargin: 12,
-                      onPressed: (){
+                      onPressed: () {
                         Get.to(() => const AssignJobManuallyScreen());
                       },
                     ),

@@ -1,8 +1,14 @@
+import 'dart:developer';
+
+import 'package:binbeardriver/backend/api_end_points.dart';
+import 'package:binbeardriver/backend/base_api_service.dart';
+import 'package:binbeardriver/ui/home_tab/model/home_data_response.dart';
+import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class HomeTabController extends GetxController{
-
+class HomeTabController extends GetxController {
   List<LatLng> testingLatLngList = [
     const LatLng(26.854388241227724, 75.76720853834199),
     const LatLng(26.85793580484039, 75.79552164216459),
@@ -23,4 +29,50 @@ class HomeTabController extends GetxController{
     "Peter Parker",
     "John Doe",
   ];
+
+  RxBool isHomeLoading = true.obs;
+
+  RxList<Booking?>? allbookings = <Booking?>[].obs;
+  RxList<AllDriver?>? allDrivers = <AllDriver?>[].obs;
+  RxInt? totalBooking = 0.obs;
+  RxInt? totalEarning = 0.obs;
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
+
+  @override
+  void onInit() {
+    getHomeData();
+    log("==========>>>>>>>>>>>>> Init Called");
+    super.onInit();
+  }
+
+  getHomeData() async {
+    isHomeLoading.value = true;
+
+    try {
+      await BaseApiService()
+          .get(apiEndPoint: ApiEndPoints().getHomeData, showLoader: false)
+          .then((value) {
+        refreshController.refreshCompleted();
+        isHomeLoading.value = false;
+        if (value?.statusCode == 200) {
+          HomeDataResponse response = HomeDataResponse.fromJson(value?.data);
+          if (response.success ?? false) {
+            allbookings?.value = response.data?.bookings ?? [];
+            allDrivers?.value = response.data?.allDrivers ?? [];
+            totalBooking?.value = response.data?.totalBooking ?? 0;
+            totalEarning?.value = response.data?.totalBooking ?? 0;
+            update();
+          } else {
+            showSnackBar(subtitle: response.message ?? "");
+          }
+        } else {
+          showSnackBar(subtitle: "Something went wrong, please try again");
+        }
+      });
+    } on Exception catch (e) {
+      isHomeLoading.value = false;
+      refreshController.refreshCompleted();
+    }
+  }
 }

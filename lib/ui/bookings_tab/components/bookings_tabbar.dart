@@ -1,9 +1,7 @@
+import 'package:binbeardriver/ui/bookings_tab/controller/bookings_controller.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
-import 'package:binbeardriver/utils/base_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../controller/bookings_controller.dart';
 
 class BookingsTabBar extends StatelessWidget {
   BookingsTabBar({super.key});
@@ -13,12 +11,10 @@ class BookingsTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(right: horizontalScreenPadding, left: horizontalScreenPadding, bottom: 18),
+      margin: const EdgeInsets.only(right: 40, left: 40, bottom: 18),
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(90)
-      ),
+          color: Colors.white, borderRadius: BorderRadius.circular(90)),
       child: TabBar(
         controller: controller.tabController,
         indicatorSize: TabBarIndicatorSize.tab,

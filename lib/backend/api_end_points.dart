@@ -1,5 +1,4 @@
 class ApiEndPoints {
-
   /// Debug Server: https://v1.checkprojectstatus.com/binbear/api/
 
   final String baseUrl = 'https://v1.checkprojectstatus.com/binbear/api/';
@@ -18,8 +17,8 @@ class ApiEndPoints {
   final String changePassword = "change-password";
   final String getUserProfile = "getuserprofile";
   final String editUserProfile = "edituserprofile";
-  final String getHomeData = "homepage";
-  final String myBookings = "my_bookings";
+  final String getHomeData = "home/screen";
+  final String myBookings = "bookings/data";
   final String notificationList = "notificationlist";
   final String markAllAsRead = "allmarkasread";
   final String bookingDetail = "booking_detail";
