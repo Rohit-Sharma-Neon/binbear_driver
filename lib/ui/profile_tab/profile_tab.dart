@@ -1,7 +1,13 @@
+import 'package:card_loading/card_loading.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
 import '../base_components/animated_column.dart';
 import '../base_components/base_app_bar.dart';
 import '../base_components/base_button.dart';
 import '../base_components/base_container.dart';
+import '../base_components/base_dummy_profile.dart';
 import '../base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
@@ -10,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../base_components/base_shimmer.dart';
 import '../base_components/base_text.dart';
 import '../settings/settings_screen.dart';
 import 'controller/profile_controller.dart';
@@ -35,7 +42,7 @@ class _ProfileTabState extends State<ProfileTab> {
           title: "My Account",
           showNotification: true,
           showDrawerIcon: true,
-          showSwitchButton: true,
+          showSwitchButton: false,
         ),
         body: BaseContainer(
           topMargin: 10,
@@ -48,19 +55,28 @@ class _ProfileTabState extends State<ProfileTab> {
               children: [
                 Hero(
                   tag: "profile_image",
-                  child: ClipRRect(
+              child:  Obx(()=> controller.isProfileLoading.value ?
+               const BaseShimmer(width: 118, height: 118, borderRadius: 99) :
+              (controller.profileData?.value?.profile??"").toString().isEmpty ?
+               const BaseDummyProfile(overflowHeight: 150, overflowWidth: 205, topMargin: 10,) :
+                   ClipRRect(
                     borderRadius: BorderRadius.circular(90),
-                    child: Image.asset(
-                      "assets/delete/dummy_profile.jpeg", width: 120, height: 120, fit: BoxFit.fill),
+                    child: Image.network(controller.profileData?.value?.profile??"", width: 118, height: 118, fit: BoxFit.cover),
                   ),
-                ),
-                const BaseText(
+                )),
+            Obx(()=> controller.isProfileLoading.value ?
+            CardLoading(
+              margin: const EdgeInsets.only(top: 14, bottom: 6),
+              width: 160,
+              height: 24,
+              borderRadius: BorderRadius.circular(99),
+            ) : BaseText(
                   topMargin: 15,
-                  value: "Rohit Sharma",
+                  value: controller.profileData?.value?.name?.toString()??"N/A",
                   fontSize: 20,
                   color: Colors.black,
                   fontWeight: FontWeight.w500,
-                ),
+                )),
                 BaseContainer(
                   topMargin: 15,
                   bottomMargin: 0,
@@ -76,27 +92,35 @@ class _ProfileTabState extends State<ProfileTab> {
                         padding: const EdgeInsets.only(top: 1),
                         child: SvgPicture.asset(BaseAssets.icEmail, width: 18, height: 18,),
                       ),
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          BaseText(
-                            topMargin: 0,
-                            leftMargin: 8,
-                            value: "Email Address",
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          BaseText(
-                            topMargin: 3,
-                            leftMargin: 8,
-                            value: "rohitsharma@gmail.com",
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ],
-                      ),
+                       Expanded(
+                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const BaseText(
+                              topMargin: 0,
+                              leftMargin: 8,
+                              value: "Email Address",
+                              fontSize: 14,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            Obx(()=> controller.isProfileLoading.value ? const BaseShimmer(
+                              topMargin: 6,
+                              leftMargin: 8,
+                              width: double.infinity,
+                              height: 20,
+                              borderRadius: 99,
+                            ) : BaseText(
+                              topMargin: 3,
+                              leftMargin: 8,
+                              value: controller.profileData?.value?.email?.toString()??"N/A",
+                              fontSize: 16,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            )],
+                         ),
+                       ),
                     ],
                   ),
                 ),
@@ -115,27 +139,35 @@ class _ProfileTabState extends State<ProfileTab> {
                         padding: const EdgeInsets.only(top: 1),
                         child: SvgPicture.asset(BaseAssets.icPhone, width: 18, height: 18,),
                       ),
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          BaseText(
-                            topMargin: 0,
-                            leftMargin: 8,
-                            value: "Mobile Number",
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          BaseText(
-                            topMargin: 3,
-                            leftMargin: 8,
-                            value: "+1 0231456987",
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ],
-                      ),
+                       Expanded(
+                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const BaseText(
+                              topMargin: 0,
+                              leftMargin: 8,
+                              value: "Mobile Number",
+                              fontSize: 14,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            Obx(()=> controller.isProfileLoading.value ? const BaseShimmer(
+                              topMargin: 6,
+                              leftMargin: 8,
+                              width: double.infinity,
+                              height: 20,
+                              borderRadius: 99,
+                            ) : BaseText(
+                              topMargin: 3,
+                              leftMargin: 8,
+                              value: "+1 ${MaskTextInputFormatter().updateMask(mask: '(###) ###-####', newValue: TextEditingValue(text: controller.profileData?.value?.mobile?.toString()??"")).text}",
+                              fontSize: 16,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            )],
+                         ),
+                       ),
                     ],
                   ),
                 ),
@@ -153,7 +185,7 @@ class _ProfileTabState extends State<ProfileTab> {
                   btnHeight: 60,
                   title: "Settings",
                   onPressed: (){
-                    Get.to(() => const SettingsScreen(isNotificationEnabled: true,));
+                    Get.to(() => SettingsScreen(isNotificationEnabled: (controller.profileData?.value?.isSendNotification?.toString()??"1") == "1"));
                   },
                 ),
               ],
