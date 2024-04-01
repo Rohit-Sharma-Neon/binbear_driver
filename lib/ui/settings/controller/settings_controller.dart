@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../backend/api_end_points.dart';
 import '../../../utils/base_functions.dart';
+import '../../profile_tab/controller/profile_controller.dart';
 
 class SettingsController extends GetxController{
   RxBool isNotificationEnable = true.obs;
@@ -17,7 +18,7 @@ class SettingsController extends GetxController{
         BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
         if (response.success??false) {
           // todo: Should be updated
-          // Get.find<ProfileController>().getProfileData();
+          Get.find<ProfileController>().getProfileData();
         }else{
           showSnackBar(subtitle: response.message??"");
         }

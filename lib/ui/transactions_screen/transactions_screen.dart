@@ -5,10 +5,14 @@ import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/base_components/base_text.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
+import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/base_sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+
+import 'controller/transaction_controller.dart';
 
 class TransactionsScreen extends StatefulWidget {
   const TransactionsScreen({super.key});
@@ -18,6 +22,14 @@ class TransactionsScreen extends StatefulWidget {
 }
 
 class _TransactionsScreenState extends State<TransactionsScreen> {
+  TransactionController controller = Get.put( TransactionController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    controller.getTransactionHistory();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldBackground(
@@ -39,46 +51,66 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                   bottomMargin: 0,
                   bottomPadding: 14,
                   border: Border.all(width: 1.5, color: BaseColors.secondaryColor),
-                  child: const Row(
-                    children: [
-                      Expanded(
-                        child: BaseText(
-                          value: "Monthly Total Compensation",
-                          fontSize: 16,
+                  child: DropdownButton<String>(
+                    value: controller.dropdownValue,
+                    onChanged: (String? value) {
+                      setState(() {
+                        controller.dropdownValue = value!;
+                      });
+                    },
+                    underline: const SizedBox(),
+                    isExpanded: true,
+                    style: const TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
+                    dropdownColor: Colors.white,
+                    icon: const Icon(Icons.keyboard_arrow_down,
+                        color: Colors.black),
+                    selectedItemBuilder: (BuildContext context) {
+                      return controller.options.map((String value) {
+                        return Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                           controller. dropdownValue,
+                          ),
+                        );
+                      }).toList();
+                    },
+                    items:
+                    controller.options.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child:
+                        Text(value, style: const TextStyle(fontSize: 15)),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                Obx(() => BaseContainer(
+                    topMargin: 18,
+                    bottomMargin: 0,
+                    borderRadius: 18,
+                    leftPadding: 18,
+                    topPadding: 14,
+                    bottomPadding: 14,
+                    child: Column(
+                      children: [
+                        const BaseText(
+                          value: "Total Balance",
+                          fontSize: 14,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        BaseText(
+                          value: "\$ ${controller.totalPayment?.value ??""}",
+                          fontSize: 36,
                           color: Colors.black,
                           fontWeight: FontWeight.w700,
                         ),
-                      ),
-                      Icon(Icons.keyboard_arrow_down_rounded, size: 33,)
-                    ],
+                      ],
+                    )
                   ),
                 ),
-                const BaseContainer(
-                  topMargin: 18,
-                  bottomMargin: 0,
-                  borderRadius: 18,
-                  leftPadding: 18,
-                  topPadding: 14,
-                  bottomPadding: 14,
-                  child: Column(
-                    children: [
-                      BaseText(
-                        value: "Total Balance",
-                        fontSize: 14,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      BaseText(
-                        value: "\$ 1200",
-                        fontSize: 36,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ],
-                  )
-                ),
                 Expanded(
-                  child: BaseContainer(
+                  child:Obx(() => BaseContainer(
                     topMargin: 18,
                     borderRadius: 18,
                     bottomMargin: 20,
@@ -87,43 +119,55 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                     topPadding: 14,
                     bottomPadding: 14,
                     child: ListView.builder(
-                          itemCount: 8,
+                          itemCount: controller.transactionData?.length??0,
                           shrinkWrap: true,
                           itemBuilder: (context, index){
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Row(
+                                 Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                BaseText(
+                                const BaseText(
                                   value: "Payment Received",
                                   fontSize: 14,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w700,
                                 ),
                                 BaseText(
-                                  value: "\$ 1200",
+                                  value: "\$ ${controller.transactionData?[index].serviceProviderPayment ??""}",
                                   fontSize: 24,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ],
                             ),
-                            const BaseText(
-                              topMargin: 7,
-                              value: "Great job! Keep up the great work. You are truly appreciated!",
+                             BaseText(
+                               topMargin: 7,
+                               value: controller.transactionData?[index].title.toString() ?? "",
                               fontSize: 13,
                               color: Colors.black,
                               fontWeight: FontWeight.w400,
                             ),
-                            const BaseText(
-                              topMargin: 8,
-                              value: "Today, 3:30 pm",
-                              fontSize: 10,
-                              color: Color(0xff30302E),
-                              fontWeight: FontWeight.w400,
+                            Row(
+                             mainAxisAlignment: MainAxisAlignment.spaceBetween ,
+                              children: [
+                                 BaseText(
+                                  topMargin: 8,
+                                  value: formatBackendDate(controller.transactionData?[index].createdAt.toString()?? ""),
+                                  fontSize: 10,
+                                  color: const Color(0xff30302E),
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                BaseText(
+                                  topMargin: 8,
+                                  value:controller.transactionData?[index].id.toString() ?? "",
+                                  fontSize: 18,
+                                  color: const Color(0xff30302E),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ],
                             ),
                             Divider(
                               height: 23,
@@ -133,7 +177,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                         );
                       }),
                   ),
-                ),
+                  ) ),
               ],
             ),
           ),
