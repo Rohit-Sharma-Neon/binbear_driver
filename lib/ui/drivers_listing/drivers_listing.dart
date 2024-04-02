@@ -3,6 +3,7 @@ import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
 import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/base_components/listview_builder_animation.dart';
 import 'package:binbeardriver/ui/driver_exact_location/driver_exact_location_screen.dart';
+import 'package:binbeardriver/ui/drivers_listing/controller/home_tab_controller.dart';
 import 'package:binbeardriver/ui/home_tab/controller/home_tab_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -12,6 +13,7 @@ import '../../utils/base_sizes.dart';
 import '../base_components/base_no_data.dart';
 import '../base_components/drivers_listing_tile.dart';
 import '../base_components/base_button.dart';
+import '../onboardings/splash/controller/base_controller.dart';
 
 class DriversListing extends StatefulWidget {
   const DriversListing({super.key});
@@ -21,9 +23,8 @@ class DriversListing extends StatefulWidget {
 }
 
 class _DriversListingState extends State<DriversListing> {
-
-  HomeTabController homeTabController = Get.find<HomeTabController>();
-
+  DriverListingController controller =Get.put(DriverListingController());
+  BaseController homeTabController = Get.find<BaseController>();
 @override
   void initState() {
     // TODO: implement initState
@@ -52,7 +53,7 @@ class _DriversListingState extends State<DriversListing> {
                   isChecked: false,
                   showEditDeleteButtons: true,
                   onTap: () {
-                    Get.to(() => DriverExactLocationScreen(latLng: homeTabController.testingLatLngList[index]));
+                    Get.to(() => DriverExactLocationScreen(latLng: controller.testingLatLngList[index]));
                   },
                   onEdit: (){
                     Get.to(() => const AddEditDriverScreen(isEditing: true));

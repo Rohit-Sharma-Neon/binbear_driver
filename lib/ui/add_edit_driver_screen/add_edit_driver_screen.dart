@@ -102,9 +102,9 @@ class _AddEditDriverScreenState extends State<AddEditDriverScreen> {
                      if(widget.isEditing){
                        controller.editDriver();
                      }else{
-                       controller.addDriver();
+                       controller.addDriver().then;
                      }
-                        Get.back();}
+                        }
                       },
                     ),
                   ],
