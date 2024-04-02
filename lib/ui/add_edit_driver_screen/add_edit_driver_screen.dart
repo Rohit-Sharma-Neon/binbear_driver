@@ -13,11 +13,13 @@ import '../base_components/base_button.dart';
 import '../base_components/base_container.dart';
 import '../base_components/base_scaffold_background.dart';
 import '../base_components/base_textfield.dart';
+import '../drivers_listing/model/driverlist_response.dart';
 import 'controller/editdriver_controller.dart';
 
 class AddEditDriverScreen extends StatefulWidget {
   final bool isEditing;
-  const AddEditDriverScreen({super.key, required this.isEditing});
+  final DriverData? driverData;
+  const AddEditDriverScreen({super.key, required this.isEditing, this.driverData});
 
   @override
   State<AddEditDriverScreen> createState() => _AddEditDriverScreenState();
@@ -25,7 +27,13 @@ class AddEditDriverScreen extends StatefulWidget {
 
 class _AddEditDriverScreenState extends State<AddEditDriverScreen> {
   EditDriverController controller = Get.put(EditDriverController());
-
+@override
+  void initState() {
+    // TODO: implement initState
+controller.nameController.text = widget.driverData?.name??"";
+controller.emailController.text = widget.driverData?.email??"";
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldBackground(
@@ -100,9 +108,9 @@ class _AddEditDriverScreenState extends State<AddEditDriverScreen> {
                      showSnackBar(subtitle: "Password Length Can't Be Less Than 8");
                    }else{
                      if(widget.isEditing){
-                       controller.editDriver();
+                       controller.editDriver(widget.driverData?.id.toString()??"");
                      }else{
-                       controller.addDriver().then;
+                       controller.addDriver();
                      }
                         }
                       },
