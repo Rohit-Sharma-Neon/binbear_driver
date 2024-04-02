@@ -1,3 +1,4 @@
+
 import 'package:binbeardriver/ui/base_components/base_page_sub_title.dart';
 import 'package:binbeardriver/ui/base_components/base_page_title.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
@@ -5,12 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../utils/base_functions.dart';
 import '../base_components/animated_column.dart';
 import '../base_components/base_app_bar.dart';
 import '../base_components/base_button.dart';
 import '../base_components/base_container.dart';
 import '../base_components/base_scaffold_background.dart';
 import '../base_components/base_textfield.dart';
+import 'controller/editdriver_controller.dart';
 
 class AddEditDriverScreen extends StatefulWidget {
   final bool isEditing;
@@ -21,24 +24,7 @@ class AddEditDriverScreen extends StatefulWidget {
 }
 
 class _AddEditDriverScreenState extends State<AddEditDriverScreen> {
-
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.isEditing) {
-      nameController.text = "Peter Parker";
-      emailController.text = "peter@gmail.com";
-      passwordController.text = "peter1234";
-    }else{
-      nameController.clear();
-      emailController.clear();
-      passwordController.clear();
-    }
-  }
+  EditDriverController controller = Get.put(EditDriverController());
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +49,7 @@ class _AddEditDriverScreenState extends State<AddEditDriverScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     BaseTextField(
-                      controller: nameController,
+                      controller: controller.nameController,
                       labelText: 'Name',
                       hintText: 'Enter Full Name',
                       textInputType: TextInputType.name,
@@ -74,7 +60,7 @@ class _AddEditDriverScreenState extends State<AddEditDriverScreen> {
                     ),
                     BaseTextField(
                       topMargin: 18,
-                      controller: emailController,
+                      controller: controller.emailController,
                       labelText: 'Email Address',
                       hintText: 'Email Address',
                       textInputType: TextInputType.emailAddress,
@@ -85,7 +71,7 @@ class _AddEditDriverScreenState extends State<AddEditDriverScreen> {
                     ),
                     BaseTextField(
                       topMargin: 18,
-                      controller: passwordController,
+                      controller:controller. passwordController,
                       labelText: 'Password',
                       hintText: 'Enter Password',
                       textInputType: TextInputType.visiblePassword,
@@ -101,8 +87,24 @@ class _AddEditDriverScreenState extends State<AddEditDriverScreen> {
                     BaseButton(
                       topMargin: 24,
                       title: "Continue",
-                      onPressed: (){
-                        Get.back();
+                      onPressed: () {
+                   if (controller.nameController.text.trim().isEmpty) {
+                 showSnackBar(subtitle: "Please Enter Full Name");
+                  }else if (controller.emailController.text.trim().isEmpty) {
+                     showSnackBar(subtitle: "Please Enter Email");
+                   }else if (!GetUtils.isEmail(controller.emailController.text.trim())) {
+                     showSnackBar(subtitle: "Please Enter Valid Email");
+                   }else if (controller.passwordController.text.trim().isEmpty) {
+                     showSnackBar(subtitle: "Please Enter Password");
+                   }else if (controller.passwordController.text.trim().length < 8) {
+                     showSnackBar(subtitle: "Password Length Can't Be Less Than 8");
+                   }else{
+                     if(widget.isEditing){
+                       controller.editDriver();
+                     }else{
+                       controller.addDriver();
+                     }
+                        Get.back();}
                       },
                     ),
                   ],

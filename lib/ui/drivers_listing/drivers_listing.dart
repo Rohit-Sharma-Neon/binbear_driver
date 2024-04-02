@@ -9,9 +9,9 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 
 import '../../utils/base_sizes.dart';
+import '../base_components/base_no_data.dart';
 import '../base_components/drivers_listing_tile.dart';
 import '../base_components/base_button.dart';
-import '../onboardings/base_success_screen.dart';
 
 class DriversListing extends StatefulWidget {
   const DriversListing({super.key});
@@ -24,6 +24,12 @@ class _DriversListingState extends State<DriversListing> {
 
   HomeTabController homeTabController = Get.find<HomeTabController>();
 
+@override
+  void initState() {
+    // TODO: implement initState
+  homeTabController.driverList();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldBackground(
@@ -35,14 +41,14 @@ class _DriversListingState extends State<DriversListing> {
           titleSpacing: 0,
         ),
         body: AnimationLimiter(
-          child: ListView.builder(
-            itemCount: homeTabController.driverNames.length,
+          child: Obx(() => (homeTabController.listDriver?.length??0) == 0? const BaseNoData(textColor: Colors.white, message: "No Data Found!",) : ListView.builder(
+            itemCount: homeTabController.listDriver?.length,
             shrinkWrap: true,
             itemBuilder: (context, index){
               return ListviewBuilderAnimation(
                 index: index,
                 child: DriversListingTile(
-                  title: homeTabController.driverNames[index],
+                  title: homeTabController.listDriver![index].name.toString(),
                   isChecked: false,
                   showEditDeleteButtons: true,
                   onTap: () {
@@ -51,12 +57,16 @@ class _DriversListingState extends State<DriversListing> {
                   onEdit: (){
                     Get.to(() => const AddEditDriverScreen(isEditing: true));
                   },
-                  onDelete: (){},
+                  onDelete: (){
+                    homeTabController.deleteDriver(
+                      homeTabController.listDriver?[index].id,index
+                    );
+                  },
                 ),
               );
             },
           ),
-        ),
+        )),
         bottomNavigationBar: Container(
           padding: const EdgeInsets.symmetric(horizontal: horizontalScreenPadding, vertical: 14),
           width: double.infinity,

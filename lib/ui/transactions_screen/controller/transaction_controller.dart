@@ -8,19 +8,22 @@ import '../model/transactions_response.dart';
 
 
 class TransactionController extends GetxController{
-  List<String> options = <String>['Monthly Total Compensation', 'Two', 'Three', 'Four'];
-  String dropdownValue = 'Monthly Total Compensation';
+  // List<String> options = <String>['Monthly Total Compensation', 'Two', 'Three', 'Four'];
+  List<String> options = <String>['Monthly Total Compensation'];
+  String? dropdownValue ="Monthly Total Compensation";
   final now = DateTime.now();
-  RxBool isLoading = false.obs;
+  RxBool isTransactionLoading = false.obs;
   RefreshController refreshController = RefreshController(initialRefresh: false);
   RxList<BookingData>? transactionData = <BookingData>[].obs;
   RxInt? totalPayment = 0.obs;
 
+
   getTransactionHistory() async {
-    isLoading.value = true;
+    Map<String, dynamic> params = {
+      'filter':'',
+    };
     try {
-      await BaseApiService().get(apiEndPoint: ApiEndPoints().transactionHistory, showLoader: false).then((value){
-        isLoading.value = false;
+      await BaseApiService().post(apiEndPoint: ApiEndPoints().transactionHistory,data: params).then((value){
         refreshController.refreshCompleted();
         if (value?.statusCode ==  200) {
           TransactionResponse response = TransactionResponse.fromJson(value?.data);
@@ -35,7 +38,6 @@ class TransactionController extends GetxController{
         }
       });
     } on Exception catch (e) {
-      isLoading.value = false;
       refreshController.refreshCompleted();
     }
   }
