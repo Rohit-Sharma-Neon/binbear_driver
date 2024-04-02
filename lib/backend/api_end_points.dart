@@ -34,6 +34,6 @@ class ApiEndPoints {
   final String editDriver = "edit/binbear";
   final String driverDelete = "delete/binbear";
   final String addDriver = "create/beanbear";
-
+  final String bookingAction = "bookings/action";
 
 }
