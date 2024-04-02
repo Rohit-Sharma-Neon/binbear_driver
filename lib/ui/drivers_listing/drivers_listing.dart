@@ -56,7 +56,7 @@ class _DriversListingState extends State<DriversListing> {
                     Get.to(() => DriverExactLocationScreen(latLng: controller.testingLatLngList[index]));
                   },
                   onEdit: (){
-                    Get.to(() => const AddEditDriverScreen(isEditing: true));
+                    Get.to(() =>  AddEditDriverScreen(isEditing: true,driverData: homeTabController.listDriver?[index],));
                   },
                   onDelete: (){
                     homeTabController.deleteDriver(
@@ -75,7 +75,7 @@ class _DriversListingState extends State<DriversListing> {
           child: BaseButton(
             title: '+ Add New Binbear',
             onPressed: (){
-              Get.to(() => const AddEditDriverScreen(isEditing: false));
+              Get.to(() => const AddEditDriverScreen(isEditing: false,));
             },
           ),
         ),

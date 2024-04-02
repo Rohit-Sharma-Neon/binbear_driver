@@ -1,3 +1,4 @@
+import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
@@ -12,8 +13,10 @@ class EditDriverController extends GetxController{
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  editDriver(){
+
+  editDriver(String id){
     Map<String, String> data = {
+      "binbear_id":id,
       "name": nameController.text.trim(),
       "email": emailController.text.trim(),
       "password": passwordController.text.trim(),
@@ -48,6 +51,7 @@ class EditDriverController extends GetxController{
           triggerHapticFeedback();
           Get.back();
           showSnackBar(subtitle: response.message??"", isSuccess: true);
+          Get.find<BaseController>().driverList();
         }else{
           showSnackBar(subtitle: response.message??"");
         }
