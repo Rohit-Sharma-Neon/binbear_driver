@@ -19,6 +19,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:uuid/uuid.dart';
 import 'package:dio/dio.dart' as as_dio;
 
+import '../../../drivers_listing/model/driverlist_response.dart';
+
 class BaseController extends GetxController{
 
   late BitmapDescriptor defaultMarker;
@@ -35,6 +37,10 @@ class BaseController extends GetxController{
   RxBool isSavedAddressLoading = false.obs;
   RxList<SavedAddressListData>? savedAddressList = <SavedAddressListData>[].obs;
   RefreshController savedAddressRefreshController = RefreshController(initialRefresh: false);
+  // driver listing
+  RxInt selectedDriverIndex = 0.obs;
+  RxList<DriverData>? listDriver = <DriverData>[].obs;
+  RefreshController refreshController = RefreshController(initialRefresh: false);
 
   @override
   void onInit() {
@@ -220,4 +226,42 @@ class BaseController extends GetxController{
     icEndMarkerPin = BitmapDescriptor.fromBytes(icEndMarkerPinBytes!);
   }
 
+  driverList() {
+    try {
+      BaseApiService().post(
+          apiEndPoint: ApiEndPoints().driverList).then((value) {
+        if (value?.statusCode == 200) {
+          DriverList response = DriverList.fromJson(value?.data);
+          if (response.success ?? false) {
+            listDriver?.value = response.data ?? [];
+          } else {
+            showSnackBar(subtitle: response.message ?? "");
+          }
+        } else {
+          showSnackBar(subtitle: "Something went wrong, please try again");
+        }
+      });
+    } on Exception catch (e) {
+      refreshController.refreshCompleted();
+    }
+  }
+
+  deleteDriver(dynamic id ,int index){
+    Map<String, dynamic> params = {'binbear_id': id};
+
+    BaseApiService().post(apiEndPoint: ApiEndPoints().driverDelete,data: params).then((value){
+      if (value?.statusCode ==  200) {
+        BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
+        if (response.success??false) {
+          triggerHapticFeedback();
+          showSnackBar(subtitle: response.message??"", isSuccess: true);
+          listDriver?.removeAt(index);
+        }else{
+          showSnackBar(subtitle: response.message??"");
+        }
+      }else{
+        showSnackBar(subtitle: "Something went wrong, please try again");
+      }
+    });
+  }
 }
