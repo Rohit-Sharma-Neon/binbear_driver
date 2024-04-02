@@ -32,6 +32,7 @@ class HomeTabController extends GetxController {
 
   RxBool isHomeLoading = true.obs;
 
+
   RxList<Booking?>? allbookings = <Booking?>[].obs;
   RxList<AllDriver?>? allDrivers = <AllDriver?>[].obs;
   RxInt? totalBooking = 0.obs;
