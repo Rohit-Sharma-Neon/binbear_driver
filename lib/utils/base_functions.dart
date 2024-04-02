@@ -191,7 +191,7 @@ Future<File?> showMediaPicker({bool? isCropEnabled}) async {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         )
     ),

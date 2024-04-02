@@ -37,6 +37,8 @@ dependencies:
   image_cropper: ^5.0.1
   carousel_slider: ^4.2.1
   flutter_webview_plugin: ^0.4.0
+  # Security
+  flutter_jailbreak_detection: ^1.10.0
   # Map
   geolocator: ^11.0.0
   google_maps_flutter: ^2.6.0

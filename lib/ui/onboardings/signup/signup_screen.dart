@@ -221,7 +221,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         GestureDetector(
                           onTap: (){
-                            FocusManager.instance.primaryFocus?.unfocus();
                             showMediaPicker().then((value) {
                               if ((value?.path??"").isNotEmpty) {
                                 controller.pickedFile = File(value?.path??"");

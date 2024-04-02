@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:binbeardriver/ui/base_error_screen.dart';
 import 'package:binbeardriver/ui/dashboard_module/dashboard_screen/dashboard_screen.dart';
 import 'package:binbeardriver/ui/driver/jobs_screen/jobs_screen.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
+import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import '../../base_components/base_scaffold_background.dart';
 import '../../base_components/base_text.dart';
 import '../../bookings_tab/controller/bookings_controller.dart';
@@ -41,14 +42,18 @@ class _SplashScreenState extends State<SplashScreen> {
         });
       });
       Future.delayed( const Duration(seconds: 3), () async {
-      if ((BaseStorage.read(StorageKeys.apiToken)??"").toString().isNotEmpty && BaseStorage.read(StorageKeys.isUserDriver) != null) {
-        if (BaseStorage.read(StorageKeys.isUserDriver)) {
-          Get.offAll(() => const JobsScreen());
-        }else{
-          Get.offAll(() => const DashBoardScreen());
-        }
+      if (await FlutterJailbreakDetection.jailbroken) {
+        Get.offAll(() => const BaseErrorScreen());
       }else{
-        Get.offAll(() => const WelcomeScreen());
+        if ((BaseStorage.read(StorageKeys.apiToken)??"").toString().isNotEmpty && BaseStorage.read(StorageKeys.isUserDriver) != null) {
+          if (BaseStorage.read(StorageKeys.isUserDriver)) {
+            Get.offAll(() => const JobsScreen());
+          }else{
+            Get.offAll(() => const DashBoardScreen());
+          }
+        }else{
+          Get.offAll(() => const WelcomeScreen());
+        }
       }
     });
   });
