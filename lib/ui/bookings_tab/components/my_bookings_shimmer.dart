@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 class MyBookingsShimmer extends StatelessWidget {
   const MyBookingsShimmer({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return AnimationLimiter(
