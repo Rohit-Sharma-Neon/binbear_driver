@@ -24,8 +24,7 @@ class MyBookingsShimmer extends StatelessWidget {
             index: index,
             child: BaseBookingShimmer(
               bottomMargin: 18,
-              isPastBooking:
-                  Get.find<BookingsController>().tabController.index == 1,
+              isPastBooking: /*Get.find<BookingsController>().tabController.index == 1*/false,
             ),
           );
         },

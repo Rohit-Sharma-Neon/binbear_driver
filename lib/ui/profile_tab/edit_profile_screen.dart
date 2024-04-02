@@ -68,66 +68,66 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: SingleChildScrollView(
                   child: AnimatedColumn(
                     children: [
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Hero(
-                            tag: "profile_image",
-                            child: Obx(
-                                  () {
-                                if ((controller.selectedImage?.value?.path ?? "").isNotEmpty) {
-                                  return ClipRRect(
-                                    borderRadius: BorderRadius.circular(10000),
-                                    child: Image.file(
-                                      controller.selectedImage?.value ?? File(""),width: 100,
-                                      height: 100,fit: BoxFit.cover,),
-                                  );
-                                } else if ((controller.profileData?.value?.profile?.toString() ?? "").isNotEmpty) {
-                                  return ClipRRect(
-                                    borderRadius: BorderRadius.circular(10000),
-                                    child: Image.network(
-                                      controller.profileData?.value?.profile
-                                          ?.toString() ??
-                                          "",
-                                      width: 100,
-                                      height: 100,fit: BoxFit.cover,
-                                    ),
-                                  );
-                                } else {
-                                  return const BaseDummyProfile(
-                                      overflowHeight: 140,
-                                      overflowWidth: 190,
-                                      topMargin: 10);
-                                }
-                              },
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: ZoomIn(
-                              duration: const Duration(milliseconds: 700),
-                              child: Container(
-                                padding: const EdgeInsets.all(9),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: BaseColors.primaryColor,
-                                ),
-                                child: InkWell(
-                                    onTap: () {
-                                      showMediaPicker(isCropEnabled: true).then((value) {
-                                        if ((value?.path??"").isNotEmpty) {
-                                          controller.selectedImage?.value = value;
-                                        }
-                                      });
-                                      // showGetImageBottomSheet(context);
-                                    },
-                                    child: const Icon(Icons.edit_sharp,
-                                        color: Colors.white, size: 19)),
+                      GestureDetector(
+                        onTap: (){
+                          showMediaPicker(isCropEnabled: true).then((value) {
+                            if ((value?.path??"").isNotEmpty) {
+                              controller.selectedImage?.value = value;
+                            }
+                          });
+                        },
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Hero(
+                              tag: "profile_image",
+                              child: Obx(
+                                    () {
+                                  if ((controller.selectedImage?.value?.path ?? "").isNotEmpty) {
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(10000),
+                                      child: Image.file(
+                                        controller.selectedImage?.value ?? File(""),width: 100,
+                                        height: 100,fit: BoxFit.cover,),
+                                    );
+                                  } else if ((controller.profileData?.value?.profile?.toString() ?? "").isNotEmpty) {
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(10000),
+                                      child: Image.network(
+                                        controller.profileData?.value?.profile
+                                            ?.toString() ??
+                                            "",
+                                        width: 100,
+                                        height: 100,fit: BoxFit.cover,
+                                      ),
+                                    );
+                                  } else {
+                                    return const BaseDummyProfile(
+                                        overflowHeight: 140,
+                                        overflowWidth: 190,
+                                        topMargin: 10);
+                                  }
+                                },
                               ),
                             ),
-                          )
-                        ],
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: ZoomIn(
+                                duration: const Duration(milliseconds: 700),
+                                child: Container(
+                                  padding: const EdgeInsets.all(9),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: BaseColors.primaryColor,
+                                  ),
+                                  child: const Icon(Icons.edit_sharp,
+                                      color: Colors.white, size: 19),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                       GetBuilder<ProfileController>(
                         builder: (ProfileController controller) {

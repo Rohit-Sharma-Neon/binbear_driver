@@ -29,10 +29,9 @@ class _AddEditDriverScreenState extends State<AddEditDriverScreen> {
   EditDriverController controller = Get.put(EditDriverController());
 @override
   void initState() {
-    // TODO: implement initState
-controller.nameController.text = widget.driverData?.name??"";
-controller.emailController.text = widget.driverData?.email??"";
-    super.initState();
+  controller.nameController.text = widget.driverData?.name??"";
+  controller.emailController.text = widget.driverData?.email??"";
+  super.initState();
   }
   @override
   Widget build(BuildContext context) {

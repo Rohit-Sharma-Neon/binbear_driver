@@ -1,3 +1,4 @@
+import 'package:binbeardriver/ui/bookings_tab/controller/bookings_controller.dart';
 import 'package:binbeardriver/ui/driver/jobs_screen/components/my_jobs_tab_view.dart';
 import 'package:binbeardriver/utils/base_sizes.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class JobsScreen extends StatefulWidget {
 class _JobsScreenState extends State<JobsScreen> {
 
   JobsController controller = Get.put(JobsController());
+  // BookingsController bookingsController = Get.put(BookingsController());
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
   @override
