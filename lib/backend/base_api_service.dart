@@ -89,6 +89,7 @@ class BaseApiService {
         dismissBaseLoader(showLoader: showLoader??true);
         return response;
       } on DioException catch (e) {
+      print("hello ---${e}");
       dismissBaseLoader(showLoader: showLoader??true);
       if (e.error.toString() == "No Internet Connection") {
         showSnackBar(subtitle: e.error.toString());

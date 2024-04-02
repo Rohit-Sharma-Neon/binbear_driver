@@ -1,4 +1,5 @@
 class ApiEndPoints {
+
   /// Debug Server: https://v1.checkprojectstatus.com/binbear/api/
 
   final String baseUrl = 'https://v1.checkprojectstatus.com/binbear/api/';
@@ -29,4 +30,10 @@ class ApiEndPoints {
   final String setDefaultAddress = "defaultaddressset";
   final String bookingCreate = "bookingcreate";
   final String transactionHistory = "transactionhistory";
+  final String driverList = "binbear/list";
+  final String editDriver = "edit/binbear";
+  final String driverDelete = "delete/binbear";
+  final String addDriver = "create/beanbear";
+
+
 }

@@ -11,7 +11,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../base_components/base_no_data.dart';
+import '../base_components/smart_refresher_base_header.dart';
+import 'components/transection_shimmer.dart';
 import 'controller/transaction_controller.dart';
 
 class TransactionsScreen extends StatefulWidget {
@@ -56,6 +60,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                     onChanged: (String? value) {
                       setState(() {
                         controller.dropdownValue = value!;
+                        controller.getTransactionHistory();
                       });
                     },
                     underline: const SizedBox(),
@@ -69,7 +74,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                         return Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                           controller. dropdownValue,
+                           controller.dropdownValue ?? '',
                           ),
                         );
                       }).toList();
@@ -118,7 +123,15 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                     rightPadding: 18,
                     topPadding: 14,
                     bottomPadding: 14,
-                    child: ListView.builder(
+                    child: SmartRefresher(
+                      controller: controller.refreshController,
+                      header:  const SmartRefresherBaseHeader(),
+                      onRefresh: (){
+                        controller.transactionData;
+                      },
+                      child: controller.isTransactionLoading.value
+                          ? const TransactionShimmer()
+                          : (controller.transactionData?.length??0) == 0 ? const BaseNoData(textColor: Colors.grey, message: "No Transactions Found!",) :ListView.builder(
                           itemCount: controller.transactionData?.length??0,
                           shrinkWrap: true,
                           itemBuilder: (context, index){
@@ -178,7 +191,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                       }),
                   ),
                   ) ),
-              ],
+                )],
             ),
           ),
         ),

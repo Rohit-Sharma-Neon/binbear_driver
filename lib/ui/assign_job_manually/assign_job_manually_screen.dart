@@ -34,13 +34,13 @@ class _AssignJobManuallyScreenState extends State<AssignJobManuallyScreen> {
         ),
         body: AnimationLimiter(
           child: ListView.builder(
-            itemCount: homeTabController.driverNames.length,
+            itemCount: homeTabController.listDriver?.length,
             shrinkWrap: true,
             itemBuilder: (context, index){
               return ListviewBuilderAnimation(
                 index: index,
                 child: Obx(()=>DriversListingTile(
-                  title: homeTabController.driverNames[index],
+                  title: homeTabController.listDriver![index].name.toString(),
                   isChecked: homeTabController.selectedDriverIndex.value == index,
                   onTap: () {
                     triggerHapticFeedback();
