@@ -27,7 +27,7 @@ class LoginController extends GetxController{
       "email":emailController.text.trim(),
       "password":passwordController.text.trim(),
       "device_token":"xxxxxxxx",
-      "role_id": BaseStorage.read(StorageKeys.isUserDriver) ? "2" : "1",
+      "role_id": BaseStorage.read(StorageKeys.isUserDriver) ? "3" : "2",
     };
     BaseApiService().post(apiEndPoint: ApiEndPoints().login, data: data).then((value){
       if (value?.statusCode ==  200) {

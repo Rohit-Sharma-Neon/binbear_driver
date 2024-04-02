@@ -11,7 +11,7 @@ import 'package:get_storage/get_storage.dart';
 
 import '../../base_components/base_scaffold_background.dart';
 import '../../base_components/base_text.dart';
-import '../../bookings_tab/controller/bookings_controller.dart';
+
 import '../../dashboard_module/dashboard_screen/controller/dashboard_controller.dart';
 import '../welcome_screen.dart';
 import 'controller/base_controller.dart';
@@ -26,7 +26,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   BaseController baseController = Get.put(BaseController());
   DashboardController dashboardController = Get.put(DashboardController());
-  BookingsController bookingsController = Get.put(BookingsController());
+  // BookingsController bookingsController = Get.put(BookingsController());
 
   bool showFooter = true;
 

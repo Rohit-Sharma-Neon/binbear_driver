@@ -38,8 +38,8 @@ class HomeDataResponse {
 class Data {
   List<Booking>? bookings;
   List<AllDriver>? allDrivers;
-  int? totalBooking;
-  int? totalEarning;
+  dynamic totalBooking;
+  dynamic totalEarning;
 
   Data({
     this.bookings,

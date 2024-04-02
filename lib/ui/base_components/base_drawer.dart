@@ -23,7 +23,7 @@ class BaseDrawer extends StatelessWidget {
     return Container(
       width: Get.width/1.3,
       height: double.infinity,
-      padding: const EdgeInsets.only(top: 35, bottom: 50),
+      padding: const EdgeInsets.only(top: 35, bottom:25),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(20),
@@ -31,89 +31,92 @@ class BaseDrawer extends StatelessWidget {
         ),
         color: Colors.white,
       ),
-      child: Column(
-        children: [
-          GetStorage().read(StorageKeys.isUserDriver)??false ?
-          Container(
-              height: 100,
-              width: 100,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade200,
-                shape: BoxShape.circle,
-              ),
-              child: SvgPicture.asset(BaseAssets.icBinBears)) :
-          ClipRRect(
-            borderRadius: BorderRadius.circular(90),
-            child: Image.asset("assets/delete/dummy_profile.jpeg", width: 100, height: 100, fit: BoxFit.fill),
-          ),
-          const BaseText(
-            topMargin: 15,
-            value: "Rohit Sharma",
-            fontSize: 20,
-            color: Colors.black,
-            fontWeight: FontWeight.w500,
-          ),
-          const Divider(thickness: 0.6, color: Colors.grey, height: 35),
-          drawerListTiles(
-            title: 'Our Story',
-            onTap: () {},
-          ),
-          drawerListTiles(
-            title: 'Contact Us',
-            onTap: () {
-              Get.to(() => const ContactUsScreen());
-            },
-          ),
-          drawerListTiles(
-            title: 'Privacy Policy',
-            onTap: () {
-              Get.to(() => const AboutAppScreen(type: "Privacy Policy"));
-            },
-          ),
-          drawerListTiles(
-            title: 'Terms & Conditions',
-            onTap: () {
-              Get.to(() => const AboutAppScreen(type: "Terms & Conditions"));
-            },
-          ),
-          drawerListTiles(
-            title: 'Help & Support',
-            onTap: () {},
-          ),
-          drawerListTiles(
-            title: 'Transactions',
-            onTap: () {
-              Get.to(() => const TransactionsScreen());
-            },
-          ),
-          drawerListTiles(
-            title: 'About Us',
-            onTap: () {
-              Get.to(() => const AboutAppScreen(type: "About Us"));
-            },
-          ),
-          Visibility(
-            visible: !(GetStorage().read(StorageKeys.isUserDriver)??false),
-            child: drawerListTiles(
-              title: 'Help & Support',
+      child: SingleChildScrollView( 
+        child: Column(
+          children: [
+            GetStorage().read(StorageKeys.isUserDriver)??false ?
+            Container(
+                height: 100,
+                width: 100,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  shape: BoxShape.circle,
+                ),
+                child: SvgPicture.asset(BaseAssets.icBinBears)) :
+            ClipRRect(
+              borderRadius: BorderRadius.circular(90),
+              child: Image.asset("assets/delete/dummy_profile.jpeg", width: 100, height: 100, fit: BoxFit.fill),
+            ),
+            const BaseText(
+              topMargin: 15,
+              value: "Rohit Sharma",
+              fontSize: 20,
+              color: Colors.black,
+              fontWeight: FontWeight.w500,
+            ),
+            const Divider(thickness: 0.6, color: Colors.grey, height: 35),
+            drawerListTiles(
+              title: 'Our Story',
+              onTap: () {},
+            ),
+            drawerListTiles(
+              title: 'Contact Us',
               onTap: () {
-                Get.to(() => const HelpSupportScreen());
+                Get.to(() => const ContactUsScreen());
               },
             ),
-          ),
-          const Spacer(),
-          drawerListTiles(
-            title: 'Log Out',
-            onTap: () {
-              BaseStorage.remove(StorageKeys.apiToken);
-              BaseStorage.remove(StorageKeys.userName);
-              BaseStorage.remove(StorageKeys.isUserDriver);
-              BaseStorage.remove(StorageKeys.profilePhoto);
-              Get.offAll(() => const WelcomeScreen());
-            },
-          ),
-        ],
+            drawerListTiles(
+              title: 'Privacy Policy',
+              onTap: () {
+                Get.to(() => const AboutAppScreen(type: "Privacy Policy"));
+              },
+            ),
+            drawerListTiles(
+              title: 'Terms & Conditions',
+              onTap: () {
+                Get.to(() => const AboutAppScreen(type: "Terms & Conditions"));
+              },
+            ),
+            drawerListTiles(
+              title: 'Help & Support',
+              onTap: () {},
+            ),
+            drawerListTiles(
+              title: 'Transactions',
+              onTap: () {
+                Get.to(() => const TransactionsScreen());
+              },
+            ),
+            drawerListTiles(
+              title: 'About Us',
+              onTap: () {
+                Get.to(() => const AboutAppScreen(type: "About Us"));
+              },
+            ),
+            Visibility(
+              visible: !(GetStorage().read(StorageKeys.isUserDriver)??false),
+              child: drawerListTiles(
+                title: 'Help & Support',
+                onTap: () {
+                  Get.to(() => const HelpSupportScreen());
+                },
+              ),
+            ),
+            SizedBox(height: 25 ,),
+            // const Spacer(),
+            drawerListTiles(
+              title: 'Log Out',
+              onTap: () {
+                BaseStorage.remove(StorageKeys.apiToken);
+                BaseStorage.remove(StorageKeys.userName);
+                BaseStorage.remove(StorageKeys.isUserDriver);
+                BaseStorage.remove(StorageKeys.profilePhoto);
+                Get.offAll(() => const WelcomeScreen());
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

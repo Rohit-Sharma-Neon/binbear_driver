@@ -247,7 +247,7 @@ class _HomeTabState extends State<HomeTab> {
                           : Padding(
                               padding: const EdgeInsets.only(top: 3),
                               child: SizedBox(
-                                height: 220,
+                                height: 200,
                                 width: MediaQuery.of(context).size.width,
                                 child: ListView.builder(
                                   shrinkWrap: true,
@@ -333,7 +333,7 @@ class _HomeTabState extends State<HomeTab> {
                                     left: horizontalScreenPadding),
                                 scrollDirection: Axis.horizontal,
                                 itemCount:
-                                    homeTabController.allDrivers?.length ?? 0,
+                                    (homeTabController.allDrivers?.length??0) > 4 ? 4 : homeTabController.allDrivers?.length ?? 0,
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: () {

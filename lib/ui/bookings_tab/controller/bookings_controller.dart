@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:binbeardriver/backend/api_end_points.dart';
 import 'package:binbeardriver/backend/base_api_service.dart';
+import 'package:binbeardriver/backend/base_responses/base_success_response.dart';
 import 'package:binbeardriver/ui/bookings_tab/model/bookings_response.dart';
 import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
@@ -106,7 +107,7 @@ class BookingsController extends GetxController
   }
 
   RxBool isLoading = false.obs;
-  List<Booking>? list = <Booking>[];
+  RxList<Booking>? list = <Booking>[].obs;
   RefreshController upcomingRefreshController =
       RefreshController(initialRefresh: false);
   RefreshController pastRefreshController =
@@ -127,8 +128,14 @@ class BookingsController extends GetxController
   getMyBookingsApi() async {
     if (!tabController.indexIsChanging) {
       isLoading.value = true;
+      int requestIndex = 1;
+      if (tabController.index == 2) {
+        requestIndex = 4;
+      } else {
+        requestIndex = tabController.index + 1;
+      }
       Map<String, String> data = {
-        "booking_status": tabController.index.toString(),
+        "booking_status": requestIndex.toString(),
       };
       try {
         await BaseApiService()
@@ -143,7 +150,7 @@ class BookingsController extends GetxController
             MyBookingsResponse response =
                 MyBookingsResponse.fromJson(value?.data);
             if (response.success ?? false) {
-              list = response.data?.bookings ?? [];
+              list?.value = response.data?.bookings ?? [];
             } else {
               showSnackBar(subtitle: response.message ?? "");
             }
@@ -157,6 +164,39 @@ class BookingsController extends GetxController
         upcomingRefreshController.refreshCompleted();
         pastRefreshController.refreshCompleted();
       }
+    }
+  }
+
+  //Booking Action(Accept or Reject Bookingt)
+  bookingActionApi(String bookingId, String action, int index) async {
+    Map<String, String> data = {"booking_id": bookingId, "action": action};
+    try {
+      await BaseApiService()
+          .post(
+              apiEndPoint: ApiEndPoints().bookingAction,
+              data: data,
+              showLoader: true)
+          .then((value) async {
+        if (value?.statusCode == 200) {
+          BaseSuccessResponse response =
+              BaseSuccessResponse.fromJson(value?.data);
+          if (response.success ?? false) {
+            showSnackBar(
+                isSuccess: action == "1",
+                title: action == "1" ? "Booking Accepted" : "Booking Rejected",
+                subtitle: response.message ?? "");
+              list?.removeAt(index);
+            update();
+          } else {
+            showSnackBar(subtitle: response.message ?? "");
+          }
+        } else {
+          showSnackBar(subtitle: "Something went wrong, please try again");
+        }
+        isLoading.value = false;
+      });
+    } on Exception catch (e) {
+      isLoading.value = false;
     }
   }
 }
