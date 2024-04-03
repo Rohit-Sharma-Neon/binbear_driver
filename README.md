@@ -18,7 +18,7 @@ samples, guidance on mobile development, and a full API reference.
 // Git Commands
 # git remote set-url --add origin https://github.com/Rohit-Sharma-Neon/binbear_driver.git
 # git add .
-# git commit -m ""
+# git commit -m "push"
 # git push -u origin mithilesh_branch
 # git push -u origin sub-main-branch
 # git push -u origin new_branch
