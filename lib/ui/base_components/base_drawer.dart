@@ -43,7 +43,14 @@ class BaseDrawer extends StatelessWidget {
                   BaseStorage.read(StorageKeys.profilePhoto)??"",
                   width: 100,
                   height: 100,
-                  fit: BoxFit.fill),
+                  fit: BoxFit.fill,
+                loadingBuilder:(context, child, loadingProgress) {
+                    if(loadingProgress == null){
+                      return child;
+                    }
+                  return CircularProgressIndicator();
+                },
+              ),
             )
                 : const BaseDummyProfile(
                 overflowHeight: 150, overflowWidth: 205, topMargin: 10),
