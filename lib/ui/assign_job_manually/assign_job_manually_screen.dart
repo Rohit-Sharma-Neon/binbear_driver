@@ -40,13 +40,13 @@ class _AssignJobManuallyScreenState extends State<AssignJobManuallyScreen> {
           titleSpacing: 0,
         ),
         body: AnimationLimiter(
-          child: ListView.builder(
+          child:  Obx(()=>ListView.builder(
             itemCount: controller.listDriver?.length,
             shrinkWrap: true,
             itemBuilder: (context, index){
               return ListviewBuilderAnimation(
                 index: index,
-                child: Obx(()=>DriversListingTile(
+                child:DriversListingTile(
                   title: controller.listDriver![index].name.toString(),
                   isChecked: controller.selectedDriverIndex.value == index,
                   onTap: () {
@@ -54,11 +54,10 @@ class _AssignJobManuallyScreenState extends State<AssignJobManuallyScreen> {
                     controller.selectedDriverIndex.value = index;
                   },
                 ),
-                ),
               );
               },
           ),
-        ),
+        )),
         bottomNavigationBar: Container(
           padding: const EdgeInsets.symmetric(horizontal: horizontalScreenPadding, vertical: 14),
           width: double.infinity,
