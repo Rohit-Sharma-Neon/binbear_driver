@@ -1,10 +1,8 @@
 import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
-import 'package:binbeardriver/ui/base_components/base_container.dart';
 import 'package:binbeardriver/ui/base_components/drivers_listing_tile.dart';
 import 'package:binbeardriver/ui/base_components/base_button.dart';
 import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/base_components/listview_builder_animation.dart';
-import 'package:binbeardriver/ui/home_tab/controller/home_tab_controller.dart';
 import 'package:binbeardriver/ui/onboardings/base_success_screen.dart';
 import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
@@ -22,7 +20,14 @@ class AssignJobManuallyScreen extends StatefulWidget {
 
 class _AssignJobManuallyScreenState extends State<AssignJobManuallyScreen> {
 
-  BaseController homeTabController = Get.find<BaseController>();
+  BaseController controller = Get.find<BaseController>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    controller.driverList();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,17 +41,17 @@ class _AssignJobManuallyScreenState extends State<AssignJobManuallyScreen> {
         ),
         body: AnimationLimiter(
           child: ListView.builder(
-            itemCount: homeTabController.listDriver?.length,
+            itemCount: controller.listDriver?.length,
             shrinkWrap: true,
             itemBuilder: (context, index){
               return ListviewBuilderAnimation(
                 index: index,
                 child: Obx(()=>DriversListingTile(
-                  title: homeTabController.listDriver![index].name.toString(),
-                  isChecked: homeTabController.selectedDriverIndex.value == index,
+                  title: controller.listDriver![index].name.toString(),
+                  isChecked: controller.selectedDriverIndex.value == index,
                   onTap: () {
                     triggerHapticFeedback();
-                    homeTabController.selectedDriverIndex.value = index;
+                    controller.selectedDriverIndex.value = index;
                   },
                 ),
                 ),

@@ -73,6 +73,7 @@ class Booking {
   dynamic transactionId;
   dynamic serviceProviderPayment;
   dynamic adminPayment;
+  dynamic assignStatus;
   dynamic serviceStatus;
   PickupAddress? pickupAddress;
   AssignedProviderAddress? assignedProviderAddress;
@@ -99,6 +100,7 @@ class Booking {
     this.transactionId,
     this.serviceProviderPayment,
     this.adminPayment,
+    this.assignStatus,
     this.serviceStatus,
     this.pickupAddress,
     this.distance,
@@ -130,6 +132,7 @@ class Booking {
         transactionId: json["transaction_id"],
         serviceProviderPayment: json["service_provider_payment"],
         adminPayment: json["admin_payment"],
+        assignStatus: json["assign_status"],
         serviceStatus: json["service_status"],
         pickupAddress: json["pickup_address"] == null
             ? null
@@ -160,6 +163,7 @@ class Booking {
         "transaction_id": transactionId,
         "service_provider_payment": serviceProviderPayment,
         "admin_payment": adminPayment,
+        "assign_status": assignStatus,
         "service_status": serviceStatus,
         "pickup_address": pickupAddress?.toJson(),
         "distance": distance,

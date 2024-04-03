@@ -11,7 +11,7 @@ class BookingsTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(right: 40, left: 40, bottom: 18),
+      margin: const EdgeInsets.only(right: 32, left:32, bottom: 18),
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(90)),

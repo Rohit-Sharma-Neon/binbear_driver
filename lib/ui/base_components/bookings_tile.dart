@@ -16,7 +16,7 @@ class BookingListTile extends StatelessWidget {
   final double? tileWidth, startingLat, startingLong, endingLat, endingLong;
   final double? topMargin, bottomMargin, rightMargin, leftMargin;
   final String location, date, time, distance;
-  final bool isPastBooking, showAcceptRejectButtons, showCurrentLocation;
+  final bool isPastBooking, showAcceptRejectButtons, showCurrentLocation, showAssignButton;
   final bool? isAccepted, isCompleted;
   final void Function()? acceptAction;
   final void Function()? rejectAction;
@@ -34,6 +34,7 @@ class BookingListTile extends StatelessWidget {
       this.leftMargin,
       required this.isPastBooking,
       required this.showAcceptRejectButtons,
+      required this.showAssignButton,
       this.isAccepted,
       this.isCompleted,
       this.startingLat,
@@ -57,13 +58,26 @@ class BookingListTile extends StatelessWidget {
         onTap: () {
           triggerHapticFeedback();
           FocusManager.instance.primaryFocus?.unfocus();
-          if (onTap != null) {
-            onTap!();
+          // if (onTap != null) {
+          //   onTap!();
+          // }
+          if (GetStorage().read(StorageKeys.isUserDriver)??false) {
+            Get.to(const DriverMapViewScreen());
+          } else {
+            Get.to( ServiceProviderMapViewScreen(
+              startingLat: startingLat ?? 0,
+              startingLong: startingLong ?? 0,
+              endingLat: endingLat ?? 0,
+              endingLong: endingLong ?? 0,
+              showCurrentPosition: showCurrentLocation,
+              showAssignButton: showAssignButton,
+            ));
           }
         },
         child: Container(
           width: tileWidth ?? MediaQuery.of(context).size.width / 1.24,
-          padding: const EdgeInsets.only(left: 10, right: 10, top: 14, bottom: 4),
+          padding:
+              const EdgeInsets.only(left: 10, right: 10, top: 14, bottom: 4),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(15),

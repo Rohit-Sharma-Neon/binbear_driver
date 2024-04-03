@@ -181,9 +181,9 @@ class BookingsController extends GetxController with GetSingleTickerProviderStat
               BaseSuccessResponse.fromJson(value?.data);
           if (response.success ?? false) {
             showSnackBar(
-                isSuccess: action == "1",
-                title: action == "1" ? "Booking Accepted" : "Booking Rejected",
-                subtitle: response.message ?? "");
+                 isSuccess: action == "1",
+                 title: action == "1" ? "Booking Accepted" : "Booking Rejected",
+                 subtitle: response.message ?? "");
               list?.removeAt(index);
             update();
           } else {

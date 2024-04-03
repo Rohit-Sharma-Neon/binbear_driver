@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:animate_do/animate_do.dart';
 import 'package:binbeardriver/ui/base_components/base_outlined_button.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/cupertino.dart';
 import '../base_components/animated_column.dart';
 import '../base_components/base_app_bar.dart';
 import '../base_components/base_button.dart';
@@ -21,6 +22,7 @@ import 'package:get/get.dart';
 
 import '../base_components/base_text.dart';
 import '../base_components/base_textfield.dart';
+import '../manage_address/manage_address_screen.dart';
 import 'controller/profile_controller.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -291,6 +293,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         btnHeight: 60,
                         btnRightPadding: 20,
                         borderRadius: 13,
+                        onPressed: () {
+                          Get.to(const ManageAddressScreen());
+                        },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

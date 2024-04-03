@@ -2,8 +2,11 @@ import 'package:binbeardriver/backend/api_end_points.dart';
 import 'package:binbeardriver/backend/base_api_service.dart';
 import 'package:binbeardriver/backend/base_responses/base_success_response.dart';
 import 'package:binbeardriver/ui/dashboard_module/dashboard_screen/dashboard_screen.dart';
+import 'package:binbeardriver/ui/driver/jobs_screen/jobs_screen.dart';
 import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
+import 'package:binbeardriver/utils/get_storage.dart';
+import 'package:binbeardriver/utils/storage_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -35,7 +38,12 @@ class ManageAddressController extends GetxController{
             Get.back();
             Get.find<BaseController>().getSavedAddress();
           }else{
-            Get.offAll(() => const DashBoardScreen());
+             if (BaseStorage.read(StorageKeys.isUserDriver)) {
+              Get.offAll(() => const JobsScreen());
+            } else {
+              Get.offAll(() => const DashBoardScreen());
+            }
+            // Get.offAll(() => const DashBoardScreen());
           }
         }else{
           showSnackBar(subtitle: response.message??"");

@@ -273,6 +273,27 @@ class _HomeTabState extends State<HomeTab> {
                                       distance:
                                           "${homeTabController.allbookings?[index]?.distance ?? ""}",
                                       showAcceptRejectButtons: true,
+                                      showAssignButton: (homeTabController
+                                                  .allbookings?[index]?.assignStatus
+                                                  ?.toString() ??
+                                              "0") ==
+                                          "1",
+                                       acceptAction: () {
+                                        homeTabController.bookingActionApi(
+                                            homeTabController.allbookings?[index]?.id
+                                                    ?.toString() ??
+                                                "",
+                                            "1",
+                                            index);
+                                      },
+                                      rejectAction: () {
+                                        homeTabController.bookingActionApi(
+                                            homeTabController.allbookings?[index]?.id
+                                                    ?.toString() ??
+                                                "",
+                                            "2",
+                                            index);
+                                      },
                                     );
                                   },
                                 ),

@@ -1,6 +1,5 @@
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:flutter/material.dart';
-import 'package:scaled_app/scaled_app.dart';
 
 class BaseScaffoldBackground extends StatelessWidget {
   final Widget child;

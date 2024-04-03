@@ -1,14 +1,12 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:binbeardriver/ui/driver/jobs_screen/controller/jobs_controller.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
-import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/base_sizes.dart';
 import 'package:binbeardriver/utils/get_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 import '../../utils/storage_keys.dart';
 import '../dashboard_module/dashboard_screen/controller/dashboard_controller.dart';
