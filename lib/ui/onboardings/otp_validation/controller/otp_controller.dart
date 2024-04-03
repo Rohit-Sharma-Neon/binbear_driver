@@ -1,6 +1,7 @@
 import 'package:binbeardriver/backend/api_end_points.dart';
 import 'package:binbeardriver/backend/base_api_service.dart';
 import 'package:binbeardriver/ui/onboardings/base_success_screen.dart';
+import 'package:binbeardriver/ui/onboardings/login/login_screen.dart';
 import 'package:binbeardriver/ui/onboardings/otp_validation/model/otp_response.dart';
 import 'package:binbeardriver/ui/onboardings/signup/controller/signup_controller.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
@@ -27,11 +28,15 @@ class OtpController extends GetxController{
       if (value?.statusCode ==  200) {
         OtpResponse response = OtpResponse.fromJson(value?.data);
         if (response.success??false) {
-          BaseStorage.write(StorageKeys.apiToken, response.data?.token??"");
-          BaseStorage.write(StorageKeys.userName, response.data?.name??"");
-          BaseStorage.write(StorageKeys.profilePhoto, response.data?.profile??"");
-          BaseStorage.write(StorageKeys.isUserDriver, false);
-          Get.off(() => const BaseSuccessScreen());
+          // BaseStorage.write(StorageKeys.apiToken, response.data?.token??"");
+          // BaseStorage.write(StorageKeys.userName, response.data?.name??"");
+          // BaseStorage.write(StorageKeys.profilePhoto, response.data?.profile??"");
+          // BaseStorage.write(StorageKeys.isUserDriver, false);
+          Get.offAll(() => const LoginScreen());
+            showSnackBar(
+              subtitle: response.message ?? "",
+              isSuccess: true,
+              title: "Success");
         }else{
           showSnackBar(subtitle: response.message??"");
         }

@@ -232,6 +232,7 @@ class Booking {
   dynamic serviceProviderPayment;
   dynamic adminPayment;
   dynamic status;
+  dynamic assignStatus;
   dynamic serviceStatus;
   dynamic createdAt;
   dynamic updatedAt;
@@ -255,6 +256,7 @@ class Booking {
     this.serviceProviderPayment,
     this.adminPayment,
     this.status,
+    this.assignStatus,
     this.serviceStatus,
     this.createdAt,
     this.updatedAt,
@@ -278,6 +280,7 @@ class Booking {
         transactionId: json["transaction_id"],
         serviceProviderPayment: json["service_provider_payment"],
         adminPayment: json["admin_payment"],
+        assignStatus: json["assign_status"],
         status: json["status"],
         serviceStatus: json["service_status"],
         createdAt: json["created_at"] == null
@@ -309,6 +312,7 @@ class Booking {
         "service_provider_payment": serviceProviderPayment,
         "admin_payment": adminPayment,
         "status": status,
+        "assign_status": assignStatus,
         "service_status": serviceStatus,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),

@@ -1,9 +1,13 @@
 import 'package:binbeardriver/ui/assign_job_manually/assign_job_manually_screen.dart';
 import 'package:binbeardriver/ui/base_components/base_map_header_shadow.dart';
 import 'package:binbeardriver/ui/bookings_tab/controller/bookings_controller.dart';
+import 'package:binbeardriver/ui/service_provider_map_view/controller/service_provider_map_view_controller.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
+import 'package:binbeardriver/utils/base_functions.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,14 +20,14 @@ import '../base_components/base_text.dart';
 
 class ServiceProviderMapViewScreen extends StatefulWidget {
   final double? startingLat, startingLong, endingLat, endingLong;
-  final bool showCurrentPosition;
+  final bool showCurrentPosition, showAssignButton;
   const ServiceProviderMapViewScreen(
       {super.key,
       this.startingLat,
       this.startingLong,
       this.endingLat,
       this.endingLong,
-      required this.showCurrentPosition});
+      required this.showCurrentPosition, required this.showAssignButton});
 
   @override
   State<ServiceProviderMapViewScreen> createState() =>
@@ -32,7 +36,7 @@ class ServiceProviderMapViewScreen extends StatefulWidget {
 
 class _ServiceProviderMapViewScreenState
     extends State<ServiceProviderMapViewScreen> {
-  BookingsController controller = Get.put(BookingsController());
+  BookingsController controller = Get.isRegistered<BookingsController>() ? Get.find<BookingsController>() : Get.put(BookingsController());
 
   @override
   void initState() {
@@ -249,9 +253,9 @@ class _ServiceProviderMapViewScreenState
                       ],
                     ),
                   ),
-                  const Spacer(),
+                  // const Spacer(),
                   Visibility(
-                    visible: controller.tabController.index == 0,
+                    visible: widget.showAssignButton,
                     child: BaseButton(
                       title: "Assign Job Manually",
                       topMargin: 11,

@@ -50,12 +50,13 @@
                                   "${controller.list?[index].pickupAddress?.flatNo ?? ""}, ${controller.list?[index].pickupAddress?.fullAddress ?? ""}",
                               date: formatBackendDate(
                                   controller.list?[index].createdAt.toString() ??
-                                      ""),
+                                      ""),/* pass pickup date instead of created at */
                               time: controller.list?[index].time ?? "",
                               distance:
                                   controller.list?[index].distance?.toString() ??
                                       "",
                               showCurrentLocation: false,
+                              showAssignButton: (controller.list?[index].assignStatus?.toString() ?? "0") == "1" ,
                               acceptAction: (){
                                 controller.bookingActionApi(controller.list?[index].id?.toString()??"","1",index);
                               },
