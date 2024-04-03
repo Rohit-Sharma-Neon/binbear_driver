@@ -2,6 +2,7 @@ import 'package:binbeardriver/backend/api_end_points.dart';
 import 'package:binbeardriver/backend/base_api_service.dart';
 import 'package:binbeardriver/ui/dashboard_module/dashboard_screen/dashboard_screen.dart';
 import 'package:binbeardriver/ui/driver/jobs_screen/jobs_screen.dart';
+import 'package:binbeardriver/ui/onboardings/location/onboarding_location_screen.dart';
 import 'package:binbeardriver/ui/onboardings/login/model/login_response.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/get_storage.dart';
@@ -33,14 +34,20 @@ class LoginController extends GetxController{
       if (value?.statusCode ==  200) {
         LoginResponse response = LoginResponse.fromJson(value?.data);
         if (response.success??false) {
-          BaseStorage.write(StorageKeys.apiToken, response.data?.token??"");
-          BaseStorage.write(StorageKeys.userName, response.data?.name??"");
-          BaseStorage.write(StorageKeys.profilePhoto, response.data?.profile??"");
-          if (BaseStorage.read(StorageKeys.isUserDriver)) {
-            Get.offAll(() => const JobsScreen());
+          BaseStorage.write(StorageKeys.apiToken, response.data?.user?.token??"");
+          BaseStorage.write(StorageKeys.userName, response.data?.user?.name??"");
+          BaseStorage.write(StorageKeys.profilePhoto, response.data?.user?.profile??"");
+          if(!(response.data?.hasAddress ?? false)) {
+            Get.to(() => OnboardingLocationScreen());
           }else{
-            Get.offAll(() => const DashBoardScreen());
+             if (BaseStorage.read(StorageKeys.isUserDriver)) {  
+              Get.offAll(() => const JobsScreen());
+            } else {
+              Get.offAll(() => const DashBoardScreen());
+            }
           }
+
+         
         }else{
           showSnackBar(subtitle: response.message??"");
         }

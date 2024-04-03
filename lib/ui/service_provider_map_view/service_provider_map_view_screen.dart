@@ -20,14 +20,14 @@ import '../base_components/base_text.dart';
 
 class ServiceProviderMapViewScreen extends StatefulWidget {
   final double? startingLat, startingLong, endingLat, endingLong;
-  final bool showCurrentPosition;
+  final bool showCurrentPosition, showAssignButton;
   const ServiceProviderMapViewScreen(
       {super.key,
       this.startingLat,
       this.startingLong,
       this.endingLat,
       this.endingLong,
-      required this.showCurrentPosition});
+      required this.showCurrentPosition, required this.showAssignButton});
 
   @override
   State<ServiceProviderMapViewScreen> createState() =>
@@ -36,7 +36,7 @@ class ServiceProviderMapViewScreen extends StatefulWidget {
 
 class _ServiceProviderMapViewScreenState
     extends State<ServiceProviderMapViewScreen> {
-  BookingsController controller = Get.find<BookingsController>();
+  BookingsController controller = Get.isRegistered<BookingsController>() ? Get.find<BookingsController>() : Get.put(BookingsController());
 
   @override
   void initState() {
@@ -253,9 +253,9 @@ class _ServiceProviderMapViewScreenState
                       ],
                     ),
                   ),
-                  const Spacer(),
+                  // const Spacer(),
                   Visibility(
-                    visible: controller.tabController.index == 0,
+                    visible: widget.showAssignButton,
                     child: BaseButton(
                       title: "Assign Job Manually",
                       topMargin: 11,

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:binbeardriver/backend/api_end_points.dart';
 import 'package:binbeardriver/backend/base_api_service.dart';
+import 'package:binbeardriver/backend/base_responses/base_success_response.dart';
 import 'package:binbeardriver/ui/home_tab/model/home_data_response.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:get/get.dart';
@@ -62,7 +63,7 @@ class HomeTabController extends GetxController {
             allbookings?.value = response.data?.bookings ?? [];
             allDrivers?.value = response.data?.allDrivers ?? [];
             totalBooking?.value = response.data?.totalBooking ?? 0;
-            totalEarning?.value = response.data?.totalBooking ?? 0;
+            totalEarning?.value = response.data?.totalEarning ?? 0;
             update();
           } else {
             showSnackBar(subtitle: response.message ?? "");
@@ -74,6 +75,41 @@ class HomeTabController extends GetxController {
     } on Exception catch (e) {
       isHomeLoading.value = false;
       refreshController.refreshCompleted();
+    }
+  }
+
+
+  //Booking Action(Accept or Reject Bookingt)
+  bookingActionApi(String bookingId, String action, int index) async {
+    Map<String, String> data = {"booking_id": bookingId, "action": action};
+    try {
+      await BaseApiService()
+          .post(
+              apiEndPoint: ApiEndPoints().bookingAction,
+              data: data,
+              showLoader: true)
+          .then((value) async {
+        if (value?.statusCode == 200) {
+          BaseSuccessResponse response =
+              BaseSuccessResponse.fromJson(value?.data);
+          if (response.success ?? false) {
+            showSnackBar(
+                isSuccess: action == "1",
+                title: action == "1" ? "Booking Accepted" : "Booking Rejected",
+                subtitle: response.message ?? "");
+            allbookings?.removeAt(index);
+
+            update();
+          } else {
+            showSnackBar(subtitle: response.message ?? "");
+          }
+        } else {
+          showSnackBar(subtitle: "Something went wrong, please try again");
+        }
+
+      });
+    } on Exception catch (e) {
+
     }
   }
 }

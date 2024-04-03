@@ -23,7 +23,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-
   SettingsController controller = Get.put(SettingsController());
 
   @override
@@ -80,23 +79,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           height: 14,
                           child: Transform.scale(
                             scale: 0.8,
-                            child: Obx(()=>Switch(
+                            child: Obx(
+                              () => Switch(
                                 value: controller.isNotificationEnable.value,
-                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
                                 inactiveThumbColor: Colors.black,
                                 inactiveTrackColor: Colors.grey.shade400,
                                 activeColor: BaseColors.primaryColor,
-                                trackOutlineWidth: MaterialStateProperty.resolveWith<double>((Set<MaterialState> states) {
+                                trackOutlineWidth:
+                                    MaterialStateProperty.resolveWith<double>(
+                                        (Set<MaterialState> states) {
                                   return 0.0;
                                 }),
-                                trackOutlineColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+                                trackOutlineColor:
+                                    MaterialStateProperty.resolveWith<Color>(
+                                        (Set<MaterialState> states) {
                                   return Colors.transparent;
                                 }),
-                                thumbColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+                                thumbColor:
+                                    MaterialStateProperty.resolveWith<Color>(
+                                  (Set<MaterialState> states) {
                                     return Colors.black;
                                   },
                                 ),
-                                onChanged: (val){
+                                onChanged: (val) {
                                   triggerHapticFeedback();
                                   controller.isNotificationEnable.value = val;
                                   controller.callApi(newValue: val);
@@ -118,7 +125,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   triggerHapticFeedback();
                   Get.to(() => const ChangePasswordScreen());
                 },
@@ -142,9 +149,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: (){
-                  triggerHapticFeedback();
-                  Get.offAll(() => const WelcomeScreen());
+                onTap: () {
+                  clearSessionData();
                 },
                 child: BaseContainer(
                   borderRadius: 14,

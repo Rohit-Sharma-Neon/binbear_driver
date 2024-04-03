@@ -4,6 +4,7 @@ import 'package:binbeardriver/ui/help_&_support/help_&_support_screen.dart';
 import 'package:binbeardriver/ui/onboardings/welcome_screen.dart';
 import 'package:binbeardriver/ui/transactions_screen/transactions_screen.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
+import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/get_storage.dart';
 import 'package:binbeardriver/utils/storage_keys.dart';
 import 'package:flutter/material.dart';
@@ -21,33 +22,34 @@ class BaseDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: Get.width/1.3,
+      width: Get.width / 1.3,
       height: double.infinity,
-      padding: const EdgeInsets.only(top: 35, bottom:25),
+      padding: const EdgeInsets.only(top: 35, bottom: 25),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20),
-            bottomRight: Radius.circular(20),
+          topRight: Radius.circular(20),
+          bottomRight: Radius.circular(20),
         ),
         color: Colors.white,
       ),
-      child: SingleChildScrollView( 
+      child: SingleChildScrollView(
         child: Column(
           children: [
-            GetStorage().read(StorageKeys.isUserDriver)??false ?
-            Container(
-                height: 100,
-                width: 100,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  shape: BoxShape.circle,
-                ),
-                child: SvgPicture.asset(BaseAssets.icBinBears)) :
-            ClipRRect(
-              borderRadius: BorderRadius.circular(90),
-              child: Image.asset("assets/delete/dummy_profile.jpeg", width: 100, height: 100, fit: BoxFit.fill),
-            ),
+            GetStorage().read(StorageKeys.isUserDriver) ?? false
+                ? Container(
+                    height: 100,
+                    width: 100,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
+                      shape: BoxShape.circle,
+                    ),
+                    child: SvgPicture.asset(BaseAssets.icBinBears))
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(90),
+                    child: Image.asset("assets/delete/dummy_profile.jpeg",
+                        width: 100, height: 100, fit: BoxFit.fill),
+                  ),
             const BaseText(
               topMargin: 15,
               value: "Rohit Sharma",
@@ -95,7 +97,7 @@ class BaseDrawer extends StatelessWidget {
               },
             ),
             Visibility(
-              visible: !(GetStorage().read(StorageKeys.isUserDriver)??false),
+              visible: !(GetStorage().read(StorageKeys.isUserDriver) ?? false),
               child: drawerListTiles(
                 title: 'Help & Support',
                 onTap: () {
@@ -103,16 +105,14 @@ class BaseDrawer extends StatelessWidget {
                 },
               ),
             ),
-            SizedBox(height: 25 ,),
+           const SizedBox(
+              height: 25,
+            ),
             // const Spacer(),
             drawerListTiles(
               title: 'Log Out',
               onTap: () {
-                BaseStorage.remove(StorageKeys.apiToken);
-                BaseStorage.remove(StorageKeys.userName);
-                BaseStorage.remove(StorageKeys.isUserDriver);
-                BaseStorage.remove(StorageKeys.profilePhoto);
-                Get.offAll(() => const WelcomeScreen());
+                clearSessionData();
               },
             ),
           ],
@@ -121,12 +121,13 @@ class BaseDrawer extends StatelessWidget {
     );
   }
 
-  Widget drawerListTiles({required String title, required void Function()? onTap}){
+  Widget drawerListTiles(
+      {required String title, required void Function()? onTap}) {
     return BaseTextButton(
       btnHeight: 55,
       borderRadius: 0,
       btnPadding: const EdgeInsets.only(left: 0),
-      onPressed: (){
+      onPressed: () {
         Get.find<DashboardController>().scaffoldKey.currentState?.closeDrawer();
         onTap!();
       },

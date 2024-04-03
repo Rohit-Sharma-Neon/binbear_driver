@@ -75,6 +75,7 @@ class Jobs {
   dynamic price;
   dynamic couponId;
   dynamic transactionId;
+  dynamic assignStatus;
   dynamic serviceProviderPayment;
   dynamic adminPayment;
   dynamic serviceStatus;
@@ -103,6 +104,7 @@ class Jobs {
     this.serviceProviderPayment,
     this.adminPayment,
     this.serviceStatus,
+    this.assignStatus,
     this.pickupAddress,
     this.distance,
     this.time,
@@ -133,6 +135,7 @@ class Jobs {
         serviceProviderPayment: json["service_provider_payment"],
         adminPayment: json["admin_payment"],
         serviceStatus: json["service_status"],
+        assignStatus: json["assign_status"],
         pickupAddress: json["pickup_address"] == null
             ? null
             : PickupAddress.fromJson(json["pickup_address"]),
@@ -161,6 +164,7 @@ class Jobs {
         "service_provider_payment": serviceProviderPayment,
         "admin_payment": adminPayment,
         "service_status": serviceStatus,
+        "assign_status":assignStatus,
         "pickup_address": pickupAddress?.toJson(),
         "distance": distance,
         "time": time,
