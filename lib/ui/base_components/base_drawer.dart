@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../dashboard_module/dashboard_screen/controller/dashboard_controller.dart';
+import 'base_dummy_profile.dart';
 import 'base_text.dart';
 import 'base_text_button.dart';
 
@@ -34,28 +35,31 @@ class BaseDrawer extends StatelessWidget {
       child: SingleChildScrollView( 
         child: Column(
           children: [
-            GetStorage().read(StorageKeys.isUserDriver)??false ?
-            Container(
-                height: 100,
-                width: 100,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  shape: BoxShape.circle,
-                ),
-                child: SvgPicture.asset(BaseAssets.icBinBears)) :
-            ClipRRect(
+            BaseStorage.read(StorageKeys.profilePhoto).toString().isNotEmpty
+                ? ClipRRect(
               borderRadius: BorderRadius.circular(90),
-              child: Image.asset("assets/delete/dummy_profile.jpeg", width: 100, height: 100, fit: BoxFit.fill),
-            ),
-            const BaseText(
+              child: Image.network(
+                  BaseStorage.read(StorageKeys.profilePhoto)??"",
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.fill),
+            )
+                : const BaseDummyProfile(
+                overflowHeight: 150, overflowWidth: 205, topMargin: 10),
+            BaseText(
               topMargin: 15,
-              value: "Rohit Sharma",
+              value: BaseStorage.read(StorageKeys.userName)??"",
               fontSize: 20,
               color: Colors.black,
               fontWeight: FontWeight.w500,
             ),
             const Divider(thickness: 0.6, color: Colors.grey, height: 35),
+            drawerListTiles(
+              title: 'Transactions',
+              onTap: () {
+                Get.to(() => const TransactionsScreen());
+              },
+            ),
             drawerListTiles(
               title: 'Our Story',
               onTap: () {},
@@ -78,16 +82,7 @@ class BaseDrawer extends StatelessWidget {
                 Get.to(() => const AboutAppScreen(type: "Terms & Conditions"));
               },
             ),
-            drawerListTiles(
-              title: 'Help & Support',
-              onTap: () {},
-            ),
-            drawerListTiles(
-              title: 'Transactions',
-              onTap: () {
-                Get.to(() => const TransactionsScreen());
-              },
-            ),
+
             drawerListTiles(
               title: 'About Us',
               onTap: () {

@@ -109,36 +109,37 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                           ),
                                       ),
                                       const SizedBox(width: 8),
-                                      const Expanded(
+                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             BaseText(
-                                              value: "Services!!!",
+                                              value:controller.list?[index].title??"",
                                               maxLines: 3,
                                               overflow: TextOverflow.ellipsis,
                                               fontSize: 15,
                                               height: 0,
-                                              color: Color(0xff30302E),
+                                              color: const Color(0xff30302E),
                                               fontWeight: FontWeight.w700,
                                             ),
                                             BaseText(
-                                              value: "Lorem Ipsum is simply dummy",
+                                              value: controller.list?[index].message??"",
                                               fontSize: 13,
                                               height: 0,
                                               maxLines: 8,
                                               overflow: TextOverflow.ellipsis,
-                                              color: Color(0xff8E8E8E),
+                                              color: const Color(0xff8E8E8E),
                                               fontWeight: FontWeight.w400,
                                             ),
                                             BaseText(
                                               topMargin: 12,
-                                              value: "Today, 3:30 pm",
+                                              value: controller.getDate(
+                                                DateTime.parse(controller.list?[index].createdAt??"")),
                                               fontSize: 9,
-                                              color: Color(0xff5B5B77),
+                                              color: const Color(0xff5B5B77),
                                               fontWeight: FontWeight.w500,
                                             ),
-                                          ],
+                                            ],
                                         ),
                                       )
                                     ],

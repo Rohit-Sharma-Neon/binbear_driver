@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -40,6 +39,7 @@ class ProfileController extends GetxController{
     emailController.text = profileData?.value?.email?.toString()??"";
     mobileController.text = MaskTextInputFormatter().updateMask(mask: '(###) ###-####', newValue: TextEditingValue(text: profileData?.value?.mobile?.toString()??"")).text;
     selectedGender.value = (profileData?.value?.gender?.toString().toLowerCase()??"female").contains("female") ? "Female" : "Male";
+
   }
 
   updateProfile() async {
@@ -98,7 +98,7 @@ class ProfileController extends GetxController{
           showSnackBar(subtitle: "Something went wrong, please try again");
         }
       });
-    } on Exception catch (e) {
+    } on Exception {
       isProfileLoading.value = false;
       refreshController.refreshCompleted();
     }
