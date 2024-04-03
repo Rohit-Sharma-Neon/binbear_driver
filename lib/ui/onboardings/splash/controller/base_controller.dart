@@ -6,6 +6,7 @@ import 'package:binbeardriver/backend/base_api_service.dart';
 import 'package:binbeardriver/backend/base_responses/autocomplete_api_response.dart';
 import 'package:binbeardriver/backend/base_responses/base_success_response.dart';
 import 'package:binbeardriver/ui/manual_address/model/saved_address_response.dart';
+import 'package:binbeardriver/ui/onboardings/base_success_screen.dart';
 import 'package:binbeardriver/utils/base_debouncer.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/base_strings.dart';
@@ -234,6 +235,32 @@ class BaseController extends GetxController{
           DriverList response = DriverList.fromJson(value?.data);
           if (response.success ?? false) {
             listDriver?.value = response.data ?? [];
+          } else {
+            showSnackBar(subtitle: response.message ?? "");
+          }
+        } else {
+          showSnackBar(subtitle: "Something went wrong, please try again");
+        }
+      });
+    } on Exception catch (e) {
+      refreshController.refreshCompleted();
+    }
+  }
+
+  assignBooking(String id ,String bookingId) {
+
+    Map<String, String> data = {
+     'binbear_id': id,
+     'booking_id': bookingId
+    };
+    try {
+      BaseApiService().post(
+          apiEndPoint: ApiEndPoints().assignBooking,data: data,showLoader: true).then((value) {
+        if (value?.statusCode == 200) {
+          BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
+          if (response.success ?? false) {
+            Get.back(); Get.back();
+            showSnackBar(subtitle: response.message ?? "",isSuccess:true);
           } else {
             showSnackBar(subtitle: response.message ?? "");
           }

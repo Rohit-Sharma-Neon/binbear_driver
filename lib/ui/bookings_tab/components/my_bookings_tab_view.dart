@@ -52,6 +52,8 @@
                                   controller.list?[index].createdAt.toString() ??
                                       ""),/* pass pickup date instead of created at */
                               time: controller.list?[index].time ?? "",
+                              bookingId:controller.list?[index].id.toString() ??
+                                  "" ,
                               distance:
                                   controller.list?[index].distance?.toString() ??
                                       "",

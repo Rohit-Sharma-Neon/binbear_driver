@@ -21,13 +21,14 @@ import '../base_components/base_text.dart';
 class ServiceProviderMapViewScreen extends StatefulWidget {
   final double? startingLat, startingLong, endingLat, endingLong;
   final bool showCurrentPosition, showAssignButton;
+  final String bookingId;
   const ServiceProviderMapViewScreen(
       {super.key,
       this.startingLat,
       this.startingLong,
       this.endingLat,
       this.endingLong,
-      required this.showCurrentPosition, required this.showAssignButton});
+      required this.showCurrentPosition, required this.showAssignButton, required this.bookingId});
 
   @override
   State<ServiceProviderMapViewScreen> createState() =>
@@ -261,7 +262,7 @@ class _ServiceProviderMapViewScreenState
                       topMargin: 11,
                       bottomMargin: 12,
                       onPressed: () {
-                        Get.to(() => const AssignJobManuallyScreen());
+                        Get.to(() =>  AssignJobManuallyScreen(bookingId: widget.bookingId,));
                       },
                     ),
                   ),

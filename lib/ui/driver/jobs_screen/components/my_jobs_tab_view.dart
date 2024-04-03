@@ -56,6 +56,8 @@ class MyJobsTabview extends StatelessWidget {
                             distance:
                                 controller.list?[index].distance?.toString() ??
                                     "",
+                            bookingId:controller.list?[index].id.toString() ??
+                              "" ,
                             showCurrentLocation: false,
                             showAssignButton: (controller
                                         .list?[index].assignStatus

@@ -18,6 +18,7 @@ class BookingListTile extends StatelessWidget {
   final String location, date, time, distance;
   final bool isPastBooking, showAcceptRejectButtons, showCurrentLocation, showAssignButton;
   final bool? isAccepted, isCompleted;
+  final String bookingId;
   final void Function()? acceptAction;
   final void Function()? rejectAction;
   final void Function()? onTap;
@@ -35,6 +36,7 @@ class BookingListTile extends StatelessWidget {
       required this.isPastBooking,
       required this.showAcceptRejectButtons,
       required this.showAssignButton,
+        required this.bookingId,
       this.isAccepted,
       this.isCompleted,
       this.startingLat,
@@ -71,6 +73,7 @@ class BookingListTile extends StatelessWidget {
               endingLong: endingLong ?? 0,
               showCurrentPosition: showCurrentLocation,
               showAssignButton: showAssignButton,
+              bookingId: bookingId,
             ));
           }
         },

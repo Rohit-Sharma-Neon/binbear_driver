@@ -10,10 +10,11 @@ import 'package:binbeardriver/utils/base_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class AssignJobManuallyScreen extends StatefulWidget {
-  const AssignJobManuallyScreen({super.key});
-
+  const AssignJobManuallyScreen({super.key, required this.bookingId});
+final String bookingId;
   @override
   State<AssignJobManuallyScreen> createState() => _AssignJobManuallyScreenState();
 }
@@ -40,24 +41,25 @@ class _AssignJobManuallyScreenState extends State<AssignJobManuallyScreen> {
           titleSpacing: 0,
         ),
         body: AnimationLimiter(
-          child:  Obx(()=>ListView.builder(
-            itemCount: controller.listDriver?.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index){
-              return ListviewBuilderAnimation(
-                index: index,
-                child:DriversListingTile(
-                  title: controller.listDriver![index].name.toString(),
-                  isChecked: controller.selectedDriverIndex.value == index,
-                  onTap: () {
-                    triggerHapticFeedback();
-                    controller.selectedDriverIndex.value = index;
-                  },
-                ),
-              );
-              },
-          ),
-        )),
+          child:Obx(() =>  ListView.builder(
+              itemCount: controller.listDriver?.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index){
+                return ListviewBuilderAnimation(
+                  index: index,
+                  child:Obx(()=>DriversListingTile(
+                    title: controller.listDriver![index].name.toString(),
+                    isChecked: controller.selectedDriverIndex.value == index,
+                    onTap: () {
+                      triggerHapticFeedback();
+                      controller.selectedDriverIndex.value = index;
+                    },
+                  ),
+                )
+                ); },
+
+                    ),
+          )),
         bottomNavigationBar: Container(
           padding: const EdgeInsets.symmetric(horizontal: horizontalScreenPadding, vertical: 14),
           width: double.infinity,
@@ -65,15 +67,10 @@ class _AssignJobManuallyScreenState extends State<AssignJobManuallyScreen> {
           child: BaseButton(
             title: 'Assign',
             onPressed: (){
-              Get.off(() => BaseSuccessScreen(
-                title: "Job Assigned",
-                description: " ",
-                btnTitle: "OK",
-                topMargin: 70,
-                onBtnTap: (){
-                  Get.back();
-                },
-              ));
+
+              controller.assignBooking(controller.listDriver?[controller.selectedDriverIndex.value].id.toString() ?? "",widget.bookingId);
+
+
             },
           ),
         ),
