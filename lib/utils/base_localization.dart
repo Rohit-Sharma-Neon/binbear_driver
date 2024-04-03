@@ -217,7 +217,11 @@ class BaseLocalization extends Translations {
     },
 
     'de_DE': {
-      "Create an account by filling in the\ninformation below": 'jsd fksdahklfhdkslflksadflksd fl',
+      "Thank You For Your Interest.":'klsj dfksdkfjsadfjs flkskl',
+    },
+
+    'ur_PK': {
+      "Thank You For Your Interest.":'hasjdfsdakjfhsdahfsdhfjflkadjf',
     }
   };
 }

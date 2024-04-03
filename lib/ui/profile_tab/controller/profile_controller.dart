@@ -50,7 +50,6 @@ class ProfileController extends GetxController{
     dio.FormData data = dio.FormData.fromMap({
       "name":nameController.text.trim(),
       "gender":selectedGender.value,
-
     });
     if((selectedImage?.value?.path??'').isNotEmpty){
       data.files.add(MapEntry("profile",
@@ -68,13 +67,13 @@ class ProfileController extends GetxController{
         if (response.success??false) {
           triggerHapticFeedback();
           Get.back();
-          showSnackBar(isSuccess: true, subtitle: response.message??"");
+          showSnackBar(isSuccess: true, message: response.message??"");
           getProfileData();
         }else{
-          showSnackBar(subtitle: response.message??"");
+          showSnackBar(message: response.message??"");
         }
       }else{
-        showSnackBar(subtitle: "Something went wrong, please try again");
+        showSnackBar(message: "Something went wrong, please try again");
       }
     });
   }
@@ -92,10 +91,10 @@ class ProfileController extends GetxController{
             BaseStorage.write(StorageKeys.userName, response.data?.name??"");
             profileData?.value = response.data;
           }else{
-            showSnackBar(subtitle: response.message??"");
+            showSnackBar(message: response.message??"");
           }
         }else{
-          showSnackBar(subtitle: "Something went wrong, please try again");
+          showSnackBar(message: "Something went wrong, please try again");
         }
       });
     } on Exception {

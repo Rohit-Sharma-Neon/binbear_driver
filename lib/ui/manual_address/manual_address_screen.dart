@@ -1,6 +1,7 @@
 import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
 import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/manual_address/controller/manual_address_controller.dart';
+import 'package:binbeardriver/utils/base_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -9,7 +10,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../utils/base_assets.dart';
 import '../../utils/base_colors.dart';
 import '../../utils/base_functions.dart';
-import '../../utils/base_variables.dart';
 import '../base_components/base_button.dart';
 import '../base_components/base_container.dart';
 import '../base_components/base_google_address_shimmer.dart';

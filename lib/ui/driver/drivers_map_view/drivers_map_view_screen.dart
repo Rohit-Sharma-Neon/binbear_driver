@@ -1,8 +1,12 @@
 import 'package:binbeardriver/ui/base_components/base_map_header_shadow.dart';
+import 'package:binbeardriver/ui/driver/jobs_screen/model/my_jobs_response.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
+import 'package:binbeardriver/utils/base_variables.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -15,7 +19,9 @@ import '../../base_components/base_text.dart';
 import 'controller/drivers_map_view_controller.dart';
 
 class DriverMapViewScreen extends StatefulWidget {
-  const DriverMapViewScreen({super.key});
+  final Jobs? jobsData;
+  final bool isNewBooking;
+  const DriverMapViewScreen({super.key, required this.jobsData, required this.isNewBooking});
 
   @override
   State<DriverMapViewScreen> createState() => _DriverMapViewScreenState();
@@ -23,12 +29,18 @@ class DriverMapViewScreen extends StatefulWidget {
 
 class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
 
-  UpdateWorkStatusController controller = Get.put(UpdateWorkStatusController());
+  DriversMapViewController controller = Get.put(DriversMapViewController());
 
   @override
   void initState() {
     super.initState();
     controller.currentWorkStatus.value = "Pick-Up!";
+    if ((widget.jobsData?.pickupAddress?.lat?.toString()??"").isNotEmpty && (widget.jobsData?.pickupAddress?.lng?.toString()??"").isNotEmpty) {
+      controller.addMarker(
+          latitude: double.parse((widget.jobsData?.pickupAddress?.lat??defaultLat).toString()),
+          longitude: double.parse((widget.jobsData?.pickupAddress?.lng??defaultLng).toString()),
+      );
+    }
   }
 
   @override
@@ -46,11 +58,24 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
         ),
         body: Stack(
           children: [
-            GoogleMap(
-              mapType: MapType.normal,
-              initialCameraPosition: controller.kGooglePlex,
-              onMapCreated: (GoogleMapController googleMapController) {
-                controller.mapController.complete(googleMapController);
+            GetBuilder<DriversMapViewController>(
+              builder: (DriversMapViewController controller) {
+                print("Widget Rebuild");
+                return GoogleMap(
+                  mapType: MapType.normal,
+                  myLocationEnabled: true,
+                  initialCameraPosition: controller.getInitialCameraPosition(
+                    lat: double.parse((widget.jobsData?.pickupAddress?.lat??defaultLat).toString()),
+                    long: double.parse((widget.jobsData?.pickupAddress?.lng??defaultLng).toString()),
+                  ),
+                  markers: Set<Marker>.of(controller.markers),
+                  zoomControlsEnabled: false,
+                  onMapCreated: (GoogleMapController googleMapController) {
+                    if(!controller.mapController.isCompleted){
+                      controller.mapController.complete(googleMapController);
+                    }
+                  },
+                );
               },
             ),
             const BaseMapHeaderShadow()
@@ -59,8 +84,8 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
         bottomNavigationBar: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            const BaseContainer(
-              height: 305,
+            BaseContainer(
+              height: widget.isNewBooking ? 215 : 305,
               color: BaseColors.secondaryColor,
               borderRadius: 15,
               topPadding: 6,
@@ -77,23 +102,23 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                 children: [
                   BaseText(
                     topMargin: 4,
-                    value: "3d, Avenue Road",
+                    value: (widget.jobsData?.pickupAddress?.fullAddress?.toString()??"").split(",").first,
                     fontSize: 12,
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
                   ),
                   BaseText(
                     topMargin: 2,
-                    value: "33.6 miles",
+                    value: "${widget.jobsData?.distance?.toString() ?? "0"} miles",
                     fontSize: 11,
-                    color: Color(0xffFBE6D3),
+                    color: const Color(0xffFBE6D3),
                     fontWeight: FontWeight.w400,
                   ),
                 ],
               ),
             ),
             BaseContainer(
-              height: 252,
+              height: widget.isNewBooking ? 160 : 252,
               color: const Color(0xff330601),
               borderRadius: 15,
               topPadding: 6,
@@ -122,9 +147,9 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                     color: const Color(0xffFBE6D3).withOpacity(0.42),
                     fontWeight: FontWeight.w400,
                   ),
-                  const BaseText(
+                  BaseText(
                     topMargin: 2,
-                    value: "Can 2 Curb Service",
+                    value: getServiceTitleById(serviceId: widget.jobsData?.categoryId?.toString()??""),
                     fontSize: 13,
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
@@ -140,49 +165,70 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SvgPicture.asset(BaseAssets.icPin, color: BaseColors.secondaryColor, height: 12),
-                      const BaseText(
-                        topMargin: 2,
-                        leftMargin: 3.5,
-                        value: "3d, Avenue road, usa",
-                        fontSize: 13,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
+                      Expanded(
+                        child: BaseText(
+                          topMargin: 2,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          leftMargin: 3.5,
+                          value: (widget.jobsData?.pickupAddress?.flatNo?.toString()??"")+(widget.jobsData?.pickupAddress?.fullAddress?.toString()??""),
+                          fontSize: 13,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ],
                   ),
-                  Obx(()=>Visibility(
-                    replacement: const SizedBox(height: 32),
-                    visible: controller.currentWorkStatus.value == "Pick-Up!" || controller.currentWorkStatus.value == "Deliver Back To Home",
-                    child: GestureDetector(
-                      onTap: (){
-                        triggerHapticFeedback();
-                      },
-                      child: Padding(
-                          padding: const EdgeInsets.only(top: 11),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SvgPicture.asset(BaseAssets.icUpload, color: BaseColors.secondaryColor, height: 15),
-                              const BaseText(
-                                topMargin: 2,
-                                leftMargin: 7,
-                                value: "Upload a picture",
-                                fontSize: 13,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ],
+                  Visibility(
+                    visible: widget.isNewBooking == false,
+                    child: Obx(()=>Visibility(
+                      replacement: const SizedBox(height: 32),
+                      visible: controller.currentWorkStatus.value == "Pick-Up!" || controller.currentWorkStatus.value == "Deliver Back To Home",
+                      child: GestureDetector(
+                        onTap: (){
+                          triggerHapticFeedback();
+                          showMediaPicker(isCropEnabled: true).then((value) {
+                            if ((value?.path??"").isNotEmpty) {
+                              controller.selectedImageFile?.value = value;
+                            }
+                          });
+                        },
+                        child: Padding(
+                            padding: const EdgeInsets.only(top: 11),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SvgPicture.asset(BaseAssets.icUpload, color: BaseColors.secondaryColor, height: 15),
+                                Expanded(
+                                  child: BaseText(
+                                    topMargin: 2,
+                                    leftMargin: 7,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    value: (controller.selectedImageFile?.value?.path??"").isEmpty ? "Upload a picture" : (controller.selectedImageFile?.value?.path??"").split("/").last,
+                                    fontSize: 13,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
+                      ),
+                    ),
                     ),
                   ),
-                  ),
-                  Obx(()=>BaseButton(
-                      title: controller.currentWorkStatus.value,
-                      topMargin: 11,
-                      bottomMargin: 12,
-                      onPressed: controller.onButtonTap,
-                      child: controller.getButtonContent(),
+                  Visibility(
+                    visible: widget.isNewBooking == false,
+                    child: Obx(()=>BaseButton(
+                        title: controller.currentWorkStatus.value,
+                        topMargin: 11,
+                        bottomMargin: 12,
+                        onPressed: (){
+                          controller.onButtonTap(bookingId: widget.jobsData?.id?.toString()??"");
+                        },
+                        child: controller.getButtonContent(),
+                      ),
                     ),
                   )
                 ],

@@ -67,10 +67,10 @@ class _AssignJobManuallyScreenState extends State<AssignJobManuallyScreen> {
           child: BaseButton(
             title: 'Assign',
             onPressed: (){
-
-              controller.assignBooking(controller.listDriver?[controller.selectedDriverIndex.value].id.toString() ?? "",widget.bookingId);
-
-
+              controller.assignBooking(
+                controller.listDriver?[controller.selectedDriverIndex.value].id.toString() ?? "",
+                widget.bookingId,
+              );
             },
           ),
         ),

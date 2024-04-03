@@ -151,10 +151,10 @@ class BookingsController extends GetxController with GetSingleTickerProviderStat
             if (response.success ?? false) {
               list?.value = response.data?.bookings ?? [];
             } else {
-              showSnackBar(subtitle: response.message ?? "");
+              showSnackBar(message: response.message ?? "");
             }
           } else {
-            showSnackBar(subtitle: "Something went wrong, please try again");
+            showSnackBar(message: "Something went wrong, please try again");
           }
           isLoading.value = false;
         });
@@ -183,14 +183,14 @@ class BookingsController extends GetxController with GetSingleTickerProviderStat
             showSnackBar(
                  isSuccess: action == "1",
                  title: action == "1" ? "Booking Accepted" : "Booking Rejected",
-                 subtitle: response.message ?? "");
+                 message: response.message ?? "");
               list?.removeAt(index);
             update();
           } else {
-            showSnackBar(subtitle: response.message ?? "");
+            showSnackBar(message: response.message ?? "");
           }
         } else {
-          showSnackBar(subtitle: "Something went wrong, please try again");
+          showSnackBar(message: "Something went wrong, please try again");
         }
         isLoading.value = false;
       });

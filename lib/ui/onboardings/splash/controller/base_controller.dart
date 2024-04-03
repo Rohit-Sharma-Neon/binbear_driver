@@ -138,10 +138,10 @@ class BaseController extends GetxController{
           if (response.success??false) {
             savedAddressList?.value = response.data??[];
           }else{
-            showSnackBar(subtitle: response.message??"");
+            showSnackBar(message: response.message??"");
           }
         }else{
-          showSnackBar(subtitle: "Something went wrong, please try again");
+          showSnackBar(message: "Something went wrong, please try again");
         }
         isSavedAddressLoading.value = false;
         update();
@@ -166,10 +166,10 @@ class BaseController extends GetxController{
           if (response.success??false) {
             returnValue = true;
           }else{
-            showSnackBar(subtitle: response.message??"");
+            showSnackBar(message: response.message??"");
           }
         }else{
-          showSnackBar(subtitle: "Something went wrong, please try again");
+          showSnackBar(message: "Something went wrong, please try again");
         }
         return returnValue;
       });
@@ -197,10 +197,10 @@ class BaseController extends GetxController{
           if (response.success??false) {
             returnValue = true;
           }else{
-            showSnackBar(subtitle: response.message??"");
+            showSnackBar(message: response.message??"");
           }
         }else{
-          showSnackBar(subtitle: "Something went wrong, please try again");
+          showSnackBar(message: "Something went wrong, please try again");
         }
         return returnValue;
       });
@@ -229,17 +229,16 @@ class BaseController extends GetxController{
 
   driverList() {
     try {
-      BaseApiService().post(
-          apiEndPoint: ApiEndPoints().driverList).then((value) {
+      BaseApiService().post(apiEndPoint: ApiEndPoints().driverList).then((value) {
         if (value?.statusCode == 200) {
           DriverList response = DriverList.fromJson(value?.data);
           if (response.success ?? false) {
             listDriver?.value = response.data ?? [];
           } else {
-            showSnackBar(subtitle: response.message ?? "");
+            showSnackBar(message: response.message ?? "");
           }
         } else {
-          showSnackBar(subtitle: "Something went wrong, please try again");
+          showSnackBar(message: "Something went wrong, please try again");
         }
       });
     } on Exception catch (e) {
@@ -254,19 +253,18 @@ class BaseController extends GetxController{
      'booking_id': bookingId
     };
     try {
-      BaseApiService().post(
-          apiEndPoint: ApiEndPoints().assignBooking,data: data,showLoader: true).then((value) {
+      BaseApiService().post(apiEndPoint: ApiEndPoints().assignBooking,data: data,showLoader: true).then((value) {
         if (value?.statusCode == 200) {
           BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
           if (response.success ?? false) {
             Get.back();
             Get.back();
-            showSnackBar(subtitle: response.message ?? "",isSuccess:true);
+            showSnackBar(message: response.message ?? "",isSuccess:true);
           } else {
-            showSnackBar(subtitle: response.message ?? "");
+            showSnackBar(message: response.message ?? "");
           }
         } else {
-          showSnackBar(subtitle: "Something went wrong, please try again");
+          showSnackBar(message: "Something went wrong, please try again");
         }
       });
     } on Exception catch (e) {
@@ -283,13 +281,13 @@ class BaseController extends GetxController{
         BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
         if (response.success??false) {
           triggerHapticFeedback();
-          showSnackBar(subtitle: response.message??"", isSuccess: true);
+          showSnackBar(message: response.message??"", isSuccess: true);
           listDriver?.removeAt(index);
         }else{
-          showSnackBar(subtitle: response.message??"");
+          showSnackBar(message: response.message??"");
         }
       }else{
-        showSnackBar(subtitle: "Something went wrong, please try again");
+        showSnackBar(message: "Something went wrong, please try again");
       }
     });
   }

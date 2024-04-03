@@ -146,13 +146,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         title: "Login",
                         onPressed: (){
                           if(controller.emailController.text.isEmpty){
-                            showSnackBar(subtitle: "Please Enter Email");
+                            showSnackBar(message: "Please Enter Email");
                           }else if (!GetUtils.isEmail(controller.emailController.text)) {
-                            showSnackBar(subtitle: "Please Enter Valid Email");
+                            showSnackBar(message: "Please Enter Valid Email");
                           }else if (controller.passwordController.text.isEmpty) {
-                            showSnackBar(subtitle: "Please Enter Password");
+                            showSnackBar(message: "Please Enter Password");
                           }else if (controller.passwordController.text.length < 8) {
-                            showSnackBar(subtitle: "Password Length Can't Be Less Than 8");
+                            showSnackBar(message: "Password Length Can't Be Less Than 8");
                           }else{
                             controller.getResponse();
                           }

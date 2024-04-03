@@ -250,52 +250,34 @@ class _HomeTabState extends State<HomeTab> {
                                 width: MediaQuery.of(context).size.width,
                                 child: ListView.builder(
                                   shrinkWrap: true,
-                                  itemCount:
-                                      homeTabController.allbookings?.length ??
-                                          0,
-                                  padding: const EdgeInsets.only(
-                                      left: horizontalScreenPadding),
+                                  itemCount: homeTabController.allbookings?.length ?? 0,
+                                  padding: const EdgeInsets.only(left: horizontalScreenPadding),
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) {
                                     return BookingListTile(
                                       showCurrentLocation: false,
                                       isPastBooking: false,
                                       rightMargin: 6,
-                                      location:
-                                          "${homeTabController.allbookings?[index]?.pickupAddress?.flatNo ?? ""}, ${homeTabController.allbookings?[index]?.pickupAddress?.fullAddress ?? ""}",
-                                      date: formatBackendDate(homeTabController
-                                              .allbookings?[index]?.createdAt
-                                              .toString() ??
-                                          ""),
-                                      time: homeTabController
-                                              .allbookings?[index]?.time ??
-                                          "",
-                                      bookingId:homeTabController
-                                          .allbookings?[index]?.id.toString() ??
-                                          "" ,
-                                      distance:
-                                          "${homeTabController.allbookings?[index]?.distance ?? ""}",
+                                      location: "${homeTabController.allbookings?[index]?.pickupAddress?.flatNo ?? ""}, ${homeTabController.allbookings?[index]?.pickupAddress?.fullAddress ?? ""}",
+                                      date: formatBackendDate(homeTabController.allbookings?[index]?.createdAt.toString() ?? ""),
+                                      time: homeTabController.allbookings?[index]?.time ?? "",
+                                      bookingId:homeTabController.allbookings?[index]?.id.toString() ?? "",
+                                      distance: "${homeTabController.allbookings?[index]?.distance ?? ""}",
                                       showAcceptRejectButtons: true,
-                                      showAssignButton: (homeTabController
-                                                  .allbookings?[index]?.assignStatus
-                                                  ?.toString() ??
-                                              "0") ==
-                                          "1",
+                                      showAssignButton: (homeTabController.allbookings?[index]?.assignStatus?.toString() ?? "0") == "1",
                                        acceptAction: () {
                                         homeTabController.bookingActionApi(
-                                            homeTabController.allbookings?[index]?.id
-                                                    ?.toString() ??
-                                                "",
-                                            "1",
-                                            index);
+                                          homeTabController.allbookings?[index]?.id?.toString() ?? "",
+                                          "1",
+                                          index,
+                                        );
                                       },
                                       rejectAction: () {
                                         homeTabController.bookingActionApi(
-                                            homeTabController.allbookings?[index]?.id
-                                                    ?.toString() ??
-                                                "",
-                                            "2",
-                                            index);
+                                          homeTabController.allbookings?[index]?.id?.toString() ?? "",
+                                          "2",
+                                          index,
+                                        );
                                       },
                                     );
                                   },

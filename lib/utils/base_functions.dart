@@ -15,6 +15,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
+import 'base_sizes.dart';
+
 triggerHapticFeedback() {
   HapticFeedback.vibrate();
 }
@@ -22,7 +24,8 @@ triggerHapticFeedback() {
 MaskTextInputFormatter usPhoneMask = MaskTextInputFormatter(
     mask: '(###) ###-####',
     filter: {"#": RegExp(r'[0-9]')},
-    type: MaskAutoCompletionType.lazy);
+    type: MaskAutoCompletionType.lazy,
+);
 
 String formatBackendDate(String dateString, {bool? getDayFirst}) {
   if (dateString.isNotEmpty && dateString != "null") {
@@ -56,7 +59,7 @@ void dismissBaseLoader({bool? showLoader}) {
 }
 
 showSnackBar(
-    {bool? isSuccess, String? title, String? subtitle, BuildContext? context}) {
+    {bool? isSuccess, String? title, String? message, BuildContext? context}) {
   if (Get.isSnackbarOpen) {
     Get.closeAllSnackbars();
   } else {
@@ -92,7 +95,7 @@ showSnackBar(
         ],
       ),
       messageText: BaseText(
-        value: subtitle ?? "",
+        value: message ?? "",
         fontSize: 13,
         color: Colors.white,
         fontWeight: FontWeight.w400,
@@ -287,36 +290,35 @@ Future<CroppedFile?> cropImage(File imageFile) async {
 
 String getAddressTypeNameByID({required String addressTypeID}) {
   switch (addressTypeID) {
-    case "1":
-      return "Home";
-    case "2":
-      return "Work";
-    case "3":
-      return "Friends & Family";
-    case "4":
-      return "Other";
-    default:
-      return "Home";
+    case "1": return "Home";
+    case "2": return "Work";
+    case "3": return "Friends & Family";
+    case "4": return "Other";
+    default: return "Home";
   }
 }
 
 String getAddressTypeNumber({required String getAddressTypeName}) {
   switch (getAddressTypeName) {
-    case "Home":
-      return "1";
-    case "Work":
-      return "2";
-    case "Friends & Family":
-      return "3";
-    case "Other":
-      return "4";
-    default:
-      return "1";
+    case "Home": return "1";
+    case "Work": return "2";
+    case "Friends & Family": return "3";
+    case "Other": return "4";
+    default: return "1";
+  }
+}
+
+String getServiceTitleById({required String serviceId}) {
+  switch (serviceId) {
+    case "1": return "Can 2 Curb Service";
+    case "2": return "Bulk Trash Pickup";
+    case "3": return "Trash Can Cleaning";
+    default: return "Trash Can Cleaning";
   }
 }
 
 void clearSessionData() {
    triggerHapticFeedback();
-  BaseStorage.box.erase();
+   BaseStorage.box.erase();
    Get.offAll(() => const WelcomeScreen());
 }

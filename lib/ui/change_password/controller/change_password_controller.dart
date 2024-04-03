@@ -26,12 +26,12 @@ class ChangePasswordController extends GetxController{
         if (response.success??false) {
           triggerHapticFeedback();
           Get.back();
-          showSnackBar(subtitle: response.message??"", isSuccess: true);
+          showSnackBar(message: response.message??"", isSuccess: true);
         }else{
-          showSnackBar(subtitle: response.message??"");
+          showSnackBar(message: response.message??"");
         }
       }else{
-        showSnackBar(subtitle: "Something went wrong, please try again");
+        showSnackBar(message: "Something went wrong, please try again");
       }
     });
   }

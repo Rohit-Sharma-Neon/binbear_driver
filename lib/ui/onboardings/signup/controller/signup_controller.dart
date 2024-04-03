@@ -43,10 +43,10 @@ class SignUpController extends GetxController{
         if (response.success??false) {
           Get.to(()=> const OtpScreen());
         }else{
-          showSnackBar(subtitle: response.message??"");
+          showSnackBar(message: response.message??"");
         }
       }else{
-        showSnackBar(subtitle: "Something went wrong, please try again");
+        showSnackBar(message: "Something went wrong, please try again");
       }
     });
   }

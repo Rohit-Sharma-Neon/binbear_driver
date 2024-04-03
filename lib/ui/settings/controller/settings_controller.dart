@@ -20,10 +20,10 @@ class SettingsController extends GetxController{
           // todo: Should be updated
           Get.find<ProfileController>().getProfileData();
         }else{
-          showSnackBar(subtitle: response.message??"");
+          showSnackBar(message: response.message??"");
         }
       }else{
-        showSnackBar(subtitle: "Something went wrong, please try again");
+        showSnackBar(message: "Something went wrong, please try again");
       }
     });
   }

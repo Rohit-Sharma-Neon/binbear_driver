@@ -105,17 +105,17 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                           title: "Submit",
                           onPressed: (){
                             if (controller.nameController.text.trim().isEmpty) {
-                              showSnackBar(subtitle: "Please Enter Your Name");
+                              showSnackBar(message: "Please Enter Your Name");
                             }else if (controller.nameController.text.trim().length < 2) {
-                              showSnackBar(subtitle: "Please Enter Email");
+                              showSnackBar(message: "Please Enter Email");
                             }else if (controller.emailController.text.trim().isEmpty) {
-                              showSnackBar(subtitle: "Please Enter Email");
+                              showSnackBar(message: "Please Enter Email");
                             }else if (!GetUtils.isEmail(controller.emailController.text.trim())) {
-                              showSnackBar(subtitle: "Please Enter Valid Email");
+                              showSnackBar(message: "Please Enter Valid Email");
                             }else if (controller.messageController.text.trim().isEmpty) {
-                              showSnackBar(subtitle: "Please Enter Your Message");
+                              showSnackBar(message: "Please Enter Your Message");
                             }else if (controller.messageController.text.trim().length < 6) {
-                              showSnackBar(subtitle: "Message too short!");
+                              showSnackBar(message: "Message too short!");
                             }else{
                               controller.callApi();
                             }

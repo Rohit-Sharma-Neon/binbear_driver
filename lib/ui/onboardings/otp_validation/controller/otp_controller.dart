@@ -34,14 +34,14 @@ class OtpController extends GetxController{
           // BaseStorage.write(StorageKeys.isUserDriver, false);
           Get.offAll(() => const LoginScreen());
             showSnackBar(
-              subtitle: response.message ?? "",
+              message: response.message ?? "",
               isSuccess: true,
               title: "Success");
         }else{
-          showSnackBar(subtitle: response.message??"");
+          showSnackBar(message: response.message??"");
         }
       }else{
-        showSnackBar(subtitle: "Something went wrong, please try again");
+        showSnackBar(message: "Something went wrong, please try again");
       }
     });
   }

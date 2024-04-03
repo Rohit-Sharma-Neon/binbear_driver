@@ -34,8 +34,8 @@ class ApiEndPoints {
   final String editDriver = "edit/binbear";
   final String driverDelete = "delete/binbear";
   final String addDriver = "create/beanbear";
-  final String bookingAction = "bookings/action";
+  final String bookingAction = "driver/actions";
   final String assignBooking = "assign/booking";
-
-
+  final String driverHomeData = "driver/home/screen";
+  final String updateDriverStatus = "driver/statusupdate";
 }

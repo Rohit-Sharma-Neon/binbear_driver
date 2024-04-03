@@ -70,7 +70,7 @@ class BaseApiService {
     } on DioException catch (e) {
       dismissBaseLoader(showLoader: showLoader??true);
       if (e.error.toString() == "No Internet Connection") {
-        showSnackBar(subtitle: e.error.toString());
+        showSnackBar(message: e.error.toString());
       }
       _handleError(e,showErrorSnackbar: showErrorSnackbar??true);
       rethrow;
@@ -92,7 +92,7 @@ class BaseApiService {
       print("hello ---${e}");
       dismissBaseLoader(showLoader: showLoader??true);
       if (e.error.toString() == "No Internet Connection") {
-        showSnackBar(subtitle: e.error.toString());
+        showSnackBar(message: e.error.toString());
       }
       _handleError(e);
       rethrow;
@@ -174,7 +174,7 @@ class BaseApiService {
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         return true;
       }else{
-        showSnackBar(subtitle: "No Internet Connection");
+        showSnackBar(message: "No Internet Connection");
         log("No internet connection");
         return false;
       }
@@ -241,7 +241,7 @@ class BaseApiService {
       // Handle response error
       log('Bad Response Error: ${e.message}');
       if (showErrorSnackbar??true) {
-        showSnackBar(subtitle: (e.response?.data['message']??"")??"");
+        showSnackBar(message: (e.response?.data['message']??"")??"");
       }
     } else if (e.type == DioExceptionType.cancel) {
       // Handle cancel error
@@ -251,7 +251,7 @@ class BaseApiService {
       log('Unknown Error: ${e.response?.data["message"]}');
       if ((e.response?.data["message"].toString()??"").isNotEmpty) {
         if (showErrorSnackbar??true) {
-          showSnackBar(subtitle: e.response?.data["message"]);
+          showSnackBar(message: e.response?.data["message"]);
         }
       }
     }

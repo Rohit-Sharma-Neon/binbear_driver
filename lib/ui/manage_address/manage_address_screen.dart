@@ -102,11 +102,11 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                       topMargin: 5,
                       onPressed: (){
                         if (controller.houseNoController.text.trim().isEmpty) {
-                          showSnackBar(subtitle: "Please Enter House / Flat / Block Number");
+                          showSnackBar(message: "Please Enter House / Flat / Block Number");
                         }/*else if (controller.apartmentController.text.trim().isEmpty) {
                           showSnackBar(subtitle: "Please Enter Apartment / Road / Area");
                         }*/else if (controller.landmarkController.text.trim().isEmpty) {
-                          showSnackBar(subtitle: "Please Enter Description");
+                          showSnackBar(message: "Please Enter Description");
                         }else{
                           controller.saveAddress(
                             lat: widget.lat??0,

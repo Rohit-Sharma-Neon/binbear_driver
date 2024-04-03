@@ -172,17 +172,17 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           title: "Save",
                           onPressed: (){
                             if (controller.oldPasswordController.text.trim().isEmpty) {
-                              showSnackBar(subtitle: "Please Enter Old Password");
+                              showSnackBar(message: "Please Enter Old Password");
                             }else if (controller.oldPasswordController.text.trim().length < 8) {
-                              showSnackBar(subtitle: "Please Enter Valid Old Password");
+                              showSnackBar(message: "Please Enter Valid Old Password");
                             }else if (controller.newPasswordController.text.trim().isEmpty) {
-                              showSnackBar(subtitle: "Please Enter New Password");
+                              showSnackBar(message: "Please Enter New Password");
                             }else if (controller.newPasswordController.text.trim().length < 8) {
-                              showSnackBar(subtitle: "New Password Length Can't Be Less Than 8");
+                              showSnackBar(message: "New Password Length Can't Be Less Than 8");
                             }else if (controller.confirmPasswordController.text.trim().isEmpty) {
-                              showSnackBar(subtitle: "Please Enter Confirm Password");
+                              showSnackBar(message: "Please Enter Confirm Password");
                             }else if (controller.confirmPasswordController.text.trim() != controller.newPasswordController.text.trim()) {
-                              showSnackBar(subtitle: "Confirm Password Is Not Matching, Please Check");
+                              showSnackBar(message: "Confirm Password Is Not Matching, Please Check");
                             }else{
                               controller.changePassword();
                             }

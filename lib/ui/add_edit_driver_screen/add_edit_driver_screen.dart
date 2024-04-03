@@ -96,15 +96,15 @@ class _AddEditDriverScreenState extends State<AddEditDriverScreen> {
                       title: "Continue",
                       onPressed: () {
                    if (controller.nameController.text.trim().isEmpty) {
-                 showSnackBar(subtitle: "Please Enter Full Name");
+                 showSnackBar(message: "Please Enter Full Name");
                   }else if (controller.emailController.text.trim().isEmpty) {
-                     showSnackBar(subtitle: "Please Enter Email");
+                     showSnackBar(message: "Please Enter Email");
                    }else if (!GetUtils.isEmail(controller.emailController.text.trim())) {
-                     showSnackBar(subtitle: "Please Enter Valid Email");
+                     showSnackBar(message: "Please Enter Valid Email");
                    }else if (controller.passwordController.text.trim().isEmpty) {
-                     showSnackBar(subtitle: "Please Enter Password");
+                     showSnackBar(message: "Please Enter Password");
                    }else if (controller.passwordController.text.trim().length < 8) {
-                     showSnackBar(subtitle: "Password Length Can't Be Less Than 8");
+                     showSnackBar(message: "Password Length Can't Be Less Than 8");
                    }else{
                      if(widget.isEditing){
                        controller.editDriver(widget.driverData?.id.toString()??"");

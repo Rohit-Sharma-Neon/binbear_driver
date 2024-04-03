@@ -52,9 +52,7 @@ class HomeTabController extends GetxController {
     isHomeLoading.value = true;
 
     try {
-      await BaseApiService()
-          .get(apiEndPoint: ApiEndPoints().getHomeData, showLoader: false)
-          .then((value) {
+      await BaseApiService().get(apiEndPoint: ApiEndPoints().getHomeData, showLoader: false).then((value) {
         refreshController.refreshCompleted();
         isHomeLoading.value = false;
         if (value?.statusCode == 200) {
@@ -66,10 +64,10 @@ class HomeTabController extends GetxController {
             totalEarning?.value = response.data?.totalEarning ?? 0;
             update();
           } else {
-            showSnackBar(subtitle: response.message ?? "");
+            showSnackBar(message: response.message ?? "");
           }
         } else {
-          showSnackBar(subtitle: "Something went wrong, please try again");
+          showSnackBar(message: "Something went wrong, please try again");
         }
       });
     } on Exception catch (e) {
@@ -96,15 +94,15 @@ class HomeTabController extends GetxController {
             showSnackBar(
                 isSuccess: action == "1",
                 title: action == "1" ? "Booking Accepted" : "Booking Rejected",
-                subtitle: response.message ?? "");
+                message: response.message ?? "");
             allbookings?.removeAt(index);
 
             update();
           } else {
-            showSnackBar(subtitle: response.message ?? "");
+            showSnackBar(message: response.message ?? "");
           }
         } else {
-          showSnackBar(subtitle: "Something went wrong, please try again");
+          showSnackBar(message: "Something went wrong, please try again");
         }
 
       });

@@ -42,28 +42,28 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const BaseText(
+                    BaseText(
                         value: "Thank You For Your Interest.",
                         textAlign: TextAlign.center,
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
                         height: 1.3
                     ),
-                    const BaseText(
+                    BaseText(
                         topMargin: 45,
                         value: "The Business Does\nNot Run Without\nYou!",
                         textAlign: TextAlign.center,
                         fontSize: 27,
                         fontWeight: FontWeight.w800,
-                        height: 1.3
+                        height: 1.3,
                     ),
                     BaseButton(
                       topMargin: 55,
                       title: "Become A Binbear",
+                      bottomMargin: 18,
                       onPressed: (){
                         Get.to(() => const SignUpScreen());
                       },
-                      bottomMargin: 18,
                     ),
                     BaseText(
                       topMargin: 7,

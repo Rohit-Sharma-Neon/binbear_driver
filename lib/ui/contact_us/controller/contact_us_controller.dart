@@ -33,10 +33,10 @@ class ContactUsController extends GetxController{
             ),
             );
           }else{
-            showSnackBar(subtitle: response.message??"");
+            showSnackBar(message: response.message??"");
           }
         }else{
-          showSnackBar(subtitle: "Something went wrong, please try again");
+          showSnackBar(message: "Something went wrong, please try again");
         }
       });
   }

@@ -315,12 +315,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         title: "Save",
                         onPressed: () {
                           if (controller.nameController.text.trim().isEmpty) {
-                            showSnackBar(subtitle: "Please Enter Full Name");
-                          } else if (controller.nameController.text
-                              .trim()
-                              .length <
-                              2) {
-                            showSnackBar(subtitle: "Please Enter Valid Name");
+                            showSnackBar(message: "Please Enter Full Name");
+                          } else if (controller.nameController.text.trim().length < 2) {
+                            showSnackBar(message: "Please Enter Valid Name");
                           } else {
                             controller.updateProfile();
                           }

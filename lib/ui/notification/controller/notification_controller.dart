@@ -30,10 +30,10 @@ class NotificationController extends GetxController{
           if (response.success??false) {
             list?.value = response.data??[];
           }else{
-            showSnackBar(subtitle: response.message??"");
+            showSnackBar(message: response.message??"");
           }
         }else{
-          showSnackBar(subtitle: "Something went wrong, please try again");
+          showSnackBar(message: "Something went wrong, please try again");
         }
         isNotificationLoading.value = false;
       });
@@ -57,10 +57,10 @@ class NotificationController extends GetxController{
             });
             list?.refresh();
           }else{
-            showSnackBar(subtitle: response.message??"");
+            showSnackBar(message: response.message??"");
           }
         }else{
-          showSnackBar(subtitle: "Something went wrong, please try again");
+          showSnackBar(message: "Something went wrong, please try again");
         }
       });
     } on Exception catch (e) {

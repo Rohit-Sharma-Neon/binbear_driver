@@ -24,10 +24,10 @@ class AboutAppController extends GetxController{
           title.value = response.data?.first.title??"";
           description.value = response.data?.first.description??"";
         }else{
-          showSnackBar(subtitle: response.message??"");
+          showSnackBar(message: response.message??"");
         }
       }else{
-        showSnackBar(subtitle: "Something went wrong, please try again");
+        showSnackBar(message: "Something went wrong, please try again");
       }
     });
   }

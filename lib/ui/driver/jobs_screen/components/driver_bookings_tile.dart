@@ -1,28 +1,23 @@
-import 'package:binbeardriver/ui/service_provider_map_view/service_provider_map_view_screen.dart';
+import 'package:binbeardriver/ui/base_components/base_accept_reject_buttons.dart';
+import 'package:binbeardriver/ui/base_components/base_outlined_button.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
-import 'package:binbeardriver/utils/storage_keys.dart';
-import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import '../driver/drivers_map_view/drivers_map_view_screen.dart';
-import 'base_accept_reject_buttons.dart';
-import 'base_outlined_button.dart';
-import 'base_text.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class BookingListTile extends StatelessWidget {
+class DriverBookingListTile extends StatelessWidget {
   final double? tileWidth, startingLat, startingLong, endingLat, endingLong;
   final double? topMargin, bottomMargin, rightMargin, leftMargin;
   final String location, date, time, distance;
-  final bool isPastBooking, showAcceptRejectButtons, showCurrentLocation, showAssignButton;
+  final bool isNewBooking, showAcceptRejectButtons, showCurrentLocation, showAssignButton;
   final bool? isAccepted, isCompleted;
   final String bookingId;
   final void Function()? acceptAction;
   final void Function()? rejectAction;
   final void Function()? onTap;
-  const BookingListTile(
+  const DriverBookingListTile(
       {super.key,
       this.tileWidth,
       required this.location,
@@ -33,7 +28,7 @@ class BookingListTile extends StatelessWidget {
       this.bottomMargin,
       this.rightMargin,
       this.leftMargin,
-      required this.isPastBooking,
+      required this.isNewBooking,
       required this.showAcceptRejectButtons,
       required this.showAssignButton,
         required this.bookingId,
@@ -66,8 +61,7 @@ class BookingListTile extends StatelessWidget {
         },
         child: Container(
           width: tileWidth ?? MediaQuery.of(context).size.width / 1.24,
-          padding:
-              const EdgeInsets.only(left: 10, right: 10, top: 14, bottom: 4),
+          padding: const EdgeInsets.only(left: 10, right: 10, top: 14, bottom: 4),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(15),

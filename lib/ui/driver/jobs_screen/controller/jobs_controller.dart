@@ -15,7 +15,7 @@ class JobsController extends GetxController with GetSingleTickerProviderStateMix
 
 
   RxBool isLoading = false.obs;
-  List<Jobs>? list = <Jobs>[];
+  RxList<Jobs>? list = <Jobs>[].obs;
   RefreshController upcomingRefreshController =
       RefreshController(initialRefresh: false);
   RefreshController pastRefreshController =
@@ -72,24 +72,18 @@ class JobsController extends GetxController with GetSingleTickerProviderStateMix
         "booking_status": requestIndex.toString(),
       };
       try {
-        await BaseApiService()
-            .post(
-                apiEndPoint: ApiEndPoints().myBookings,
-                data: data,
-                showLoader: false)
-            .then((value) {
+        await BaseApiService().post(apiEndPoint: ApiEndPoints().driverHomeData, data: data, showLoader: false).then((value) {
           upcomingRefreshController.refreshCompleted();
           pastRefreshController.refreshCompleted();
           if (value?.statusCode == 200) {
-            MyJobsResponse response =
-                MyJobsResponse.fromJson(value?.data);
+            MyJobsResponse response = MyJobsResponse.fromJson(value?.data);
             if (response.success ?? false) {
-              list = response.data?.jobs ?? [];
+              list?.value = response.data?.jobs ?? [];
             } else {
-              showSnackBar(subtitle: response.message ?? "");
+              showSnackBar(message: response.message ?? "");
             }
           } else {
-            showSnackBar(subtitle: "Something went wrong, please try again");
+            showSnackBar(message: "Something went wrong, please try again");
           }
           isLoading.value = false;
         });
@@ -102,30 +96,31 @@ class JobsController extends GetxController with GetSingleTickerProviderStateMix
   }
 
   //Booking Action(Accept or Reject Bookingt)
-  bookingActionApi(String bookingId, String action) async {
-    Map<String, String> data = {"booking_id": bookingId, "action": action};
+  bookingActionApi(String bookingId, String action, {required int index}) async {
+    Map<String, String> data = {
+      "booking_id": bookingId,
+      "action": action,
+    };
     try {
-      await BaseApiService()
-          .post(
+      await BaseApiService().post(
               apiEndPoint: ApiEndPoints().bookingAction,
               data: data,
               showLoader: true)
           .then((value) {
         if (value?.statusCode == 200) {
-          BaseSuccessResponse response =
-              BaseSuccessResponse.fromJson(value?.data);
+          BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
           if (response.success ?? false) {
             showSnackBar(
                 isSuccess: action == "1",
                 title: action == "1" ? "Booking Accepted" : "Booking Rejected",
-                subtitle: response.message ?? "");
-            getMyJobsApi();
-            update();
+                message: response.message ?? "");
+            list?.removeAt(index);
+            list?.refresh();
           } else {
-            showSnackBar(subtitle: response.message ?? "");
+            showSnackBar(message: response.message ?? "");
           }
         } else {
-          showSnackBar(subtitle: "Something went wrong, please try again");
+          showSnackBar(message: "Something went wrong, please try again");
         }
         isLoading.value = false;
       });

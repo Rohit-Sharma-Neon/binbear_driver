@@ -1,7 +1,7 @@
 class DriverList {
-  bool? success;
+  dynamic success;
   List<DriverData>? data;
-  String? message;
+  dynamic message;
 
   DriverList({this.success, this.data, this.message});
 
@@ -10,55 +10,55 @@ class DriverList {
     if (json['data'] != null) {
       data = <DriverData>[];
       json['data'].forEach((v) {
-        data!.add(new DriverData.fromJson(v));
+        data!.add(DriverData.fromJson(v));
       });
     }
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
 
 class DriverData {
-  int? id;
-  String? name;
-  Null? middleName;
-  Null? lastName;
-  String? email;
-  String? mobile;
-  Null? stripeAccountId;
-  Null? dob;
-  Null? gender;
-  int? isOnline;
-  Null? countryCode;
-  Null? otp;
-  String? token;
-  Null? profile;
-  Null? bio;
-  int? roleId;
-  int? serviceProviderId;
-  Null? businessName;
-  Null? idProof;
-  int? isVerify;
-  int? adminApproval;
-  int? status;
-  int? binbearStatus;
-  Null? binbearCurrentBooking;
-  int? isSendNotification;
-  String? emailVerifiedAt;
-  int? phoneVerifiedAt;
-  String? deviceToken;
-  Null? socketId;
-  String? createdAt;
-  String? updatedAt;
+  dynamic id;
+  dynamic name;
+  dynamic middleName;
+  dynamic lastName;
+  dynamic email;
+  dynamic mobile;
+  dynamic stripeAccountId;
+  dynamic dob;
+  dynamic gender;
+  dynamic isOnline;
+  dynamic countryCode;
+  dynamic otp;
+  dynamic token;
+  dynamic profile;
+  dynamic bio;
+  dynamic roleId;
+  dynamic serviceProviderId;
+  dynamic businessName;
+  dynamic idProof;
+  dynamic isVerify;
+  dynamic adminApproval;
+  dynamic status;
+  dynamic binbearStatus;
+  dynamic binbearCurrentBooking;
+  dynamic isSendNotification;
+  dynamic emailVerifiedAt;
+  dynamic phoneVerifiedAt;
+  dynamic deviceToken;
+  dynamic socketId;
+  dynamic createdAt;
+  dynamic updatedAt;
 
   DriverData(
       {this.id,
@@ -128,38 +128,38 @@ class DriverData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['middle_name'] = this.middleName;
-    data['last_name'] = this.lastName;
-    data['email'] = this.email;
-    data['mobile'] = this.mobile;
-    data['stripe_account_id'] = this.stripeAccountId;
-    data['dob'] = this.dob;
-    data['gender'] = this.gender;
-    data['is_online'] = this.isOnline;
-    data['country_code'] = this.countryCode;
-    data['otp'] = this.otp;
-    data['token'] = this.token;
-    data['profile'] = this.profile;
-    data['bio'] = this.bio;
-    data['role_id'] = this.roleId;
-    data['service_provider_id'] = this.serviceProviderId;
-    data['business_name'] = this.businessName;
-    data['id_proof'] = this.idProof;
-    data['is_verify'] = this.isVerify;
-    data['admin_approval'] = this.adminApproval;
-    data['status'] = this.status;
-    data['binbear_status'] = this.binbearStatus;
-    data['binbear_current_booking'] = this.binbearCurrentBooking;
-    data['is_send_notification'] = this.isSendNotification;
-    data['email_verified_at'] = this.emailVerifiedAt;
-    data['phone_verified_at'] = this.phoneVerifiedAt;
-    data['device_token'] = this.deviceToken;
-    data['socket_id'] = this.socketId;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['middle_name'] = middleName;
+    data['last_name'] = lastName;
+    data['email'] = email;
+    data['mobile'] = mobile;
+    data['stripe_account_id'] = stripeAccountId;
+    data['dob'] = dob;
+    data['gender'] = gender;
+    data['is_online'] = isOnline;
+    data['country_code'] = countryCode;
+    data['otp'] = otp;
+    data['token'] = token;
+    data['profile'] = profile;
+    data['bio'] = bio;
+    data['role_id'] = roleId;
+    data['service_provider_id'] = serviceProviderId;
+    data['business_name'] = businessName;
+    data['id_proof'] = idProof;
+    data['is_verify'] = isVerify;
+    data['admin_approval'] = adminApproval;
+    data['status'] = status;
+    data['binbear_status'] = binbearStatus;
+    data['binbear_current_booking'] = binbearCurrentBooking;
+    data['is_send_notification'] = isSendNotification;
+    data['email_verified_at'] = emailVerifiedAt;
+    data['phone_verified_at'] = phoneVerifiedAt;
+    data['device_token'] = deviceToken;
+    data['socket_id'] = socketId;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

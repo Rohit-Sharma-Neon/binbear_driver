@@ -31,10 +31,10 @@ class TransactionController extends GetxController{
             transactionData?.value = response.data?.bookingData??[];
             totalPayment?.value= response.data?.totalPayment??0;
           }else{
-            showSnackBar(subtitle: response.message??"");
+            showSnackBar(message: response.message??"");
           }
         }else{
-          showSnackBar(subtitle: "Something went wrong, please try again");
+          showSnackBar(message: "Something went wrong, please try again");
         }
       });
     } on Exception catch (e) {
