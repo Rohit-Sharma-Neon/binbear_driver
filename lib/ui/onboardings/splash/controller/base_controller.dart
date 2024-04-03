@@ -247,8 +247,8 @@ class BaseController extends GetxController{
     }
   }
 
-  assignBooking(String id ,String bookingId) {
 
+  assignBooking(String id ,String bookingId) {
     Map<String, String> data = {
      'binbear_id': id,
      'booking_id': bookingId
@@ -259,7 +259,8 @@ class BaseController extends GetxController{
         if (value?.statusCode == 200) {
           BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
           if (response.success ?? false) {
-            Get.back(); Get.back();
+            Get.back();
+            Get.back();
             showSnackBar(subtitle: response.message ?? "",isSuccess:true);
           } else {
             showSnackBar(subtitle: response.message ?? "");
@@ -272,6 +273,7 @@ class BaseController extends GetxController{
       refreshController.refreshCompleted();
     }
   }
+
 
   deleteDriver(dynamic id ,int index){
     Map<String, dynamic> params = {'binbear_id': id};
