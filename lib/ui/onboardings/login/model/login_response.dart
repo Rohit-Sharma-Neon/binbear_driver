@@ -4,55 +4,36 @@
 
 import 'dart:convert';
 
-LoginResponse loginResponseFromJson(String str) => LoginResponse.fromJson(json.decode(str));
+LoginResponse loginResponseFromJson(String str) =>
+    LoginResponse.fromJson(json.decode(str));
 
 String loginResponseToJson(LoginResponse data) => json.encode(data.toJson());
 
 class LoginResponse {
-    bool? success;
-    LoginData? data;
-    String? message;
+  bool? success;
+  LoginData? data;
+  String? message;
 
-    LoginResponse({
-        this.success,
-        this.data,
-        this.message,
-    });
+  LoginResponse({
+    this.success,
+    this.data,
+    this.message,
+  });
 
-    factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
+  factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
         success: json["success"],
         data: json["data"] == null ? null : LoginData.fromJson(json["data"]),
         message: json["message"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "success": success,
         "data": data?.toJson(),
         "message": message,
-    };
+      };
 }
 
 class LoginData {
-    User? user;
-    bool? hasAddress;
-
-    LoginData({
-        this.user,
-        this.hasAddress,
-    });
-
-    factory LoginData.fromJson(Map<String, dynamic> json) => LoginData(
-        user: json["user"] == null ? null : User.fromJson(json["user"]),
-        hasAddress: json["has_address"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "user": user?.toJson(),
-        "has_address": hasAddress,
-    };
-}
-
-class User {
 dynamic id;
 dynamic name;
 dynamic middleName;
@@ -84,42 +65,44 @@ dynamic deviceToken;
 dynamic socketId;
 dynamic createdAt;
 dynamic updatedAt;
+dynamic hasAddress;
 
-    User({
-        this.id,
-        this.name,
-        this.middleName,
-        this.lastName,
-        this.email,
-        this.mobile,
-        this.stripeAccountId,
-        this.dob,
-        this.gender,
-        this.isOnline,
-        this.countryCode,
-        this.otp,
-        this.token,
-        this.profile,
-        this.bio,
-        this.roleId,
-        this.serviceProviderId,
-        this.businessName,
-        this.idProof,
-        this.isVerify,
-        this.adminApproval,
-        this.status,
-        this.binbearStatus,
-        this.binbearCurrentBooking,
-        this.isSendNotification,
-        this.emailVerifiedAt,
-        this.phoneVerifiedAt,
-        this.deviceToken,
-        this.socketId,
-        this.createdAt,
-        this.updatedAt,
-    });
+  LoginData({
+    this.id,
+    this.name,
+    this.middleName,
+    this.lastName,
+    this.email,
+    this.mobile,
+    this.stripeAccountId,
+    this.dob,
+    this.gender,
+    this.isOnline,
+    this.countryCode,
+    this.otp,
+    this.token,
+    this.profile,
+    this.bio,
+    this.roleId,
+    this.serviceProviderId,
+    this.businessName,
+    this.idProof,
+    this.isVerify,
+    this.adminApproval,
+    this.status,
+    this.binbearStatus,
+    this.binbearCurrentBooking,
+    this.isSendNotification,
+    this.emailVerifiedAt,
+    this.phoneVerifiedAt,
+    this.deviceToken,
+    this.socketId,
+    this.createdAt,
+    this.updatedAt,
+    this.hasAddress,
+  });
 
-    factory User.fromJson(Map<String, dynamic> json) => User(
+  factory LoginData.fromJson(Map<String, dynamic> json) => LoginData(
         id: json["id"],
         name: json["name"],
         middleName: json["middle_name"],
@@ -145,15 +128,22 @@ dynamic updatedAt;
         binbearStatus: json["binbear_status"],
         binbearCurrentBooking: json["binbear_current_booking"],
         isSendNotification: json["is_send_notification"],
-        emailVerifiedAt: json["email_verified_at"] == null ? null : DateTime.parse(json["email_verified_at"]),
+        emailVerifiedAt: json["email_verified_at"] == null
+            ? null
+            : DateTime.parse(json["email_verified_at"]),
         phoneVerifiedAt: json["phone_verified_at"],
         deviceToken: json["device_token"],
         socketId: json["socket_id"],
-        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    );
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        hasAddress: json["has_address"],
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "middle_name": middleName,
@@ -185,5 +175,6 @@ dynamic updatedAt;
         "socket_id": socketId,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
-    };
+        "has_address": hasAddress,
+      };
 }

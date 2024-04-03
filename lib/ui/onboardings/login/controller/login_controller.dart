@@ -34,10 +34,10 @@ class LoginController extends GetxController{
       if (value?.statusCode ==  200) {
         LoginResponse response = LoginResponse.fromJson(value?.data);
         if (response.success??false) {
-          BaseStorage.write(StorageKeys.apiToken, response.data?.user?.token??"");
-          BaseStorage.write(StorageKeys.userName, response.data?.user?.name??"");
-          BaseStorage.write(StorageKeys.profilePhoto, response.data?.user?.profile??"");
-          if(!(response.data?.hasAddress ?? false)) {
+          BaseStorage.write(StorageKeys.apiToken, response.data?.token??"");
+          BaseStorage.write(StorageKeys.userName, response.data?.name??"");
+          BaseStorage.write(StorageKeys.profilePhoto, response.data?.profile??"");
+          if(response.data?.hasAddress.toString() == "false" ) {
             Get.to(() => OnboardingLocationScreen());
           }else{
              if (BaseStorage.read(StorageKeys.isUserDriver)) {  
