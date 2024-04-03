@@ -19,7 +19,8 @@ class MyBookingsShimmer extends StatelessWidget {
         padding: const EdgeInsets.only(
             right: horizontalScreenPadding,
             left: horizontalScreenPadding,
-            bottom: 80),
+            bottom: 80,
+        ),
         itemBuilder: (context, index) {
           return AnimatedListBuilder(
             index: index,

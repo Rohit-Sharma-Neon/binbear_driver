@@ -4,16 +4,14 @@
 
 import 'dart:convert';
 
-MyBookingsResponse myBookingsResponseFromJson(String str) =>
-    MyBookingsResponse.fromJson(json.decode(str));
+MyBookingsResponse myBookingsResponseFromJson(String str) => MyBookingsResponse.fromJson(json.decode(str));
 
-String myBookingsResponseToJson(MyBookingsResponse data) =>
-    json.encode(data.toJson());
+String myBookingsResponseToJson(MyBookingsResponse data) => json.encode(data.toJson());
 
 class MyBookingsResponse {
   bool? success;
   MyBookingData? data;
-  String? message;
+  dynamic message;
 
   MyBookingsResponse({
     this.success,
@@ -24,8 +22,7 @@ class MyBookingsResponse {
   factory MyBookingsResponse.fromJson(Map<String, dynamic> json) =>
       MyBookingsResponse(
         success: json["success"],
-        data:
-            json["data"] == null ? null : MyBookingData.fromJson(json["data"]),
+        data: json["data"] == null ? null : MyBookingData.fromJson(json["data"]),
         message: json["message"],
       );
 
@@ -46,8 +43,7 @@ class MyBookingData {
   factory MyBookingData.fromJson(Map<String, dynamic> json) => MyBookingData(
         bookings: json["bookings"] == null
             ? []
-            : List<Booking>.from(
-                json["bookings"]!.map((x) => Booking.fromJson(x))),
+            : List<Booking>.from(json["bookings"]!.map((x) => Booking.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -79,6 +75,7 @@ class Booking {
   dynamic adminPayment;
   dynamic serviceStatus;
   PickupAddress? pickupAddress;
+  AssignedProviderAddress? assignedProviderAddress;
   dynamic distance;
   dynamic time;
 
@@ -106,6 +103,7 @@ class Booking {
     this.pickupAddress,
     this.distance,
     this.time,
+    this.assignedProviderAddress,
   });
 
   factory Booking.fromJson(Map<String, dynamic> json) => Booking(
@@ -137,7 +135,9 @@ class Booking {
             ? null
             : PickupAddress.fromJson(json["pickup_address"]),
         distance: json["distance"],
+    assignedProviderAddress: json["assigned_provider_address"] == null ? null : AssignedProviderAddress.fromJson(json["assigned_provider_address"]),
         time: json["time"],
+
       );
 
   Map<String, dynamic> toJson() => {
@@ -164,6 +164,7 @@ class Booking {
         "pickup_address": pickupAddress?.toJson(),
         "distance": distance,
         "time": time,
+    "assigned_provider_address": assignedProviderAddress?.toJson(),
       };
 }
 
@@ -237,4 +238,72 @@ class PickupAddress {
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
       };
+}
+
+class AssignedProviderAddress {
+  dynamic id;
+  dynamic userId;
+  dynamic flatNo;
+  dynamic apartment;
+  dynamic description;
+  dynamic lat;
+  dynamic lng;
+  dynamic homeType;
+  dynamic fullAddress;
+  dynamic isDeleted;
+  dynamic isDefault;
+  dynamic status;
+  dynamic createdAt;
+  dynamic updatedAt;
+
+  AssignedProviderAddress({
+    this.id,
+    this.userId,
+    this.flatNo,
+    this.apartment,
+    this.description,
+    this.lat,
+    this.lng,
+    this.homeType,
+    this.fullAddress,
+    this.isDeleted,
+    this.isDefault,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory AssignedProviderAddress.fromJson(Map<String, dynamic> json) => AssignedProviderAddress(
+    id: json["id"],
+    userId: json["user_id"],
+    flatNo: json["flat_no"],
+    apartment: json["apartment"],
+    description: json["description"],
+    lat: json["lat"],
+    lng: json["lng"],
+    homeType: json["home_type"],
+    fullAddress: json["full_address"],
+    isDeleted: json["is_deleted"],
+    isDefault: json["is_default"],
+    status: json["status"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "user_id": userId,
+    "flat_no": flatNo,
+    "apartment": apartment,
+    "description": description,
+    "lat": lat,
+    "lng": lng,
+    "home_type": homeType,
+    "full_address": fullAddress,
+    "is_deleted": isDeleted,
+    "is_default": isDefault,
+    "status": status,
+    "created_at": createdAt,
+    "updated_at": updatedAt,
+  };
 }

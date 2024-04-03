@@ -4,11 +4,15 @@
   import 'package:binbeardriver/ui/base_components/smart_refresher_base_header.dart';
   import 'package:binbeardriver/ui/bookings_tab/components/my_bookings_shimmer.dart';
   import 'package:binbeardriver/ui/bookings_tab/controller/bookings_controller.dart';
+import 'package:binbeardriver/ui/driver/drivers_map_view/drivers_map_view_screen.dart';
+import 'package:binbeardriver/ui/service_provider_map_view/service_provider_map_view_screen.dart';
   import 'package:binbeardriver/utils/base_functions.dart';
   import 'package:binbeardriver/utils/base_variables.dart';
+import 'package:binbeardriver/utils/storage_keys.dart';
   import 'package:flutter/material.dart';
   import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
   import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
   import 'package:pull_to_refresh/pull_to_refresh.dart';
 
   class MyBookingsTabView extends StatelessWidget {
@@ -46,27 +50,35 @@
                               isAccepted: controller.list?[index].status.toString() == "2" ,
                               showAcceptRejectButtons: controller.tabController.index == 0,
                               isPastBooking: controller.tabController.index == 1,
-                              location:
-                                  "${controller.list?[index].pickupAddress?.flatNo ?? ""}, ${controller.list?[index].pickupAddress?.fullAddress ?? ""}",
-                              date: formatBackendDate(
-                                  controller.list?[index].createdAt.toString() ??
-                                      ""),
+                              location: "${controller.list?[index].pickupAddress?.flatNo ?? ""}, ${controller.list?[index].pickupAddress?.fullAddress ?? ""}",
+                              date: formatBackendDate(controller.list?[index].createdAt.toString() ?? ""),
                               time: controller.list?[index].time ?? "",
-                              distance:
-                                  controller.list?[index].distance?.toString() ??
-                                      "",
+                              distance: controller.list?[index].distance?.toString() ?? "",
                               showCurrentLocation: false,
                               acceptAction: (){
                                 controller.bookingActionApi(controller.list?[index].id?.toString()??"","1",index);
                               },
-                                rejectAction: () {
+                              rejectAction: () {
                                 controller.bookingActionApi(
                                     controller.list?[index].id?.toString() ?? "",
-                                    "2",index);
+                                    "2",
+                                    index,
+                                );
                               },
-                              // onTap: (){     
-                              //   Get.to(() => BookingsDetailScreen(isPastBooking: controller.tabController.index == 1, bookingId: controller.list?[index].id?.toString()??""));
-                              // },
+                              onTap: (){
+                                // Get.to(() => BookingsDetailScreen(isPastBooking: controller.tabController.index == 1, bookingId: controller.list?[index].id?.toString()??""));
+                                if (GetStorage().read(StorageKeys.isUserDriver)??false) {
+                                  Get.to(const DriverMapViewScreen());
+                                } else {
+                                  Get.to(ServiceProviderMapViewScreen(
+                                    startingLat: double.parse((controller.list?[index].pickupAddress?.lat??0.0).toString()),
+                                    startingLong: double.parse((controller.list?[index].pickupAddress?.lng??0.0).toString()),
+                                    endingLat:  double.parse((controller.list?[index].assignedProviderAddress?.lat??0.0).toString()),
+                                    endingLong:  double.parse((controller.list?[index].assignedProviderAddress?.lng??0.0).toString()),
+                                    showCurrentPosition: false,
+                                  ));
+                                }
+                              },
                             ),
                           );
                         },
