@@ -6,7 +6,6 @@ import 'package:binbeardriver/backend/base_api_service.dart';
 import 'package:binbeardriver/backend/base_responses/autocomplete_api_response.dart';
 import 'package:binbeardriver/backend/base_responses/base_success_response.dart';
 import 'package:binbeardriver/ui/manual_address/model/saved_address_response.dart';
-import 'package:binbeardriver/ui/onboardings/base_success_screen.dart';
 import 'package:binbeardriver/utils/base_debouncer.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/base_strings.dart';
@@ -20,7 +19,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:uuid/uuid.dart';
 import 'package:dio/dio.dart' as as_dio;
 
-import '../../../drivers_listing/model/driverlist_response.dart';
+import 'package:binbeardriver/ui/drivers_listing/model/driverlist_response.dart';
 
 class BaseController extends GetxController{
 
@@ -59,8 +58,6 @@ class BaseController extends GetxController{
         dio = as_dio.Dio();
         String baseURL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
         String request = '$baseURL?input=$input&key=$googleApiKey&sessiontoken=$sessionToken';
-        print("Input: $input");
-        print("API Key: $googleApiKey");
         as_dio.Response response = await dio.get(request);
         AutoCompleteApiResponse autoCompleteApiResponse = AutoCompleteApiResponse.fromJson(response.data);
         isAddressSuggestionLoading.value = false;

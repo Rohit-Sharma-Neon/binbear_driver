@@ -2,12 +2,10 @@ import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/base_sizes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'base_text.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
 
 class DriversListingTile extends StatelessWidget {
   final bool isChecked;

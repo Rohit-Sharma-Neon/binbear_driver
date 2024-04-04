@@ -3,15 +3,15 @@ import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../base_components/animated_column.dart';
-import '../../base_components/base_app_bar.dart';
-import '../../base_components/base_button.dart';
-import '../../base_components/base_container.dart';
-import '../../base_components/base_scaffold_background.dart';
-import '../../base_components/base_text.dart';
-import '../../manual_address/manual_address_screen.dart';
-import '../splash/controller/base_controller.dart';
-import 'controller/onboarding_location_controller.dart';
+import 'package:binbeardriver/ui/base_components/animated_column.dart';
+import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
+import 'package:binbeardriver/ui/base_components/base_button.dart';
+import 'package:binbeardriver/ui/base_components/base_container.dart';
+import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
+import 'package:binbeardriver/ui/manual_address/manual_address_screen.dart';
+import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
+import 'package:binbeardriver/ui/onboardings/location/controller/onboarding_location_controller.dart';
 
 class OnboardingLocationScreen extends StatelessWidget {
   OnboardingLocationScreen({super.key});

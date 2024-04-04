@@ -2,10 +2,10 @@ import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.d
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-import '../../../backend/api_end_points.dart';
-import '../../../backend/base_api_service.dart';
-import '../../../backend/base_responses/base_success_response.dart';
-import '../../../utils/base_functions.dart';
+import 'package:binbeardriver/backend/api_end_points.dart';
+import 'package:binbeardriver/backend/base_api_service.dart';
+import 'package:binbeardriver/backend/base_responses/base_success_response.dart';
+import 'package:binbeardriver/utils/base_functions.dart';
 
 class EditDriverController extends GetxController{
 

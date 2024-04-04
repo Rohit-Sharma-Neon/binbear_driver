@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../base_components/base_text.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});

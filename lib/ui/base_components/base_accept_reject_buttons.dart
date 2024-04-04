@@ -1,8 +1,6 @@
 import 'package:binbeardriver/utils/base_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'base_button.dart';
+import 'package:binbeardriver/ui/base_components/base_button.dart';
 
 class BaseAcceptRejectButtons extends StatelessWidget {
   final double? topMargin, bottomMargin;

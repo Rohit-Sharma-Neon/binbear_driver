@@ -1,12 +1,7 @@
-import 'package:binbeardriver/ui/service_provider_map_view/service_provider_map_view_screen.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
-import 'package:binbeardriver/utils/storage_keys.dart';
-import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import '../driver/drivers_map_view/drivers_map_view_screen.dart';
-import 'base_accept_reject_buttons.dart';
-import 'base_outlined_button.dart';
-import 'base_text.dart';
+import 'package:binbeardriver/ui/base_components/base_accept_reject_buttons.dart';
+import 'package:binbeardriver/ui/base_components/base_outlined_button.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:flutter/material.dart';

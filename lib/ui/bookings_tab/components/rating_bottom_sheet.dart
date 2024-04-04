@@ -5,9 +5,9 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../base_components/animated_column.dart';
-import '../../base_components/base_button.dart';
-import '../../base_components/base_text.dart';
+import 'package:binbeardriver/ui/base_components/animated_column.dart';
+import 'package:binbeardriver/ui/base_components/base_button.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
 
 class RatingBottomSheet extends StatelessWidget {
   const RatingBottomSheet({super.key});
@@ -57,7 +57,6 @@ class RatingBottomSheet extends StatelessWidget {
           ),
           itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
           onRatingUpdate: (rating) {
-            print(rating);
           },
         ),
         BaseButton(

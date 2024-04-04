@@ -3,7 +3,6 @@ import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
 import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/base_components/base_text.dart';
 import 'package:binbeardriver/ui/change_password/change_password_screen.dart';
-import 'package:binbeardriver/ui/onboardings/welcome_screen.dart';
 import 'package:binbeardriver/ui/settings/controller/settings_controller.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
@@ -11,8 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../utils/base_colors.dart';
-import '../base_components/base_container.dart';
+import 'package:binbeardriver/utils/base_colors.dart';
+import 'package:binbeardriver/ui/base_components/base_container.dart';
 
 class SettingsScreen extends StatefulWidget {
   final bool isNotificationEnabled;

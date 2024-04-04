@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../../backend/api_end_points.dart';
-import '../../../backend/base_api_service.dart';
-import '../../../utils/base_functions.dart';
-import '../model/transactions_response.dart';
+import 'package:binbeardriver/backend/api_end_points.dart';
+import 'package:binbeardriver/backend/base_api_service.dart';
+import 'package:binbeardriver/utils/base_functions.dart';
+import 'package:binbeardriver/ui/transactions_screen/model/transactions_response.dart';
 
 
 class TransactionController extends GetxController{

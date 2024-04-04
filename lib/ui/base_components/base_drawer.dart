@@ -1,7 +1,6 @@
 import 'package:binbeardriver/ui/about_app/about_app_screen.dart';
 import 'package:binbeardriver/ui/contact_us/contact_us_screen.dart';
 import 'package:binbeardriver/ui/help_&_support/help_&_support_screen.dart';
-import 'package:binbeardriver/ui/onboardings/welcome_screen.dart';
 import 'package:binbeardriver/ui/transactions_screen/transactions_screen.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
@@ -12,10 +11,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import '../dashboard_module/dashboard_screen/controller/dashboard_controller.dart';
-import 'base_dummy_profile.dart';
-import 'base_text.dart';
-import 'base_text_button.dart';
+import 'package:binbeardriver/ui/dashboard_module/dashboard_screen/controller/dashboard_controller.dart';
+import 'package:binbeardriver/ui/base_components/base_dummy_profile.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
+import 'package:binbeardriver/ui/base_components/base_text_button.dart';
 
 class BaseDrawer extends StatelessWidget {
   const BaseDrawer({super.key});
@@ -44,11 +43,11 @@ class BaseDrawer extends StatelessWidget {
                   width: 100,
                   height: 100,
                   fit: BoxFit.fill,
-                loadingBuilder:(context, child, loadingProgress) {
+                loadingBuilder:(context, child, loadingProgress){
                     if(loadingProgress == null){
                       return child;
                     }
-                  return CircularProgressIndicator();
+                   return const CircularProgressIndicator();
                 },
               ),
             )

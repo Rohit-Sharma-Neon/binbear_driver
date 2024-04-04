@@ -4,10 +4,8 @@
   import 'package:binbeardriver/ui/base_components/smart_refresher_base_header.dart';
   import 'package:binbeardriver/ui/bookings_tab/components/my_bookings_shimmer.dart';
   import 'package:binbeardriver/ui/bookings_tab/controller/bookings_controller.dart';
-import 'package:binbeardriver/ui/service_provider_map_view/service_provider_map_view_screen.dart';
   import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/base_sizes.dart';
-  import 'package:binbeardriver/utils/base_variables.dart';
   import 'package:flutter/material.dart';
   import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
   import 'package:get/get.dart';

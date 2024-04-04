@@ -1,16 +1,16 @@
-import '../base_components/animated_column.dart';
-import '../base_components/base_button.dart';
-import '../base_components/base_container.dart';
-import '../base_components/base_scaffold_background.dart';
-import '../base_components/base_text.dart';
+import 'package:binbeardriver/ui/base_components/animated_column.dart';
+import 'package:binbeardriver/ui/base_components/base_button.dart';
+import 'package:binbeardriver/ui/base_components/base_container.dart';
+import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import 'login/login_screen.dart';
-import 'signup/signup_screen.dart';
+import 'package:binbeardriver/ui/onboardings/login/login_screen.dart';
+import 'package:binbeardriver/ui/onboardings/signup/signup_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -42,14 +42,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    BaseText(
+                    const BaseText(
                         value: "Thank You For Your Interest.",
                         textAlign: TextAlign.center,
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
                         height: 1.3
                     ),
-                    BaseText(
+                    const BaseText(
                         topMargin: 45,
                         value: "The Business Does\nNot Run Without\nYou!",
                         textAlign: TextAlign.center,

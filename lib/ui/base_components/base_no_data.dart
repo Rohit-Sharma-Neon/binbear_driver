@@ -2,7 +2,7 @@ import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-import 'base_text.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
 
 class BaseNoData extends StatelessWidget {
   final String? message;

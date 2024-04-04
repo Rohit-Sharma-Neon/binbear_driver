@@ -3,14 +3,12 @@ import 'package:binbeardriver/ui/base_components/drivers_listing_tile.dart';
 import 'package:binbeardriver/ui/base_components/base_button.dart';
 import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/base_components/listview_builder_animation.dart';
-import 'package:binbeardriver/ui/onboardings/base_success_screen.dart';
 import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/base_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 class AssignJobManuallyScreen extends StatefulWidget {
   const AssignJobManuallyScreen({super.key, required this.bookingId});

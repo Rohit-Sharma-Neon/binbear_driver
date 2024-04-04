@@ -2,7 +2,7 @@ import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../controller/jobs_controller.dart';
+import 'package:binbeardriver/ui/driver/jobs_screen/controller/jobs_controller.dart';
 
 class BookingsTabBar extends StatelessWidget {
   BookingsTabBar({super.key});

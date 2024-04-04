@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 
-import '../../map_view/map_view_screen.dart';
-import '../../onboardings/splash/controller/base_controller.dart';
+import 'package:binbeardriver/ui/map_view/map_view_screen.dart';
+import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 
 class ManualAddressController extends GetxController{
   TextEditingController searchController = TextEditingController();

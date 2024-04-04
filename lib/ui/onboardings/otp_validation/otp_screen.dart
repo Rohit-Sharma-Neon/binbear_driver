@@ -5,14 +5,13 @@ import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
-import '../../base_components/animated_column.dart';
-import '../../base_components/base_app_bar.dart';
-import '../../base_components/base_button.dart';
-import '../../base_components/base_container.dart';
-import '../../base_components/base_scaffold_background.dart';
-import '../../base_components/base_text.dart';
-import '../base_success_screen.dart';
-import 'controller/otp_controller.dart';
+import 'package:binbeardriver/ui/base_components/animated_column.dart';
+import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
+import 'package:binbeardriver/ui/base_components/base_button.dart';
+import 'package:binbeardriver/ui/base_components/base_container.dart';
+import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
+import 'package:binbeardriver/ui/onboardings/otp_validation/controller/otp_controller.dart';
 
 class OtpScreen extends StatefulWidget {
   const OtpScreen({super.key});

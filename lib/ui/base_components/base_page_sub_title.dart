@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'base_text.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
 
 class BasePageSubTitle extends StatelessWidget {
   final String subTitle;

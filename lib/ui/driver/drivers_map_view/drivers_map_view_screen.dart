@@ -4,19 +4,17 @@ import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/base_variables.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:scaled_app/scaled_app.dart';
-import '../../../utils/base_sizes.dart';
-import '../../base_components/base_app_bar.dart';
-import '../../base_components/base_button.dart';
-import '../../base_components/base_container.dart';
-import '../../base_components/base_text.dart';
-import 'controller/drivers_map_view_controller.dart';
+import 'package:binbeardriver/utils/base_sizes.dart';
+import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
+import 'package:binbeardriver/ui/base_components/base_button.dart';
+import 'package:binbeardriver/ui/base_components/base_container.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
+import 'package:binbeardriver/ui/driver/drivers_map_view/controller/drivers_map_view_controller.dart';
 
 class DriverMapViewScreen extends StatefulWidget {
   final Jobs? jobsData;

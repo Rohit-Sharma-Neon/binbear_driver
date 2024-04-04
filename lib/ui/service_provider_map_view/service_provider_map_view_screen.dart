@@ -1,22 +1,18 @@
 import 'package:binbeardriver/ui/assign_job_manually/assign_job_manually_screen.dart';
 import 'package:binbeardriver/ui/base_components/base_map_header_shadow.dart';
 import 'package:binbeardriver/ui/bookings_tab/controller/bookings_controller.dart';
-import 'package:binbeardriver/ui/service_provider_map_view/controller/service_provider_map_view_controller.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
-import 'package:binbeardriver/utils/base_functions.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:scaled_app/scaled_app.dart';
-import '../../../utils/base_sizes.dart';
-import '../base_components/base_app_bar.dart';
-import '../base_components/base_button.dart';
-import '../base_components/base_container.dart';
-import '../base_components/base_text.dart';
+import 'package:binbeardriver/utils/base_sizes.dart';
+import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
+import 'package:binbeardriver/ui/base_components/base_button.dart';
+import 'package:binbeardriver/ui/base_components/base_container.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
 
 class ServiceProviderMapViewScreen extends StatefulWidget {
   final double? startingLat, startingLong, endingLat, endingLong;

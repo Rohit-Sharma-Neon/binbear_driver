@@ -1,7 +1,6 @@
 import 'package:binbeardriver/ui/base_components/animated_list_builder.dart';
 import 'package:binbeardriver/ui/base_components/base_booking_shimmer.dart';
 import 'package:binbeardriver/utils/base_sizes.dart';
-import 'package:binbeardriver/utils/base_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 

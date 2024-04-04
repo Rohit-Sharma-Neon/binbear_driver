@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../base_components/animated_column.dart';
-import '../../base_components/base_app_bar.dart';
-import '../../base_components/base_button.dart';
-import '../../base_components/base_container.dart';
-import '../../base_components/base_scaffold_background.dart';
-import '../../base_components/base_text.dart';
-import '../../base_components/base_textfield.dart';
-import 'controller/forgot_password_controller.dart';
+import 'package:binbeardriver/ui/base_components/animated_column.dart';
+import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
+import 'package:binbeardriver/ui/base_components/base_button.dart';
+import 'package:binbeardriver/ui/base_components/base_container.dart';
+import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
+import 'package:binbeardriver/ui/base_components/base_textfield.dart';
+import 'package:binbeardriver/ui/onboardings/forgot_password/controller/forgot_password_controller.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});

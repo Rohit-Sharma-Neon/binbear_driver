@@ -107,7 +107,7 @@ class HomeTabController extends GetxController {
 
       });
     } on Exception catch (e) {
-
+      print(e.toString());
     }
   }
 }

@@ -1,7 +1,7 @@
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:flutter/material.dart';
 
-import 'base_text.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
 
 class CustomRadioButton extends StatelessWidget {
   final String title;
