@@ -13,7 +13,8 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class BookingsController extends GetxController with GetSingleTickerProviderStateMixin {
+class BookingsController extends GetxController
+    with GetSingleTickerProviderStateMixin {
   late TabController tabController;
   Set<Marker> markers = {};
   Completer<GoogleMapController> mapCompleter =
@@ -23,7 +24,9 @@ class BookingsController extends GetxController with GetSingleTickerProviderStat
   List<LatLng> polylineCoordinates = <LatLng>[];
   late PolylinePoints polylinePoints;
   Map<PolylineId, Polyline> polylines = {};
-  addMarkers({required LatLng southwest, required LatLng northeast}) async {
+
+  addMarkersAndPolyLines(
+      {required LatLng southwest, required LatLng northeast}) async {
     polylinePoints = PolylinePoints();
     markers.clear();
     polylineCoordinates.clear();
@@ -61,13 +64,24 @@ class BookingsController extends GetxController with GetSingleTickerProviderStat
 
     Polyline polyline = Polyline(
       polylineId: id,
-      color: BaseColors.primaryColor,
+      color: const Color(0xffDE875A),
       points: polylineCoordinates,
-      width: 2,
+      width: 3,
     );
 
     polylines[id] = polyline;
     update();
+  }
+
+  addMarker({required double latitude, required double longitude}) {
+    markers.clear();
+    polylines.clear();
+    polylineCoordinates.clear();
+    markers.add(Marker(
+      markerId: const MarkerId("default_marker"),
+      position: LatLng(latitude, longitude),
+      icon: Get.find<BaseController>().icEndMarkerPin,
+    ));
   }
 
   onMapCreated(GoogleMapController googleMapController) async {
@@ -172,7 +186,7 @@ class BookingsController extends GetxController with GetSingleTickerProviderStat
     try {
       await BaseApiService()
           .post(
-              apiEndPoint: ApiEndPoints().bookingAction,
+              apiEndPoint: ApiEndPoints().providerBookingAction,
               data: data,
               showLoader: true)
           .then((value) async {
@@ -181,10 +195,10 @@ class BookingsController extends GetxController with GetSingleTickerProviderStat
               BaseSuccessResponse.fromJson(value?.data);
           if (response.success ?? false) {
             showSnackBar(
-                 isSuccess: action == "1",
-                 title: action == "1" ? "Booking Accepted" : "Booking Rejected",
-                 message: response.message ?? "");
-              list?.removeAt(index);
+                isSuccess: action == "1",
+                title: action == "1" ? "Booking Accepted" : "Booking Rejected",
+                message: response.message ?? "");
+            list?.removeAt(index);
             update();
           } else {
             showSnackBar(message: response.message ?? "");

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:binbeardriver/ui/base_components/base_form_field_validator_icon.dart';
+import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
@@ -31,8 +32,8 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-
   SignUpController controller = Get.put(SignUpController());
+  BaseController baseController = Get.find<BaseController>();
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +65,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             textAlign: TextAlign.center,
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
-                            color: BaseColors.primaryColor
-                        ),
+                            color: BaseColors.primaryColor),
                         const BaseText(
                           topMargin: 4,
-                          value: "Create an account by filling in the\ninformation below",
+                          value:
+                              "Create an account by filling in the\ninformation below",
                           fontWeight: FontWeight.w700,
                         ),
                         BaseTextField(
@@ -85,7 +86,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             textEditingController: controller.nameController,
                             failedOn: controller.nameController.text.length < 2,
                           ),
-                          onChanged: (val){
+                          onChanged: (val) {
                             controller.update();
                           },
                         ),
@@ -100,10 +101,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             child: SvgPicture.asset(BaseAssets.icBusiness),
                           ),
                           suffixIcon: BaseFormFieldValidatorIcon(
-                            textEditingController: controller.businessNameController,
-                            failedOn: controller.businessNameController.text.length < 2,
+                            textEditingController:
+                                controller.businessNameController,
+                            failedOn:
+                                controller.businessNameController.text.length <
+                                    2,
                           ),
-                          onChanged: (val){
+                          onChanged: (val) {
                             controller.update();
                           },
                         ),
@@ -119,9 +123,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           suffixIcon: BaseFormFieldValidatorIcon(
                             textEditingController: controller.emailController,
-                            failedOn: !GetUtils.isEmail(controller.emailController.text),
+                            failedOn: !GetUtils.isEmail(
+                                controller.emailController.text),
                           ),
-                          onChanged: (val){
+                          onChanged: (val) {
                             controller.update();
                           },
                         ),
@@ -138,9 +143,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           suffixIcon: BaseFormFieldValidatorIcon(
                             textEditingController: controller.mobileController,
-                            failedOn: controller.mobileController.text.length < 14,
+                            failedOn:
+                                controller.mobileController.text.length < 14,
                           ),
-                          onChanged: (val){
+                          onChanged: (val) {
                             controller.update();
                           },
                         ),
@@ -160,24 +166,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               GestureDetector(
-                                  onTap: (){
+                                  onTap: () {
                                     triggerHapticFeedback();
-                                    controller.obscurePassword = !(controller.obscurePassword);
+                                    controller.obscurePassword =
+                                        !(controller.obscurePassword);
                                     controller.update();
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 3),
-                                    child: controller.obscurePassword ? const Icon(Icons.visibility_off, size: 24) : const Icon(Icons.visibility, size: 24),
-                                  )
-                              ),
+                                    child: controller.obscurePassword
+                                        ? const Icon(Icons.visibility_off,
+                                            size: 24)
+                                        : const Icon(Icons.visibility,
+                                            size: 24),
+                                  )),
                               BaseFormFieldValidatorIcon(
                                 leftMargin: 6,
-                                textEditingController: controller.passwordController,
-                                failedOn: controller.passwordController.text.length < 8,
+                                textEditingController:
+                                    controller.passwordController,
+                                failedOn:
+                                    controller.passwordController.text.length <
+                                        8,
                               ),
                             ],
                           ),
-                          onChanged: (val){
+                          onChanged: (val) {
                             controller.update();
                           },
                         ),
@@ -198,38 +211,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               GestureDetector(
-                                onTap: (){
+                                onTap: () {
                                   triggerHapticFeedback();
-                                  controller.obscureConfirmPassword = !(controller.obscureConfirmPassword);
+                                  controller.obscureConfirmPassword =
+                                      !(controller.obscureConfirmPassword);
                                   controller.update();
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 3),
-                                  child: controller.obscureConfirmPassword ? const Icon(Icons.visibility_off, size: 24) : const Icon(Icons.visibility, size: 24),
+                                  child: controller.obscureConfirmPassword
+                                      ? const Icon(Icons.visibility_off,
+                                          size: 24)
+                                      : const Icon(Icons.visibility, size: 24),
                                 ),
                               ),
                               BaseFormFieldValidatorIcon(
                                 leftMargin: 6,
-                                textEditingController: controller.confirmPasswordController,
-                                failedOn: controller.confirmPasswordController.text != controller.passwordController.text || controller.passwordController.text.length < 8,
+                                textEditingController:
+                                    controller.confirmPasswordController,
+                                failedOn: controller
+                                            .confirmPasswordController.text !=
+                                        controller.passwordController.text ||
+                                    controller.passwordController.text.length <
+                                        8,
                               ),
                             ],
                           ),
-                          onChanged: (val){
+                          onChanged: (val) {
                             controller.update();
                           },
                         ),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             showMediaPicker().then((value) {
-                              if ((value?.path??"").isNotEmpty) {
-                                controller.pickedFile = File(value?.path??"");
+                              if ((value?.path ?? "").isNotEmpty) {
+                                controller.pickedFile = File(value?.path ?? "");
                               }
                             });
                           },
                           child: DottedBorder(
                             borderType: BorderType.RRect,
-                            dashPattern: const [3,2],
+                            dashPattern: const [3, 2],
                             color: const Color(0xffC2C2C2),
                             radius: const Radius.circular(12),
                             child: Container(
@@ -239,7 +261,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  SvgPicture.asset(BaseAssets.icUploadDocuments),
+                                  SvgPicture.asset(
+                                      BaseAssets.icUploadDocuments),
                                   const BaseText(
                                     topMargin: 12,
                                     value: "Upload Valid ID proof",
@@ -259,45 +282,143 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           btnHeight: primaryButtonHeight,
                           borderRadius: 14,
                           fontSize: 16,
-                          onPressed: (){
-                            Get.to(() => OnboardingLocationScreen());
+                          onPressed: () {
+                            if (controller.nameController.text.trim().isEmpty) {
+                              showSnackBar(message: "Please Enter Full Name");
+                            } else if (controller.nameController.text
+                                    .trim()
+                                    .length <
+                                2) {
+                              showSnackBar(message: "Please Enter Valid Name");
+                            } else if (controller.businessNameController.text
+                                .trim()
+                                .isEmpty) {
+                              showSnackBar(
+                                  message: "Please Enter Business Name");
+                            } else if (controller.businessNameController.text
+                                    .trim()
+                                    .length <
+                                2) {
+                              showSnackBar(
+                                  message: "Please Enter Valid Business Name");
+                            } else if (controller.emailController.text
+                                .trim()
+                                .isEmpty) {
+                              showSnackBar(message: "Please Enter Email");
+                            } else if (!GetUtils.isEmail(
+                                controller.emailController.text.trim())) {
+                              showSnackBar(message: "Please Enter Valid Email");
+                            } else if (controller.mobileController.text
+                                .trim()
+                                .isEmpty) {
+                              showSnackBar(
+                                  message: "Please Enter Mobile Number");
+                            } else if (controller.mobileController.text
+                                    .trim()
+                                    .length <
+                                14) {
+                              showSnackBar(
+                                  message: "Please Enter Valid Mobile Number");
+                            } else if (controller.passwordController.text
+                                .trim()
+                                .isEmpty) {
+                              showSnackBar(message: "Please Enter Password");
+                            } else if (controller.passwordController.text
+                                    .trim()
+                                    .length <
+                                8) {
+                              showSnackBar(
+                                  message:
+                                      "Password Length Can't Be Less Than 8");
+                            } else if (controller.confirmPasswordController.text
+                                .trim()
+                                .isEmpty) {
+                              showSnackBar(
+                                  message: "Please Enter Confirm Password");
+                            } else if (controller.confirmPasswordController.text
+                                    .trim() !=
+                                controller.passwordController.text.trim()) {
+                              showSnackBar(
+                                  message:
+                                      "Confirm Password Is Not Matching, Please Check");
+                            } else {
+                               baseController.isAddressTappedOnSignUp.value =
+                                  true;
+                              controller.callSignUpApi();
+                            }
+                            // Get.to(() => OnboardingLocationScreen());
                           },
                         ),
                         BaseButton(
                           topMargin: 20,
                           title: "Sign up",
-                          onPressed: (){
+                          onPressed: () {
                             if (controller.nameController.text.trim().isEmpty) {
                               showSnackBar(message: "Please Enter Full Name");
-                            }else if (controller.nameController.text.trim().length < 2) {
+                            } else if (controller.nameController.text
+                                    .trim()
+                                    .length <
+                                2) {
                               showSnackBar(message: "Please Enter Valid Name");
-                            }else if (controller.businessNameController.text.trim().isEmpty) {
-                              showSnackBar(message: "Please Enter Business Name");
-                            }else if (controller.businessNameController.text.trim().length < 2) {
-                              showSnackBar(message: "Please Enter Valid Business Name");
-                            }else if (controller.emailController.text.trim().isEmpty) {
+                            } else if (controller.businessNameController.text
+                                .trim()
+                                .isEmpty) {
+                              showSnackBar(
+                                  message: "Please Enter Business Name");
+                            } else if (controller.businessNameController.text
+                                    .trim()
+                                    .length <
+                                2) {
+                              showSnackBar(
+                                  message: "Please Enter Valid Business Name");
+                            } else if (controller.emailController.text
+                                .trim()
+                                .isEmpty) {
                               showSnackBar(message: "Please Enter Email");
-                            }else if (!GetUtils.isEmail(controller.emailController.text.trim())) {
+                            } else if (!GetUtils.isEmail(
+                                controller.emailController.text.trim())) {
                               showSnackBar(message: "Please Enter Valid Email");
-                            }else if (controller.mobileController.text.trim().isEmpty) {
-                              showSnackBar(message: "Please Enter Mobile Number");
-                            }else if (controller.mobileController.text.trim().length < 14) {
-                              showSnackBar(message: "Please Enter Valid Mobile Number");
-                            }else if (controller.passwordController.text.trim().isEmpty) {
+                            } else if (controller.mobileController.text
+                                .trim()
+                                .isEmpty) {
+                              showSnackBar(
+                                  message: "Please Enter Mobile Number");
+                            } else if (controller.mobileController.text
+                                    .trim()
+                                    .length <
+                                14) {
+                              showSnackBar(
+                                  message: "Please Enter Valid Mobile Number");
+                            } else if (controller.passwordController.text
+                                .trim()
+                                .isEmpty) {
                               showSnackBar(message: "Please Enter Password");
-                            }else if (controller.passwordController.text.trim().length < 8) {
-                              showSnackBar(message: "Password Length Can't Be Less Than 8");
-                            }else if (controller.confirmPasswordController.text.trim().isEmpty) {
-                              showSnackBar(message: "Please Enter Confirm Password");
-                            }else if (controller.confirmPasswordController.text.trim() != controller.passwordController.text.trim()) {
-                              showSnackBar(message: "Confirm Password Is Not Matching, Please Check");
-                            }else{
+                            } else if (controller.passwordController.text
+                                    .trim()
+                                    .length <
+                                8) {
+                              showSnackBar(
+                                  message:
+                                      "Password Length Can't Be Less Than 8");
+                            } else if (controller.confirmPasswordController.text
+                                .trim()
+                                .isEmpty) {
+                              showSnackBar(
+                                  message: "Please Enter Confirm Password");
+                            } else if (controller.confirmPasswordController.text
+                                    .trim() !=
+                                controller.passwordController.text.trim()) {
+                              showSnackBar(
+                                  message:
+                                      "Confirm Password Is Not Matching, Please Check");
+                            } else {
+                             
                               controller.callSignUpApi();
                             }
                           },
                         ),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             triggerHapticFeedback();
                             Get.back();
                           },

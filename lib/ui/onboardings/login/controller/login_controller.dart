@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 
 import '../../../../utils/storage_keys.dart';
 
-class LoginController extends GetxController{
+class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   RxString selectedUserType = "Service Provider".obs;
@@ -23,35 +23,37 @@ class LoginController extends GetxController{
     super.onInit();
   }
 
-  getResponse(){
+  getResponse() {
     Map<String, String> data = {
-      "email":emailController.text.trim(),
-      "password":passwordController.text.trim(),
-      "device_token":"xxxxxxxx",
+      "email": emailController.text.trim(),
+      "password": passwordController.text.trim(),
+      "device_token": "xxxxxxxx",
       "role_id": BaseStorage.read(StorageKeys.isUserDriver) ? "3" : "2",
     };
-    BaseApiService().post(apiEndPoint: ApiEndPoints().login, data: data).then((value){
-      if (value?.statusCode ==  200) {
+    BaseApiService()
+        .post(apiEndPoint: ApiEndPoints().login, data: data)
+        .then((value) {
+      if (value?.statusCode == 200) {
         LoginResponse response = LoginResponse.fromJson(value?.data);
-        if (response.success??false) {
-          BaseStorage.write(StorageKeys.apiToken, response.data?.token??"");
-          BaseStorage.write(StorageKeys.userName, response.data?.name??"");
-          BaseStorage.write(StorageKeys.profilePhoto, response.data?.profile??"");
-          if(response.data?.hasAddress.toString() == "false" ) {
+        if (response.success ?? false) {
+          BaseStorage.write(StorageKeys.apiToken, response.data?.token ?? "");
+          BaseStorage.write(StorageKeys.userName, response.data?.name ?? "");
+          BaseStorage.write(
+              StorageKeys.profilePhoto, response.data?.profile ?? "");
+          BaseStorage.write(StorageKeys.isLoggedIn, true);
+          if (response.data?.hasAddress.toString() == "false") {
             Get.to(() => OnboardingLocationScreen());
-          }else{
-             if (BaseStorage.read(StorageKeys.isUserDriver)) {  
+          } else {
+            if (BaseStorage.read(StorageKeys.isUserDriver)) {
               Get.offAll(() => const JobsScreen());
             } else {
               Get.offAll(() => const DashBoardScreen());
             }
           }
-
-         
-        }else{
-          showSnackBar(message: response.message??"");
+        } else {
+          showSnackBar(message: response.message ?? "");
         }
-      }else{
+      } else {
         showSnackBar(message: "Something went wrong, please try again");
       }
     });

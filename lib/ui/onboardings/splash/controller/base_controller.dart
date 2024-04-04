@@ -27,6 +27,8 @@ class BaseController extends GetxController{
   late BitmapDescriptor defaultMarker;
   late BitmapDescriptor icStartMarkerPin;
   late BitmapDescriptor icEndMarkerPin;
+
+  RxBool isAddressTappedOnSignUp = false.obs;
   /// Map AutoComplete Variables
   BaseDebouncer debouncer = BaseDebouncer();
   String sessionToken = "";

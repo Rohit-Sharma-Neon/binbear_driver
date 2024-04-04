@@ -1,6 +1,7 @@
 import 'package:binbeardriver/ui/assign_job_manually/assign_job_manually_screen.dart';
 import 'package:binbeardriver/ui/base_components/base_map_header_shadow.dart';
 import 'package:binbeardriver/ui/bookings_tab/controller/bookings_controller.dart';
+import 'package:binbeardriver/ui/bookings_tab/model/bookings_response.dart';
 import 'package:binbeardriver/ui/service_provider_map_view/controller/service_provider_map_view_controller.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
@@ -19,16 +20,15 @@ import '../base_components/base_container.dart';
 import '../base_components/base_text.dart';
 
 class ServiceProviderMapViewScreen extends StatefulWidget {
-  final double? startingLat, startingLong, endingLat, endingLong;
-  final bool showCurrentPosition, showAssignButton;
-  final String bookingId;
+  // final double? startingLat, startingLong, endingLat, endingLong;
+  final bool showCurrentPosition, /*showAssignButton,*/ showPolyLines;
+  // final String bookingId;
+  final Booking? bookingData;
+
   const ServiceProviderMapViewScreen(
       {super.key,
-      this.startingLat,
-      this.startingLong,
-      this.endingLat,
-      this.endingLong,
-      required this.showCurrentPosition, required this.showAssignButton, required this.bookingId});
+      required this.showCurrentPosition,
+      required this.showPolyLines, required this.bookingData});
 
   @override
   State<ServiceProviderMapViewScreen> createState() =>
@@ -37,15 +37,33 @@ class ServiceProviderMapViewScreen extends StatefulWidget {
 
 class _ServiceProviderMapViewScreenState
     extends State<ServiceProviderMapViewScreen> {
-  BookingsController controller = Get.isRegistered<BookingsController>() ? Get.find<BookingsController>() : Get.put(BookingsController());
+  BookingsController controller = Get.isRegistered<BookingsController>()
+      ? Get.find<BookingsController>()
+      : Get.put(BookingsController());
 
   @override
   void initState() {
     super.initState();
-    controller.addMarkers(
-      southwest: LatLng(widget.startingLat ?? 0, widget.startingLong ?? 0),
-      northeast: LatLng(widget.endingLat ?? 0, widget.endingLong ?? 0),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      if (widget.showPolyLines == true) {
+        await controller.addMarkersAndPolyLines(
+          southwest: LatLng(
+              double.parse(widget.bookingData?.assignedProviderAddress?.lat
+                      .toString() ??
+                  "0"), double.parse(widget.bookingData?.assignedProviderAddress?.lng
+                      .toString() ??
+                  "0")),
+          northeast: LatLng(
+              double.parse(widget.bookingData?.pickupAddress?.lat ?? "0"), double.parse(widget.bookingData?.pickupAddress?.lng ?? "0"),
+          ),
+        );
+        setState(() {});
+      } else {
+        await controller.addMarker(
+            latitude:  double.parse(widget.bookingData?.pickupAddress?.lat ?? "0"), longitude: double.parse(widget.bookingData?.pickupAddress?.lng ?? "0"));
+        setState(() {});
+      }
+    });
   }
 
   @override
@@ -70,7 +88,10 @@ class _ServiceProviderMapViewScreenState
                   mapType: MapType.normal,
                   myLocationEnabled: widget.showCurrentPosition,
                   polylines: Set<Polyline>.of(controller.polylines.values),
-                  initialCameraPosition: controller.kGooglePlex,
+                  initialCameraPosition: controller.getInitialCameraPosition(
+                      lat:  double.parse(
+                          widget.bookingData?.pickupAddress?.lat ?? "0"), long:  double.parse(
+                          widget.bookingData?.pickupAddress?.lng ?? "0")),
                   onMapCreated: controller.onMapCreated,
                   markers: controller.markers,
                 );
@@ -98,18 +119,20 @@ class _ServiceProviderMapViewScreenState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const BaseText(
+                   BaseText(
                     topMargin: 4,
-                    value: "3d, Avenue Road",
+                    value:  "${widget.bookingData?.pickupAddress?.flatNo ?? ""}, ${widget.bookingData?.pickupAddress?.fullAddress ?? ""}",
                     fontSize: 12,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
                   ),
                   Row(
                     children: [
-                      const BaseText(
+                       BaseText(
                         topMargin: 2,
-                        value: "33.6 miles",
+                        value: "${widget.bookingData?.distance ?? ""} miles",
                         fontSize: 11,
                         color: Color(0xffFBE6D3),
                         fontWeight: FontWeight.w400,
@@ -184,14 +207,17 @@ class _ServiceProviderMapViewScreenState
                       ),
                     ],
                   ),
-                  const Row(
+                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
                         child: BaseText(
                           topMargin: 2,
-                          value: "Can 2 Curb Service",
+                          value: getServiceTitleById(
+                              serviceId:
+                                  widget.bookingData?.categoryId?.toString() ??
+                                      ""),
                           fontSize: 13,
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -201,7 +227,7 @@ class _ServiceProviderMapViewScreenState
                         child: BaseText(
                           topMargin: 2,
                           textAlign: TextAlign.end,
-                          value: "Peter Parker",
+                          value:  "${widget.bookingData?.userDetail?.name ?? ""}",
                           fontSize: 13,
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -221,14 +247,18 @@ class _ServiceProviderMapViewScreenState
                     children: [
                       SvgPicture.asset(BaseAssets.icPin,
                           color: BaseColors.secondaryColor, height: 12),
-                      const BaseText(
-                        topMargin: 2,
-                        leftMargin: 3.5,
-                        value: "3d, Avenue road, usa",
-                        fontSize: 13,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                      ),
+                       Expanded(
+                         child: BaseText(
+                          topMargin: 2,
+                          leftMargin: 3.5,
+                          value: "${widget.bookingData?.pickupAddress?.flatNo ?? ""}, ${widget.bookingData?.pickupAddress?.fullAddress ?? ""}",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                          fontSize: 13,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                                               ),
+                       ),
                     ],
                   ),
                   Visibility(
@@ -244,9 +274,9 @@ class _ServiceProviderMapViewScreenState
                           color: const Color(0xffFBE6D3).withOpacity(0.42),
                           fontWeight: FontWeight.w400,
                         ),
-                        const BaseText(
+                         BaseText(
                           topMargin: 2,
-                          value: "John Sinha",
+                          value:  "${widget.bookingData?.assignedDriver ?? ""}",
                           fontSize: 13,
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -256,13 +286,18 @@ class _ServiceProviderMapViewScreenState
                   ),
                   // const Spacer(),
                   Visibility(
-                    visible: widget.showAssignButton,
+                    visible: (widget.bookingData?.assignStatus
+                                            ?.toString() ??
+                                        "0") ==
+                                    "1",
                     child: BaseButton(
                       title: "Assign Job Manually",
                       topMargin: 11,
                       bottomMargin: 12,
                       onPressed: () {
-                        Get.to(() =>  AssignJobManuallyScreen(bookingId: widget.bookingId,));
+                        Get.to(() => AssignJobManuallyScreen(
+                              bookingId: widget.bookingData?.id.toString() ?? ""
+                            ));
                       },
                     ),
                   ),
