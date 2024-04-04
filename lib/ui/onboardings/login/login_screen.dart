@@ -1,4 +1,3 @@
-import 'package:binbeardriver/ui/driver/jobs_screen/jobs_screen.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
@@ -8,17 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../../utils/storage_keys.dart';
-import '../../base_components/animated_column.dart';
-import '../../base_components/base_button.dart';
-import '../../base_components/base_container.dart';
-import '../../base_components/base_scaffold_background.dart';
-import '../../base_components/base_text.dart';
-import '../../base_components/base_text_button.dart';
-import '../../base_components/base_textfield.dart';
-import '../../base_components/signup_user_type_selection.dart';
-import '../forgot_password/forgot_password_screen.dart';
-import 'controller/login_controller.dart';
+import 'package:binbeardriver/utils/storage_keys.dart';
+import 'package:binbeardriver/ui/base_components/animated_column.dart';
+import 'package:binbeardriver/ui/base_components/base_button.dart';
+import 'package:binbeardriver/ui/base_components/base_container.dart';
+import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
+import 'package:binbeardriver/ui/base_components/base_text_button.dart';
+import 'package:binbeardriver/ui/base_components/base_textfield.dart';
+import 'package:binbeardriver/ui/base_components/signup_user_type_selection.dart';
+import 'package:binbeardriver/ui/onboardings/forgot_password/forgot_password_screen.dart';
+import 'package:binbeardriver/ui/onboardings/login/controller/login_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -116,6 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             controller: controller.passwordController,
                             labelText: 'Password',
                             hintText: 'Enter Password',
+                            obscureText: controller.obscurePassword,
                             textInputType: TextInputType.visiblePassword,
                             textInputAction: TextInputAction.done,
                             prefixIcon: Padding(

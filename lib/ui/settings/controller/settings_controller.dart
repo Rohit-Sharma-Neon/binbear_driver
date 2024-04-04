@@ -2,9 +2,9 @@ import 'package:binbeardriver/backend/base_api_service.dart';
 import 'package:binbeardriver/backend/base_responses/base_success_response.dart';
 import 'package:get/get.dart';
 
-import '../../../backend/api_end_points.dart';
-import '../../../utils/base_functions.dart';
-import '../../profile_tab/controller/profile_controller.dart';
+import 'package:binbeardriver/backend/api_end_points.dart';
+import 'package:binbeardriver/utils/base_functions.dart';
+import 'package:binbeardriver/ui/profile_tab/controller/profile_controller.dart';
 
 class SettingsController extends GetxController{
   RxBool isNotificationEnable = true.obs;

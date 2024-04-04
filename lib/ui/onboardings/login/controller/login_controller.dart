@@ -9,7 +9,7 @@ import 'package:binbeardriver/utils/get_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-import '../../../../utils/storage_keys.dart';
+import 'package:binbeardriver/utils/storage_keys.dart';
 
 class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();

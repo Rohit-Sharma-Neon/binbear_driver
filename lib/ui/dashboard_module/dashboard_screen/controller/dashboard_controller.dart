@@ -2,7 +2,6 @@ import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 
 class DashboardController extends GetxController{
   RxInt selectedNavIndex = 0.obs;

@@ -1,12 +1,6 @@
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../../backend/api_end_points.dart';
-import '../../../backend/base_api_service.dart';
-import '../../../backend/base_responses/base_success_response.dart';
-import '../../../utils/base_functions.dart';
-import '../model/driverlist_response.dart';
 
 class DriverListingController extends GetxController {
 

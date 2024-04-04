@@ -1,14 +1,12 @@
 import 'package:card_loading/card_loading.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-import '../base_components/animated_column.dart';
-import '../base_components/base_app_bar.dart';
-import '../base_components/base_button.dart';
-import '../base_components/base_container.dart';
-import '../base_components/base_dummy_profile.dart';
-import '../base_components/base_scaffold_background.dart';
+import 'package:binbeardriver/ui/base_components/animated_column.dart';
+import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
+import 'package:binbeardriver/ui/base_components/base_button.dart';
+import 'package:binbeardriver/ui/base_components/base_container.dart';
+import 'package:binbeardriver/ui/base_components/base_dummy_profile.dart';
+import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_sizes.dart';
@@ -16,11 +14,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../base_components/base_shimmer.dart';
-import '../base_components/base_text.dart';
-import '../settings/settings_screen.dart';
-import 'controller/profile_controller.dart';
-import 'edit_profile_screen.dart';
+import 'package:binbeardriver/ui/base_components/base_shimmer.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
+import 'package:binbeardriver/ui/settings/settings_screen.dart';
+import 'package:binbeardriver/ui/profile_tab/controller/profile_controller.dart';
+import 'package:binbeardriver/ui/profile_tab/edit_profile_screen.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});

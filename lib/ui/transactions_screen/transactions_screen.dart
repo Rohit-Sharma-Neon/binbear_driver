@@ -1,22 +1,18 @@
-import 'package:binbeardriver/ui/base_components/animated_column.dart';
 import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
 import 'package:binbeardriver/ui/base_components/base_container.dart';
 import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/base_components/base_text.dart';
-import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/base_sizes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../base_components/base_no_data.dart';
-import '../base_components/smart_refresher_base_header.dart';
-import 'components/transection_shimmer.dart';
-import 'controller/transaction_controller.dart';
+import 'package:binbeardriver/ui/base_components/base_no_data.dart';
+import 'package:binbeardriver/ui/base_components/smart_refresher_base_header.dart';
+import 'package:binbeardriver/ui/transactions_screen/components/transection_shimmer.dart';
+import 'package:binbeardriver/ui/transactions_screen/controller/transaction_controller.dart';
 
 class TransactionsScreen extends StatefulWidget {
   const TransactionsScreen({super.key});

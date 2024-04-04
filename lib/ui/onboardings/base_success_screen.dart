@@ -1,14 +1,14 @@
-import '../base_components/animated_column.dart';
-import '../base_components/base_app_bar.dart';
-import '../base_components/base_button.dart';
-import '../base_components/base_container.dart';
-import '../base_components/base_scaffold_background.dart';
+import 'package:binbeardriver/ui/base_components/animated_column.dart';
+import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
+import 'package:binbeardriver/ui/base_components/base_button.dart';
+import 'package:binbeardriver/ui/base_components/base_container.dart';
+import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../base_components/base_text.dart';
-import 'location/onboarding_location_screen.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
+import 'package:binbeardriver/ui/onboardings/location/onboarding_location_screen.dart';
 
 class BaseSuccessScreen extends StatelessWidget {
   final String? description, btnTitle, title;

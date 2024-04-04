@@ -7,17 +7,17 @@ class TransactionResponse {
 
   TransactionResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
     message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['success'] = success;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['message'] = this.message;
+    data['message'] = message;
     return data;
   }
 }
@@ -32,29 +32,29 @@ class Data {
     if (json['booking_data'] != null) {
       bookingData = <BookingData>[];
       json['booking_data'].forEach((v) {
-        bookingData!.add(new BookingData.fromJson(v));
+        bookingData!.add(BookingData.fromJson(v));
       });
     }
     totalPayment = json['total_payment'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.bookingData != null) {
-      data['booking_data'] = this.bookingData!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    if (bookingData != null) {
+      data['booking_data'] = bookingData!.map((v) => v.toJson()).toList();
     }
-    data['total_payment'] = this.totalPayment;
+    data['total_payment'] = totalPayment;
     return data;
   }
 }
 
 class BookingData {
-  int? id;
-  String? bookingId;
-  String? serviceProviderPayment;
-  String? createdAt;
-  String? paymentReceived;
-  String? title;
+  dynamic id;
+  dynamic bookingId;
+  dynamic serviceProviderPayment;
+  dynamic createdAt;
+  dynamic paymentReceived;
+  dynamic title;
 
   BookingData(
       {this.id,
@@ -74,13 +74,13 @@ class BookingData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['booking_id'] = this.bookingId;
-    data['service_provider_payment'] = this.serviceProviderPayment;
-    data['created_at'] = this.createdAt;
-    data['payment_received'] = this.paymentReceived;
-    data['title'] = this.title;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['booking_id'] = bookingId;
+    data['service_provider_payment'] = serviceProviderPayment;
+    data['created_at'] = createdAt;
+    data['payment_received'] = paymentReceived;
+    data['title'] = title;
     return data;
   }
 }

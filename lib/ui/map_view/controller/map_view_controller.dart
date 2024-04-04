@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dio/dio.dart' as as_dio;
 import 'package:uuid/uuid.dart';
-import '../../onboardings/splash/controller/base_controller.dart';
+import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 
 class MapViewController extends GetxController{
   Completer<GoogleMapController> mapController = Completer();

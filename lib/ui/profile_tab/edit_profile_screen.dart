@@ -3,15 +3,14 @@ import 'dart:io';
 import 'package:animate_do/animate_do.dart';
 import 'package:binbeardriver/ui/base_components/base_outlined_button.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/cupertino.dart';
-import '../base_components/animated_column.dart';
-import '../base_components/base_app_bar.dart';
-import '../base_components/base_button.dart';
-import '../base_components/base_container.dart';
-import '../base_components/base_dummy_profile.dart';
-import '../base_components/base_form_field_validator_icon.dart';
-import '../base_components/base_radio_button.dart';
-import '../base_components/base_scaffold_background.dart';
+import 'package:binbeardriver/ui/base_components/animated_column.dart';
+import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
+import 'package:binbeardriver/ui/base_components/base_button.dart';
+import 'package:binbeardriver/ui/base_components/base_container.dart';
+import 'package:binbeardriver/ui/base_components/base_dummy_profile.dart';
+import 'package:binbeardriver/ui/base_components/base_form_field_validator_icon.dart';
+import 'package:binbeardriver/ui/base_components/base_radio_button.dart';
+import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
@@ -20,10 +19,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../base_components/base_text.dart';
-import '../base_components/base_textfield.dart';
-import '../manage_address/manage_address_screen.dart';
-import 'controller/profile_controller.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
+import 'package:binbeardriver/ui/base_components/base_textfield.dart';
+import 'package:binbeardriver/ui/manage_address/manage_address_screen.dart';
+import 'package:binbeardriver/ui/profile_tab/controller/profile_controller.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -87,20 +86,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     () {
                                   if ((controller.selectedImage?.value?.path ?? "").isNotEmpty) {
                                     return ClipRRect(
-                                      borderRadius: BorderRadius.circular(10000),
+                                      borderRadius: BorderRadius.circular(100),
                                       child: Image.file(
                                         controller.selectedImage?.value ?? File(""),width: 100,
                                         height: 100,fit: BoxFit.cover,),
                                     );
                                   } else if ((controller.profileData?.value?.profile?.toString() ?? "").isNotEmpty) {
                                     return ClipRRect(
-                                      borderRadius: BorderRadius.circular(10000),
+                                      borderRadius: BorderRadius.circular(100),
                                       child: Image.network(
                                         controller.profileData?.value?.profile
-                                            ?.toString() ??
-                                            "",
+                                            ?.toString() ?? "",
                                         width: 100,
                                         height: 100,fit: BoxFit.cover,
+                                        loadingBuilder: (context, child, loadingProgress) {
+                                          if(loadingProgress == null) {
+                                            return child;
+                                          }
+                                          return const CircularProgressIndicator();
+                                          }
                                       ),
                                     );
                                   } else {

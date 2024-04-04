@@ -4,16 +4,15 @@ import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/base_components/listview_builder_animation.dart';
 import 'package:binbeardriver/ui/driver_exact_location/driver_exact_location_screen.dart';
 import 'package:binbeardriver/ui/drivers_listing/controller/home_tab_controller.dart';
-import 'package:binbeardriver/ui/home_tab/controller/home_tab_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 
-import '../../utils/base_sizes.dart';
-import '../base_components/base_no_data.dart';
-import '../base_components/drivers_listing_tile.dart';
-import '../base_components/base_button.dart';
-import '../onboardings/splash/controller/base_controller.dart';
+import 'package:binbeardriver/utils/base_sizes.dart';
+import 'package:binbeardriver/ui/base_components/base_no_data.dart';
+import 'package:binbeardriver/ui/base_components/drivers_listing_tile.dart';
+import 'package:binbeardriver/ui/base_components/base_button.dart';
+import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 
 class DriversListing extends StatefulWidget {
   const DriversListing({super.key});

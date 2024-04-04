@@ -1,10 +1,10 @@
 import 'package:animate_do/animate_do.dart';
-import '../base_components/base_app_bar.dart';
+import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../base_components/base_scaffold_chat_background.dart';
+import 'package:binbeardriver/ui/base_components/base_scaffold_chat_background.dart';
 
 class ChatTab extends StatefulWidget {
   const ChatTab({super.key});

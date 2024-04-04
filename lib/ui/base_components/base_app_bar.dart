@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../utils/storage_keys.dart';
-import '../dashboard_module/dashboard_screen/controller/dashboard_controller.dart';
-import '../notification/notification_screen.dart';
-import 'base_text.dart';
+import 'package:binbeardriver/utils/storage_keys.dart';
+import 'package:binbeardriver/ui/dashboard_module/dashboard_screen/controller/dashboard_controller.dart';
+import 'package:binbeardriver/ui/notification/notification_screen.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;

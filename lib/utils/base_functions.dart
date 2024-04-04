@@ -15,7 +15,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-import 'base_sizes.dart';
+import 'package:binbeardriver/utils/base_sizes.dart';
 
 triggerHapticFeedback() {
   HapticFeedback.vibrate();

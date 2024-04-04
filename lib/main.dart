@@ -5,10 +5,9 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:scaled_app/scaled_app.dart';
-import 'ui/onboardings/splash/splash_screen.dart';
+import 'package:binbeardriver/ui/onboardings/splash/splash_screen.dart';
 void main() {
   runAppScaled(const MyApp(), scaleFactor: (deviceSize){
     const double widthOfDesign = 375;

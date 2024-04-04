@@ -7,7 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../base_components/base_text.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
 
 class ServiceProviderMapViewController extends GetxController{
   RxString currentWorkStatus = "Pick-Up!".obs;

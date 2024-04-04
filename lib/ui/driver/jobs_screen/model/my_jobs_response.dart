@@ -11,9 +11,9 @@ String myBookingsResponseToJson(MyJobsResponse data) =>
     json.encode(data.toJson());
 
 class MyJobsResponse {
-  bool? success;
-  MyJobsData? data;
-  String? message;
+  dynamic success;
+  dynamic data;
+  dynamic message;
 
   MyJobsResponse({
     this.success,

@@ -2,7 +2,7 @@ import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'base_text.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
 
 class BaseTextField extends StatelessWidget {
   final TextEditingController controller;

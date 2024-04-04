@@ -8,18 +8,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:scaled_app/scaled_app.dart';
-import '../../utils/base_assets.dart';
-import '../../utils/base_colors.dart';
-import '../../utils/base_functions.dart';
-import '../base_components/animated_column.dart';
-import '../base_components/base_app_bar.dart';
-import '../base_components/base_button.dart';
-import '../base_components/base_container.dart';
-import '../base_components/base_outlined_button.dart';
-import '../base_components/base_text.dart';
-import '../manage_address/manage_address_screen.dart';
-import '../manual_address/components/address_search_field.dart';
-import 'controller/map_view_controller.dart';
+import 'package:binbeardriver/utils/base_assets.dart';
+import 'package:binbeardriver/utils/base_colors.dart';
+import 'package:binbeardriver/utils/base_functions.dart';
+import 'package:binbeardriver/ui/base_components/animated_column.dart';
+import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
+import 'package:binbeardriver/ui/base_components/base_button.dart';
+import 'package:binbeardriver/ui/base_components/base_container.dart';
+import 'package:binbeardriver/ui/base_components/base_outlined_button.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
+import 'package:binbeardriver/ui/manage_address/manage_address_screen.dart';
+import 'package:binbeardriver/ui/manual_address/components/address_search_field.dart';
+import 'package:binbeardriver/ui/map_view/controller/map_view_controller.dart';
 
 class MapViewScreen extends StatefulWidget {
   final double? lat, long;
@@ -84,7 +84,6 @@ class _MapViewScreenState extends State<MapViewScreen> {
           children: [
             GetBuilder<MapViewController>(
               builder: (MapViewController controller) {
-                print("Widget Rebuild");
                 return GoogleMap(
                   mapType: MapType.normal,
                   myLocationEnabled: true,
@@ -145,8 +144,6 @@ class _MapViewScreenState extends State<MapViewScreen> {
                                 controller.searchResultList.value = [];
                                 controller.searchResultList.clear();
                                 controller.searchResultList.refresh();
-                                print("Search Result List Length: ");
-                                print(controller.searchResultList.length.toString());
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(12),

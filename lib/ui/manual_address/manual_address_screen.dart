@@ -7,20 +7,20 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../utils/base_assets.dart';
-import '../../utils/base_colors.dart';
-import '../../utils/base_functions.dart';
-import '../base_components/base_button.dart';
-import '../base_components/base_container.dart';
-import '../base_components/base_google_address_shimmer.dart';
-import '../base_components/base_text.dart';
-import '../base_components/base_text_button.dart';
-import '../base_components/smart_refresher_base_header.dart';
-import '../map_view/controller/map_view_controller.dart';
-import '../map_view/map_view_screen.dart';
-import '../onboardings/splash/controller/base_controller.dart';
-import 'components/address_search_field.dart';
-import 'components/manual_address_list_tile.dart';
+import 'package:binbeardriver/utils/base_assets.dart';
+import 'package:binbeardriver/utils/base_colors.dart';
+import 'package:binbeardriver/utils/base_functions.dart';
+import 'package:binbeardriver/ui/base_components/base_button.dart';
+import 'package:binbeardriver/ui/base_components/base_container.dart';
+import 'package:binbeardriver/ui/base_components/base_google_address_shimmer.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
+import 'package:binbeardriver/ui/base_components/base_text_button.dart';
+import 'package:binbeardriver/ui/base_components/smart_refresher_base_header.dart';
+import 'package:binbeardriver/ui/map_view/controller/map_view_controller.dart';
+import 'package:binbeardriver/ui/map_view/map_view_screen.dart';
+import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
+import 'package:binbeardriver/ui/manual_address/components/address_search_field.dart';
+import 'package:binbeardriver/ui/manual_address/components/manual_address_list_tile.dart';
 
 class ManualAddressScreen extends StatefulWidget {
   final bool? showSavedAddress;

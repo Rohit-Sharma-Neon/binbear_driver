@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../base_components/base_divider.dart';
-import '../../base_components/base_shimmer.dart';
+import 'package:binbeardriver/ui/base_components/base_divider.dart';
+import 'package:binbeardriver/ui/base_components/base_shimmer.dart';
 
 class TransactionShimmer extends StatelessWidget {
   const TransactionShimmer({super.key});

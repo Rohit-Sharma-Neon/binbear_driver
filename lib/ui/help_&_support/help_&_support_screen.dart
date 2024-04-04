@@ -1,19 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 
-import '../../utils/base_colors.dart';
-import '../../utils/base_functions.dart';
-import '../base_components/animated_column.dart';
-import '../base_components/base_app_bar.dart';
-import '../base_components/base_button.dart';
-import '../base_components/base_container.dart';
-import '../base_components/base_scaffold_background.dart';
-import '../base_components/base_text.dart';
-import '../base_components/listview_builder_animation.dart';
-import '../chat_tab/chat_tab.dart';
-import 'controller/help_support_controller.dart';
+import 'package:binbeardriver/utils/base_colors.dart';
+import 'package:binbeardriver/utils/base_functions.dart';
+import 'package:binbeardriver/ui/base_components/animated_column.dart';
+import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
+import 'package:binbeardriver/ui/base_components/base_button.dart';
+import 'package:binbeardriver/ui/base_components/base_container.dart';
+import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
+import 'package:binbeardriver/ui/base_components/listview_builder_animation.dart';
+import 'package:binbeardriver/ui/chat_tab/chat_tab.dart';
+import 'package:binbeardriver/ui/help_&_support/controller/help_support_controller.dart';
 
 class HelpSupportScreen extends StatefulWidget {
   const HelpSupportScreen({super.key});

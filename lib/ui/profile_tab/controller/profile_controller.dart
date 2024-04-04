@@ -7,13 +7,13 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:dio/dio.dart' as dio;
 
-import '../../../backend/api_end_points.dart';
-import '../../../backend/base_api_service.dart';
-import '../../../backend/base_responses/base_success_response.dart';
-import '../../../utils/base_functions.dart';
-import '../../../utils/get_storage.dart';
-import '../../../utils/storage_keys.dart';
-import '../model/profile_response.dart';
+import 'package:binbeardriver/backend/api_end_points.dart';
+import 'package:binbeardriver/backend/base_api_service.dart';
+import 'package:binbeardriver/backend/base_responses/base_success_response.dart';
+import 'package:binbeardriver/utils/base_functions.dart';
+import 'package:binbeardriver/utils/get_storage.dart';
+import 'package:binbeardriver/utils/storage_keys.dart';
+import 'package:binbeardriver/ui/profile_tab/model/profile_response.dart';
 
 class ProfileController extends GetxController{
   RxString selectedGender = "Male".obs;

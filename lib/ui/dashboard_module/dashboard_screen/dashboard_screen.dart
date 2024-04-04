@@ -3,14 +3,14 @@ import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../base_components/base_drawer.dart';
-import '../../base_components/base_scaffold_background.dart';
+import 'package:binbeardriver/ui/base_components/base_drawer.dart';
+import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 
-import '../../chat_tab/chat_tab.dart';
-import '../../home_tab/home_tab.dart';
-import '../../profile_tab/profile_tab.dart';
-import 'components/bottom_nav_items.dart';
-import 'controller/dashboard_controller.dart';
+import 'package:binbeardriver/ui/chat_tab/chat_tab.dart';
+import 'package:binbeardriver/ui/home_tab/home_tab.dart';
+import 'package:binbeardriver/ui/profile_tab/profile_tab.dart';
+import 'package:binbeardriver/ui/dashboard_module/dashboard_screen/components/bottom_nav_items.dart';
+import 'package:binbeardriver/ui/dashboard_module/dashboard_screen/controller/dashboard_controller.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({super.key});

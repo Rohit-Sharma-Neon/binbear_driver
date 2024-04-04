@@ -4,7 +4,7 @@ import 'package:binbeardriver/utils/base_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'base_text.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
 
 class BaseListCheckbox extends StatelessWidget {
   final bool? showMostPopularTag;

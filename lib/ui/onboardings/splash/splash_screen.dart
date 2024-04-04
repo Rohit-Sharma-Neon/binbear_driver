@@ -10,12 +10,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
-import '../../base_components/base_scaffold_background.dart';
-import '../../base_components/base_text.dart';
+import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
 
-import '../../dashboard_module/dashboard_screen/controller/dashboard_controller.dart';
-import '../welcome_screen.dart';
-import 'controller/base_controller.dart';
+import 'package:binbeardriver/ui/dashboard_module/dashboard_screen/controller/dashboard_controller.dart';
+import 'package:binbeardriver/ui/onboardings/welcome_screen.dart';
+import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
