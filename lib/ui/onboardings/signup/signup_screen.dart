@@ -238,11 +238,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             controller.update();
                           },
                         ),
-                        GestureDetector(
+                         GestureDetector(
                           onTap: () {
                             showMediaPicker().then((value) {
                               if ((value?.path ?? "").isNotEmpty) {
                                 controller.pickedFile = File(value?.path ?? "");
+                                setState(() {});
                               }
                             });
                           },
@@ -255,20 +256,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               height: 94,
                               alignment: Alignment.center,
                               width: double.infinity,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                      BaseAssets.icUploadDocuments),
-                                  const BaseText(
-                                    topMargin: 12,
-                                    value: "Upload Valid ID proof",
-                                    fontSize: 13,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ],
-                              ),
+                              child: controller.pickedFile?.path.isNotEmpty ??
+                                      false
+                                  ? Image.file(
+                                      controller.pickedFile ?? File(""),
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                            BaseAssets.icUploadDocuments),
+                                        const BaseText(
+                                          topMargin: 12,
+                                          value: "Upload Valid ID proof",
+                                          fontSize: 13,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ],
+                                    ),
                             ),
                           ),
                         ),
