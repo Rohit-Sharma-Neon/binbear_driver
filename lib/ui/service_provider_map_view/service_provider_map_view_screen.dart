@@ -260,6 +260,8 @@ class _ServiceProviderMapViewScreenState
                   Visibility(
                     visible: controller.tabController.index != 0 && (widget.bookingData?.driverDetail?.name ?? "") != "",
                     child: Column(
+
+
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -270,6 +272,7 @@ class _ServiceProviderMapViewScreenState
                           color: const Color(0xffFBE6D3).withOpacity(0.42),
                           fontWeight: FontWeight.w400,
                         ),
+
                          BaseText(
                           topMargin: 2,
                           value:  "${widget.bookingData?.driverDetail?.name ?? ""}",
