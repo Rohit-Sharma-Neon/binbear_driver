@@ -6,7 +6,6 @@ import 'package:binbeardriver/backend/base_responses/base_success_response.dart'
 import 'package:binbeardriver/ui/home_tab/model/home_data_response.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -39,13 +38,11 @@ class HomeTabController extends GetxController {
   RxList<AllDriver?>? allDrivers = <AllDriver?>[].obs;
   RxString? totalBooking = "0".obs;
   RxString? totalEarning = "0".obs;
-  RefreshController refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController refreshController = RefreshController(initialRefresh: false);
 
   @override
   void onInit() {
     getHomeData();
-    log("==========>>>>>>>>>>>>> Init Called");
     super.onInit();
   }
 
@@ -96,8 +93,8 @@ class HomeTabController extends GetxController {
                 isSuccess: action == "1",
                 title: action == "1" ? "Booking Accepted" : "Booking Rejected",
                 message: response.message ?? "");
-            allbookings?.removeAt(index);
-
+              allbookings?.removeAt(index);
+             getHomeData();
             update();
           } else {
             showSnackBar(message: response.message ?? "");

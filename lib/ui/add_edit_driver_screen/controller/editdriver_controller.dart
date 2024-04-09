@@ -12,6 +12,7 @@ class EditDriverController extends GetxController{
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+   RxBool obscurePassword = true.obs;
 
 
   editDriver(String id){

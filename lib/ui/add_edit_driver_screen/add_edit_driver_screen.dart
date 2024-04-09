@@ -48,7 +48,7 @@ class _AddEditDriverScreenState extends State<AddEditDriverScreen> {
               const BasePageSubTitle(
                 subTitle: "Lorem ipsum is a dummy text",
               ),
-              BaseContainer(
+                BaseContainer(
                 topMargin: 10,
                 bottomPadding: 24,
                 child: AnimatedColumn(
@@ -76,8 +76,9 @@ class _AddEditDriverScreenState extends State<AddEditDriverScreen> {
                         child: SvgPicture.asset(BaseAssets.icEmail),
                       ),
                     ),
-                    BaseTextField(
+                  Obx(() =>  BaseTextField(
                       topMargin: 18,
+                      obscureText: controller.obscurePassword.value,
                       controller:controller. passwordController,
                       labelText: 'Password',
                       hintText: 'Enter Password',
@@ -86,11 +87,23 @@ class _AddEditDriverScreenState extends State<AddEditDriverScreen> {
                         padding: const EdgeInsets.only(right: 13),
                         child: SvgPicture.asset(BaseAssets.icLock),
                       ),
-                      suffixIcon: Padding(
-                        padding: const EdgeInsets.only(left: 3),
-                        child: SvgPicture.asset(BaseAssets.icEyeCrossed),
+                      suffixIcon: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          GestureDetector(
+                            onTap: (){
+                              triggerHapticFeedback();
+                              controller.obscurePassword .value= !(controller.obscurePassword.value);
+                              controller.update();
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 3),
+                              child: controller.obscurePassword .value? const Icon(Icons.visibility_off, size: 24) : const Icon(Icons.visibility, size: 24),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
+                    )),
                     BaseButton(
                       topMargin: 24,
                       title: "Continue",

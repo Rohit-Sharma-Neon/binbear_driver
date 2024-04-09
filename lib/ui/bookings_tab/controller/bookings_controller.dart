@@ -5,7 +5,6 @@ import 'package:binbeardriver/backend/base_api_service.dart';
 import 'package:binbeardriver/backend/base_responses/base_success_response.dart';
 import 'package:binbeardriver/ui/bookings_tab/model/bookings_response.dart';
 import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
-import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';

@@ -123,7 +123,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                       controller: controller.refreshController,
                       header:  const SmartRefresherBaseHeader(),
                       onRefresh: (){
-                        controller.transactionData;
+                        controller.getTransactionHistory();
                       },
                       child: controller.isTransactionLoading.value
                           ? const TransactionShimmer()

@@ -202,13 +202,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     SvgPicture.asset(BaseAssets.icPhone),
-                                    const BaseText(
-                                      leftMargin: 7,
-                                      value: "+1",
-                                      fontSize: 14,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                                    // const BaseText(
+                                    //   leftMargin: 7,
+                                    //   value: "+1",
+                                    //   fontSize: 14,
+                                    //   color: Colors.black,
+                                    //   fontWeight: FontWeight.w400,
+                                    // ),
                                   ],
                                 ),
                               ),

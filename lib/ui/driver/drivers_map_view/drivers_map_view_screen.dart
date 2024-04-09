@@ -58,7 +58,6 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
           children: [
             GetBuilder<DriversMapViewController>(
               builder: (DriversMapViewController controller) {
-                print("Widget Rebuild");
                 return GoogleMap(
                   mapType: MapType.normal,
                   myLocationEnabled: true,

@@ -126,7 +126,7 @@ class _HomeTabState extends State<HomeTab> {
                               ),
                               BaseText(
                                 topMargin: 2,
-                                value: "\$ ${homeTabController.totalEarning}",
+                                value: "\$ ${double.parse(homeTabController.totalEarning.toString()).toStringAsFixed(2)}",
                                 fontSize: 19,
                                 color: Colors.white,
                                 leftMargin: horizontalScreenPadding + 4,
@@ -271,6 +271,7 @@ class _HomeTabState extends State<HomeTab> {
                                           "1",
                                           index,
                                         );
+
                                       },
                                       rejectAction: () {
                                         homeTabController.bookingActionApi(

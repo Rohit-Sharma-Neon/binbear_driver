@@ -16,10 +16,8 @@ class JobsController extends GetxController with GetSingleTickerProviderStateMix
 
   RxBool isLoading = false.obs;
   RxList<Jobs>? list = <Jobs>[].obs;
-  RefreshController upcomingRefreshController =
-      RefreshController(initialRefresh: false);
-  RefreshController pastRefreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController upcomingRefreshController = RefreshController(initialRefresh: false);
+  RefreshController pastRefreshController = RefreshController(initialRefresh: false);
   @override
   void onInit() {
     super.onInit();

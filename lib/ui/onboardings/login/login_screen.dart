@@ -128,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 GestureDetector(
                                   onTap: (){
                                     triggerHapticFeedback();
-                                    controller.obscurePassword = !(controller.obscurePassword);
+                                    controller.obscurePassword =  !(controller.obscurePassword);
                                     controller.update();
                                   },
                                   child: Padding(

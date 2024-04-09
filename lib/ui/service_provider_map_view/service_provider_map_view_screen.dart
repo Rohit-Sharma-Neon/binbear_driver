@@ -80,7 +80,6 @@ class _ServiceProviderMapViewScreenState
           children: [
             GetBuilder<BookingsController>(
               builder: (BookingsController controller) {
-                print("Widget Rebuild");
                 return GoogleMap(
                   mapType: MapType.normal,
                   myLocationEnabled: widget.showCurrentPosition,
@@ -259,7 +258,7 @@ class _ServiceProviderMapViewScreenState
                     ],
                   ),
                   Visibility(
-                    visible: controller.tabController.index != 0,
+                    visible: controller.tabController.index != 0 && (widget.bookingData?.driverDetail?.name ?? "") != "",
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
@@ -273,7 +272,7 @@ class _ServiceProviderMapViewScreenState
                         ),
                          BaseText(
                           topMargin: 2,
-                          value:  "${widget.bookingData?.assignedDriver ?? ""}",
+                          value:  "${widget.bookingData?.driverDetail?.name ?? ""}",
                           fontSize: 13,
                           color: Colors.white,
                           fontWeight: FontWeight.w400,

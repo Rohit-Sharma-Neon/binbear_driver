@@ -38,7 +38,7 @@ class ProfileController extends GetxController{
     nameController.text = profileData?.value?.name?.toString()??"";
     emailController.text = profileData?.value?.email?.toString()??"";
     mobileController.text = MaskTextInputFormatter().updateMask(mask: '(###) ###-####', newValue: TextEditingValue(text: profileData?.value?.mobile?.toString()??"")).text;
-    selectedGender.value = (profileData?.value?.gender?.toString().toLowerCase()??"female").contains("female") ? "Female" : "Male";
+    selectedGender.value = (profileData?.value?.gender?.toString().toLowerCase()??"male").contains("female") ? "Female" : "Male";
 
   }
 
