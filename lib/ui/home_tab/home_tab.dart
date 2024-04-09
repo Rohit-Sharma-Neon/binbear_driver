@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:binbeardriver/ui/driver_exact_location/driver_exact_location_screen.dart';
 import 'package:binbeardriver/ui/drivers_listing/drivers_listing.dart';
 import 'package:binbeardriver/ui/home_tab/components/home_booking_shimmer.dart';
 import 'package:binbeardriver/ui/home_tab/components/home_drivers_shimmer.dart';
 import 'package:binbeardriver/ui/home_tab/controller/home_tab_controller.dart';
+import 'package:binbeardriver/ui/service_provider_map_view/service_provider_map_view_screen.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -279,6 +282,19 @@ class _HomeTabState extends State<HomeTab> {
                                           "2",
                                           index,
                                         );
+                                      },
+                                       onTap: () {
+                                        // Start From Here
+                                        log("picLat========>>>>>>${homeTabController.allbookings?[index]?.pickupAddress?.lat}");
+                                        log("picLng========>>>>>>${homeTabController.allbookings?[index]?.pickupAddress?.lng}");
+                                        Get.to(ServiceProviderMapViewScreen(
+                                          bookingData: homeTabController
+                                              .allbookings?[index],
+                                          showPolyLines:false,
+                                          showCurrentPosition: false,
+                                          isNewBooking:
+                                              true,
+                                        ));
                                       },
                                     );
                                   },

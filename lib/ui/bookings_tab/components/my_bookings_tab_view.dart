@@ -97,6 +97,7 @@ class MyBookingsTabView extends StatelessWidget {
                                     bookingData: controller.list?[index],
                                     showPolyLines: controller.tabController.index!=0,
                                 showCurrentPosition: false,
+                                isNewBooking: controller.tabController.index == 0,
 
                               ));
                             },

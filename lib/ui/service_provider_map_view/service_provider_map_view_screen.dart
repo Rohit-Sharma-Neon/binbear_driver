@@ -20,12 +20,14 @@ class ServiceProviderMapViewScreen extends StatefulWidget {
   // final double? startingLat, startingLong, endingLat, endingLong;
   final bool showCurrentPosition, /*showAssignButton,*/ showPolyLines;
   // final String bookingId;
-  final Booking? bookingData;
+  final dynamic bookingData;
+  final bool isNewBooking;
 
   const ServiceProviderMapViewScreen(
       {super.key,
       required this.showCurrentPosition,
-      required this.showPolyLines, required this.bookingData});
+      required this.showPolyLines,
+      required this.bookingData, required this.isNewBooking});
 
   @override
   State<ServiceProviderMapViewScreen> createState() =>
@@ -45,19 +47,24 @@ class _ServiceProviderMapViewScreenState
       if (widget.showPolyLines == true) {
         await controller.addMarkersAndPolyLines(
           southwest: LatLng(
-              double.parse(widget.bookingData?.assignedProviderAddress?.lat
-                      .toString() ??
-                  "0"), double.parse(widget.bookingData?.assignedProviderAddress?.lng
-                      .toString() ??
-                  "0")),
+              double.parse(
+                  widget.bookingData?.assignedProviderAddress?.lat.toString() ??
+                      "0"),
+              double.parse(
+                  widget.bookingData?.assignedProviderAddress?.lng.toString() ??
+                      "0")),
           northeast: LatLng(
-              double.parse(widget.bookingData?.pickupAddress?.lat ?? "0"), double.parse(widget.bookingData?.pickupAddress?.lng ?? "0"),
+            double.parse(widget.bookingData?.pickupAddress?.lat ?? "0"),
+            double.parse(widget.bookingData?.pickupAddress?.lng ?? "0"),
           ),
         );
         setState(() {});
       } else {
         await controller.addMarker(
-            latitude:  double.parse(widget.bookingData?.pickupAddress?.lat ?? "0"), longitude: double.parse(widget.bookingData?.pickupAddress?.lng ?? "0"));
+            latitude:
+                double.parse(widget.bookingData?.pickupAddress?.lat ?? "0"),
+            longitude:
+                double.parse(widget.bookingData?.pickupAddress?.lng ?? "0"));
         setState(() {});
       }
     });
@@ -80,13 +87,15 @@ class _ServiceProviderMapViewScreenState
           children: [
             GetBuilder<BookingsController>(
               builder: (BookingsController controller) {
+                print("Widget Rebuild");
                 return GoogleMap(
                   mapType: MapType.normal,
                   myLocationEnabled: widget.showCurrentPosition,
                   polylines: Set<Polyline>.of(controller.polylines.values),
                   initialCameraPosition: controller.getInitialCameraPosition(
-                      lat:  double.parse(
-                          widget.bookingData?.pickupAddress?.lat ?? "0"), long:  double.parse(
+                      lat: double.parse(
+                          widget.bookingData?.pickupAddress?.lat ?? "0"),
+                      long: double.parse(
                           widget.bookingData?.pickupAddress?.lng ?? "0")),
                   onMapCreated: controller.onMapCreated,
                   markers: controller.markers,
@@ -100,7 +109,7 @@ class _ServiceProviderMapViewScreenState
           alignment: Alignment.bottomCenter,
           children: [
             BaseContainer(
-              height: controller.tabController.index != 0 ? 252 : 305,
+              height: widget.isNewBooking ? 215 : 305,
               color: BaseColors.secondaryColor,
               borderRadius: 15,
               topPadding: 6,
@@ -115,9 +124,10 @@ class _ServiceProviderMapViewScreenState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                   BaseText(
+                  BaseText(
                     topMargin: 4,
-                    value:  "${widget.bookingData?.pickupAddress?.flatNo ?? ""}, ${widget.bookingData?.pickupAddress?.fullAddress ?? ""}",
+                    value:
+                        "${widget.bookingData?.pickupAddress?.flatNo ?? ""}, ${widget.bookingData?.pickupAddress?.fullAddress ?? ""}",
                     fontSize: 12,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -126,11 +136,11 @@ class _ServiceProviderMapViewScreenState
                   ),
                   Row(
                     children: [
-                       BaseText(
+                      BaseText(
                         topMargin: 2,
                         value: "${widget.bookingData?.distance ?? ""} miles",
                         fontSize: 11,
-                        color: Color(0xffFBE6D3),
+                        color: const Color(0xffFBE6D3),
                         fontWeight: FontWeight.w400,
                       ),
                       Container(
@@ -156,7 +166,7 @@ class _ServiceProviderMapViewScreenState
               ),
             ),
             BaseContainer(
-              height: controller.tabController.index != 0 ? 200 : 252,
+              height:  widget.isNewBooking ? 160 : 252,
               color: const Color(0xff330601),
               borderRadius: 15,
               topPadding: 6,
@@ -203,7 +213,7 @@ class _ServiceProviderMapViewScreenState
                       ),
                     ],
                   ),
-                   Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -223,7 +233,8 @@ class _ServiceProviderMapViewScreenState
                         child: BaseText(
                           topMargin: 2,
                           textAlign: TextAlign.end,
-                          value:  "${widget.bookingData?.userDetail?.name ?? ""}",
+                          value:
+                              "${widget.bookingData?.userDetail?.name ?? ""}",
                           fontSize: 13,
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -243,22 +254,23 @@ class _ServiceProviderMapViewScreenState
                     children: [
                       SvgPicture.asset(BaseAssets.icPin,
                           color: BaseColors.secondaryColor, height: 12),
-                       Expanded(
-                         child: BaseText(
+                      Expanded(
+                        child: BaseText(
                           topMargin: 2,
                           leftMargin: 3.5,
-                          value: "${widget.bookingData?.pickupAddress?.flatNo ?? ""}, ${widget.bookingData?.pickupAddress?.fullAddress ?? ""}",
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
+                          value:
+                              "${widget.bookingData?.pickupAddress?.flatNo ?? ""}, ${widget.bookingData?.pickupAddress?.fullAddress ?? ""}",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           fontSize: 13,
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
-                                               ),
-                       ),
+                        ),
+                      ),
                     ],
                   ),
                   Visibility(
-                    visible: controller.tabController.index != 0 && (widget.bookingData?.driverDetail?.name ?? "") != "",
+                    visible: controller.tabController.index != 0,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
@@ -270,9 +282,9 @@ class _ServiceProviderMapViewScreenState
                           color: const Color(0xffFBE6D3).withOpacity(0.42),
                           fontWeight: FontWeight.w400,
                         ),
-                         BaseText(
+                        BaseText(
                           topMargin: 2,
-                          value:  "${widget.bookingData?.driverDetail?.name ?? ""}",
+                          value: "${widget.bookingData?.assignedDriver ?? ""}",
                           fontSize: 13,
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -282,18 +294,17 @@ class _ServiceProviderMapViewScreenState
                   ),
                   // const Spacer(),
                   Visibility(
-                    visible: (widget.bookingData?.assignStatus
-                                            ?.toString() ??
-                                        "0") ==
-                                    "1",
+                    visible:
+                        (widget.bookingData?.assignStatus?.toString() ?? "0") ==
+                            "1",
                     child: BaseButton(
                       title: "Assign Job Manually",
                       topMargin: 11,
                       bottomMargin: 12,
                       onPressed: () {
                         Get.to(() => AssignJobManuallyScreen(
-                              bookingId: widget.bookingData?.id.toString() ?? ""
-                            ));
+                            bookingId:
+                                widget.bookingData?.id.toString() ?? ""));
                       },
                     ),
                   ),
