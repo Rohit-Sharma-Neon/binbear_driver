@@ -6,12 +6,14 @@ import 'package:binbeardriver/ui/onboardings/welcome_screen.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_variables.dart';
 import 'package:binbeardriver/utils/get_storage.dart';
+import 'package:binbeardriver/utils/storage_keys.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -321,4 +323,31 @@ void clearSessionData() {
    triggerHapticFeedback();
    BaseStorage.box.erase();
    Get.offAll(() => const WelcomeScreen());
+}
+
+String inFormat = "yyyy-MM-dd HH:mm:ss";
+String IsoFormat = "yyyy-MM-ddThh:mm:ss";
+String outFormat = "dd MMM yyyy";
+String inFormat1 = "yyyy-MM-dd";
+String outFormat1 = "dd-MM-yyyy";
+String outFormat2 = "dd MMM";
+String outFormat3 = "dd MMM yyyy, HH:mm a";
+String outFormat4 = "dd MMM yyyy, hh:mm a";
+String outFormat5 = "dd MMM yyyy, h:mm a";
+String F12_Hours = "h:mm a";
+String outFormat6 = "dd MMM yyyy • h:mm a";
+String time = "dd MMM, h:mm a";
+formatDateFromString(String? date, {String? input, String? output}) {
+  if((date ?? "").isEmpty) return "";
+  var inputDate = DateFormat(input ?? inFormat).parse(date.toString(), true).toLocal();
+  var outputDate = DateFormat(output ?? outFormat).format(inputDate);
+  return outputDate.toString();
+}
+extension IsUser on String {
+  bool isUser() {
+    if(this == BaseStorage.read(StorageKeys.userId)){
+      return true;
+    }
+    return false;
+  }
 }

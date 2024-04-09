@@ -39,4 +39,5 @@ class ApiEndPoints {
   final String assignBooking = "assign/booking";
   final String driverHomeData = "driver/home/screen";
   final String updateDriverStatus = "driver/statusupdate";
+  final String socketUrl = "https://v1.checkprojectstatus.com:2363";
 }

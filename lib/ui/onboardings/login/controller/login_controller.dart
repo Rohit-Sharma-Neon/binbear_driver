@@ -38,8 +38,8 @@ class LoginController extends GetxController {
         if (response.success ?? false) {
           BaseStorage.write(StorageKeys.apiToken, response.data?.token ?? "");
           BaseStorage.write(StorageKeys.userName, response.data?.name ?? "");
-          BaseStorage.write(
-              StorageKeys.profilePhoto, response.data?.profile ?? "");
+          BaseStorage.write(StorageKeys.profilePhoto, response.data?.profile ?? "");
+          BaseStorage.write(StorageKeys.userId, response.data?.id ?? "");
           BaseStorage.write(StorageKeys.isLoggedIn, true);
           if (response.data?.hasAddress.toString() == "false") {
             Get.to(() => OnboardingLocationScreen());

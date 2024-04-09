@@ -1,10 +1,15 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
-import 'package:binbeardriver/utils/base_functions.dart';
+import 'package:binbeardriver/ui/base_components/base_container.dart';
+import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
+import 'package:binbeardriver/ui/base_components/base_text.dart';
+import 'package:binbeardriver/ui/chat_tab/chating_screen.dart';
+import 'package:binbeardriver/ui/chat_tab/controller/chat_controller.dart';
+import 'package:binbeardriver/ui/manual_address/components/address_search_field.dart';
+import 'package:binbeardriver/utils/base_sizes.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-
-import 'package:binbeardriver/ui/base_components/base_scaffold_chat_background.dart';
 
 class ChatTab extends StatefulWidget {
   const ChatTab({super.key});
@@ -14,62 +19,91 @@ class ChatTab extends StatefulWidget {
 }
 
 class _ChatTabState extends State<ChatTab> {
-  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
+  ChatController controller = Get.put(ChatController());
+
   @override
   Widget build(BuildContext context) {
-    return BaseScaffoldChatBackground(
+    return BaseScaffoldBackground(
       child: Scaffold(
         appBar: const BaseAppBar(
-          title: "Chat",
+          title: "Messages",
           showNotification: true,
           showDrawerIcon: true,
-          showSwitchButton: true,
         ),
-        bottomNavigationBar: Padding(
-          padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: FadeInUp(
-            duration: const Duration(milliseconds: 300),
-            child: Container(
-              padding: const EdgeInsets.only(bottom: 5, top: 5),
-              margin: const EdgeInsets.only(bottom: 2),
-              color: Colors.white,
-              child: TextField(
+        body: BaseContainer(
+          bottomMargin: horizontalScreenPadding,
+          rightMargin: horizontalScreenPadding,
+          leftMargin: horizontalScreenPadding,
+          rightPadding: 0,
+          leftPadding: 0,
+          child: Column(
+            children: [
+              AddressSearchField(
                 controller: TextEditingController(),
-                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w700, fontSize: 15),
-                maxLines: 1,
-                decoration: InputDecoration(
-                  hintText: "Type here".tr,
-                  hintStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
-                  counterStyle: const TextStyle(color: Colors.transparent, fontSize: 0),
-                  counterText: null,
-                  counter: null,
-                  prefixIcon: GestureDetector(
-                    onTap: (){
-                      triggerHapticFeedback();
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.only(right: 10, left: 15),
-                      child: Icon(Icons.attach_file_outlined, size: 20,),
-                    ),
-                  ),
-                  suffixIcon: GestureDetector(
-                    onTap: (){
-                      triggerHapticFeedback();
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.only(right: 15, left: 15, top: 10, bottom: 10),
-                      child: Icon(Icons.send_rounded),
-                    ),
-                  ),
-                  disabledBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  focusedErrorBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  border: InputBorder.none,
-                ),
+                onCloseTap: () {
+                  setState(() {});
+                },
+                onChanged: (val) {},
               ),
-            ),
+              Expanded(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.only(top: 10),
+                    itemCount: 10,
+                    itemBuilder: (context, index){
+                      return Column(
+                        children: [
+                          GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: (){
+                              Get.to(() => const ChattingScreen());
+                            },
+                            child: Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(99),
+                                  child: Image.network("",
+                                    width: 60,
+                                    height: 60,
+                                    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                      return const Center(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(left: horizontalScreenPadding, right: horizontalScreenPadding),
+                                          child: Icon(Icons.broken_image_rounded),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                const Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      BaseText(
+                                        value: "john",
+                                        fontSize: 15,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                      BaseText(
+                                        value: "Lorem ipsum dolor sit amet, elit.",
+                                        fontSize: 12,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          const Divider(color: Colors.grey)
+                        ],
+                      );
+                }),
+              )
+            ],
           ),
         ),
       ),

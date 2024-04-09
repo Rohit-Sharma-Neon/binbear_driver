@@ -1,4 +1,5 @@
 import 'package:binbeardriver/ui/bookings_tab/bookings_tab.dart';
+import 'package:binbeardriver/ui/chat_tab/chats_screen_testing.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             children: const [
               HomeTab(),
               BookingsTab(),
-              ChatTab(),
+              // ChatTab(),
+              ChatsScreen(),
               ProfileTab(),
             ],
             onPageChanged: (index) {

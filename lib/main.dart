@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:binbeardriver/backend/http_overrider.dart';
 import 'package:binbeardriver/ui/base_components/base_text.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_localization.dart';
@@ -9,6 +12,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:scaled_app/scaled_app.dart';
 import 'package:binbeardriver/ui/onboardings/splash/splash_screen.dart';
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runAppScaled(const MyApp(), scaleFactor: (deviceSize){
     const double widthOfDesign = 375;
     return deviceSize.width / widthOfDesign;
