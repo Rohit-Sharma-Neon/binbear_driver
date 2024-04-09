@@ -59,6 +59,8 @@ class DriverData {
   dynamic socketId;
   dynamic createdAt;
   dynamic updatedAt;
+  dynamic bookingIds;
+
 
   DriverData(
       {this.id,
@@ -91,7 +93,8 @@ class DriverData {
         this.deviceToken,
         this.socketId,
         this.createdAt,
-        this.updatedAt});
+        this.updatedAt,
+        this.bookingIds});
 
   DriverData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -125,6 +128,7 @@ class DriverData {
     socketId = json['socket_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+     bookingIds = json['booking_ids'];
   }
 
   Map<String, dynamic> toJson() {
@@ -160,6 +164,7 @@ class DriverData {
     data['socket_id'] = socketId;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    data['booking_ids'] = bookingIds;
     return data;
   }
 }

@@ -45,6 +45,20 @@ String formatBackendDate(String dateString, {bool? getDayFirst}) {
   }
 }
 
+String formatDateTime(String dateTimeString) {
+  DateTime dateTime = DateTime.parse(dateTimeString);
+  DateTime now = DateTime.now();
+
+  if (dateTime.year == now.year &&
+      dateTime.month == now.month &&
+      dateTime.day == now.day) {
+    return "Today, " + DateFormat.jm().format(dateTime);
+  } else {
+    return DateFormat.yMMMd().add_jm().format(dateTime);
+  }
+}
+
+
 void showBaseLoader({bool? showLoader}) {
   if (showLoader ?? true) {
     Get.context!.loaderOverlay.show();

@@ -101,7 +101,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                           fontWeight: FontWeight.w400,
                         ),
                         BaseText(
-                          value: "\$ ${controller.totalPayment?.value ??""}",
+                          value:"\$ ${double.parse(controller.totalPayment?.value ?? "0").toStringAsFixed(2)}" ,
                           fontSize: 36,
                           color: Colors.black,
                           fontWeight: FontWeight.w700,
@@ -164,18 +164,18 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                               children: [
                                  BaseText(
                                   topMargin: 8,
-                                  value: formatBackendDate(controller.transactionData?[index].createdAt.toString()?? ""),
+                                  value: formatDateTime(controller.transactionData?[index].createdAt.toString()?? ""),
                                   fontSize: 10,
                                   color: const Color(0xff30302E),
                                   fontWeight: FontWeight.w400,
                                 ),
-                                BaseText(
-                                  topMargin: 8,
-                                  value:controller.transactionData?[index].id.toString() ?? "",
-                                  fontSize: 18,
-                                  color: const Color(0xff30302E),
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                // BaseText(
+                                //   topMargin: 8,
+                                //   value:controller.transactionData?[index].id.toString() ?? "",
+                                //   fontSize: 18,
+                                //   color: const Color(0xff30302E),
+                                //   fontWeight: FontWeight.w600,
+                                // ),
                               ],
                             ),
                             Divider(

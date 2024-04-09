@@ -14,7 +14,9 @@ import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.d
 import 'package:binbeardriver/ui/onboardings/location/controller/onboarding_location_controller.dart';
 
 class OnboardingLocationScreen extends StatelessWidget {
-  OnboardingLocationScreen({super.key});
+  OnboardingLocationScreen({super.key,this.showSavedAddress, this.isEditProfile});
+   final bool? showSavedAddress;
+  final bool? isEditProfile;
 
   final OnBoardingLocationController controller = Get.put(OnBoardingLocationController());
   final BaseController baseController = Get.find<BaseController>();
@@ -63,7 +65,7 @@ class OnboardingLocationScreen extends StatelessWidget {
                       topMargin: 18,
                       title: "Add Location Manually",
                       onPressed: (){
-                        Get.to(() => const ManualAddressScreen());
+                        Get.to(() =>  ManualAddressScreen(showSavedAddress: showSavedAddress,isEditProfile: isEditProfile ?? false,));
                       },
                     ),
                   ],

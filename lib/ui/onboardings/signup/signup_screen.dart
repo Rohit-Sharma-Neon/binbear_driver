@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:binbeardriver/ui/base_components/base_form_field_validator_icon.dart';
+import 'package:binbeardriver/ui/onboardings/login/login_screen.dart';
 import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
@@ -18,6 +19,7 @@ import 'package:binbeardriver/ui/base_components/base_outlined_button.dart';
 import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/base_components/base_text.dart';
 import 'package:binbeardriver/ui/base_components/base_textfield.dart';
+import 'package:binbeardriver/ui/onboardings/location/onboarding_location_screen.dart';
 import 'package:binbeardriver/ui/onboardings/signup/controller/signup_controller.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -237,7 +239,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             controller.update();
                           },
                         ),
-                         GestureDetector(
+                        GestureDetector(
                           onTap: () {
                             showMediaPicker().then((value) {
                               if ((value?.path ?? "").isNotEmpty) {
@@ -348,7 +350,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   message:
                                       "Confirm Password Is Not Matching, Please Check");
                             } else {
-                               baseController.isAddressTappedOnSignUp.value =
+                              baseController.isAddressTappedOnSignUp.value =
                                   true;
                               controller.callSignUpApi();
                             }
@@ -418,7 +420,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   message:
                                       "Confirm Password Is Not Matching, Please Check");
                             } else {
-                             
                               controller.callSignUpApi();
                             }
                           },
@@ -427,6 +428,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           onTap: () {
                             triggerHapticFeedback();
                             Get.back();
+                            Get.to(const LoginScreen());
                           },
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,

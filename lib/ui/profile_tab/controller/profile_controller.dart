@@ -1,5 +1,7 @@
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:binbeardriver/ui/manual_address/model/saved_address_response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,18 +17,20 @@ import 'package:binbeardriver/utils/get_storage.dart';
 import 'package:binbeardriver/utils/storage_keys.dart';
 import 'package:binbeardriver/ui/profile_tab/model/profile_response.dart';
 
-class ProfileController extends GetxController{
+class ProfileController extends GetxController {
   RxString selectedGender = "Male".obs;
   File? imageFile;
   Rx<ProfileData?>? profileData = ProfileData().obs;
   RxBool isProfileLoading = false.obs;
-  RefreshController refreshController = RefreshController(initialRefresh: false);
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
   Rx<File?>? selectedImage = File("").obs;
   File? pickedFile = File("");
-
+  RxString selectedAddressId = "".obs;
+  RxString selectedAddressFull = "".obs;
 
   @override
   void onInit() {
@@ -34,12 +38,20 @@ class ProfileController extends GetxController{
     super.onInit();
   }
 
-  setData(){
-    nameController.text = profileData?.value?.name?.toString()??"";
-    emailController.text = profileData?.value?.email?.toString()??"";
-    mobileController.text = MaskTextInputFormatter().updateMask(mask: '(###) ###-####', newValue: TextEditingValue(text: profileData?.value?.mobile?.toString()??"")).text;
-    selectedGender.value = (profileData?.value?.gender?.toString().toLowerCase()??"male").contains("female") ? "Female" : "Male";
-
+  setData() {
+    nameController.text = profileData?.value?.name?.toString() ?? "";
+    emailController.text = profileData?.value?.email?.toString() ?? "";
+    mobileController.text = MaskTextInputFormatter()
+        .updateMask(
+            mask: '(###) ###-####',
+            newValue: TextEditingValue(
+                text: profileData?.value?.mobile?.toString() ?? ""))
+        .text;
+    selectedGender.value =
+        (profileData?.value?.gender?.toString().toLowerCase() ?? "male")
+                .contains("female")
+            ? "Female"
+            : "Male";
   }
 
   updateProfile() async {
@@ -48,31 +60,41 @@ class ProfileController extends GetxController{
     //   "gender":selectedGender.value,
     // };
     dio.FormData data = dio.FormData.fromMap({
-      "name":nameController.text.trim(),
-      "gender":selectedGender.value,
+      "name": nameController.text.trim(),
+      "gender": selectedGender.value,
+      "address_id": selectedAddressId.value
     });
-    if((selectedImage?.value?.path??'').isNotEmpty){
-      data.files.add(MapEntry("profile",
-          await dio.MultipartFile.fromFile(selectedImage!.value!.path, filename: selectedImage!.value!.path.split("/").last)));
+    if ((selectedImage?.value?.path ?? '').isNotEmpty) {
+      data.files.add(MapEntry(
+          "profile",
+          await dio.MultipartFile.fromFile(selectedImage!.value!.path,
+              filename: selectedImage!.value!.path.split("/").last)));
     }
-    if ((pickedFile?.path??"").isNotEmpty) {
-      data.files.add(MapEntry("id_proof", await dio.MultipartFile.fromFile((pickedFile?.path??""))));
+    if ((pickedFile?.path ?? "").isNotEmpty) {
+      data.files.add(MapEntry("id_proof",
+          await dio.MultipartFile.fromFile((pickedFile?.path ?? ""))));
     }
 
-    await BaseApiService().post(apiEndPoint: ApiEndPoints().editUserProfile, data: data).then((value){
+    await BaseApiService()
+        .post(apiEndPoint: ApiEndPoints().editUserProfile, data: data)
+        .then((value) {
       isProfileLoading.value = false;
       refreshController.refreshCompleted();
-      if (value?.statusCode ==  200) {
-        BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
-        if (response.success??false) {
+      if (value?.statusCode == 200) {
+        BaseSuccessResponse response =
+            BaseSuccessResponse.fromJson(value?.data);
+        if (response.success ?? false) {
           triggerHapticFeedback();
           Get.back();
-          showSnackBar(isSuccess: true, message: response.message??"");
+          selectedAddressFull.value = "";
+          selectedAddressId.value = "";
+          showSnackBar(isSuccess: true, message: response.message ?? "");
           getProfileData();
-        }else{
-          showSnackBar(message: response.message??"");
+          update();
+        } else {
+          showSnackBar(message: response.message ?? "");
         }
-      }else{
+      } else {
         showSnackBar(message: "Something went wrong, please try again");
       }
     });
@@ -81,19 +103,23 @@ class ProfileController extends GetxController{
   getProfileData() async {
     isProfileLoading.value = true;
     try {
-      await BaseApiService().get(apiEndPoint: ApiEndPoints().getUserProfile, showLoader: false).then((value){
+      await BaseApiService()
+          .get(apiEndPoint: ApiEndPoints().getUserProfile, showLoader: false)
+          .then((value) {
         isProfileLoading.value = false;
         refreshController.refreshCompleted();
-        if (value?.statusCode ==  200) {
+        if (value?.statusCode == 200) {
           ProfileResponse response = ProfileResponse.fromJson(value?.data);
-          if (response.success??false) {
-            BaseStorage.write(StorageKeys.profilePhoto, response.data?.profile??"");
-            BaseStorage.write(StorageKeys.userName, response.data?.name??"");
+          if (response.success ?? false) {
+            BaseStorage.write(
+                StorageKeys.profilePhoto, response.data?.profile ?? "");
+            BaseStorage.write(StorageKeys.userName, response.data?.name ?? "");
             profileData?.value = response.data;
-          }else{
-            showSnackBar(message: response.message??"");
+            log(response.data?.toJson().toString() ?? "fgjko");
+          } else {
+            showSnackBar(message: response.message ?? "");
           }
-        }else{
+        } else {
           showSnackBar(message: "Something went wrong, please try again");
         }
       });

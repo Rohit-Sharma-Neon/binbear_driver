@@ -20,7 +20,7 @@ class ServiceProviderMapViewScreen extends StatefulWidget {
   // final double? startingLat, startingLong, endingLat, endingLong;
   final bool showCurrentPosition, /*showAssignButton,*/ showPolyLines;
   // final String bookingId;
-  final Booking? bookingData;
+  final dynamic bookingData;
 
   const ServiceProviderMapViewScreen(
       {super.key,
@@ -100,7 +100,7 @@ class _ServiceProviderMapViewScreenState
           alignment: Alignment.bottomCenter,
           children: [
             BaseContainer(
-              height: controller.tabController.index != 0 ? 252 : 305,
+              height: controller.tabController.index == 0 && (widget.bookingData?.driverDetail?.name ?? "") == "" ? 252 : 305,
               color: BaseColors.secondaryColor,
               borderRadius: 15,
               topPadding: 6,
@@ -143,7 +143,10 @@ class _ServiceProviderMapViewScreenState
                       ),
                       BaseText(
                         topMargin: 2,
-                        value: controller.tabController.index != 0
+                        value: controller.tabController.index != 0 &&
+                                (widget.bookingData?.driverDetail?.name ??
+                                        "") !=
+                                    ""
                             ? "Picked Up"
                             : "Waiting for Driver Response",
                         fontSize: 11,
@@ -156,7 +159,8 @@ class _ServiceProviderMapViewScreenState
               ),
             ),
             BaseContainer(
-              height: controller.tabController.index != 0 ? 200 : 252,
+              height: controller.tabController.index == 0 && (widget.bookingData?.driverDetail?.name ?? "") == ""
+                  ? 200 : 252,
               color: const Color(0xff330601),
               borderRadius: 15,
               topPadding: 6,

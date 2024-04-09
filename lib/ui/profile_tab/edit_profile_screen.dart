@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:binbeardriver/ui/base_components/base_outlined_button.dart';
+import 'package:binbeardriver/ui/onboardings/location/onboarding_location_screen.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:binbeardriver/ui/base_components/animated_column.dart';
 import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
@@ -15,6 +16,7 @@ import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/base_sizes.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -32,7 +34,7 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
 
-  ProfileController controller = Get.find<ProfileController>();
+  ProfileController controller =Get.isRegistered<ProfileController>()? Get.find<ProfileController>():Get.put(ProfileController());
   @override
   void initState() {
     super.initState();
@@ -276,7 +278,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             height: 94,
                             alignment: Alignment.center,
                             width: double.infinity,
-                            child: Column(
+                            child: controller.pickedFile?.path.isNotEmpty ??
+                                    false
+                                ? Image.file(
+                                    controller.pickedFile ?? File(""),
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SvgPicture.asset(BaseAssets.icUploadDocuments),
@@ -298,17 +308,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         btnRightPadding: 20,
                         borderRadius: 13,
                         onPressed: () {
-                          Get.to(const ManageAddressScreen());
+                          Get.to(() => OnboardingLocationScreen(showSavedAddress: true,isEditProfile: true,));
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const BaseText(
-                              value: "3d, Avenue Road",
-                              fontSize: 14,
-                              color: BaseColors.secondaryColor,
-                              fontWeight: FontWeight.w400,
-                            ),
+                            Obx(() =>  Flexible(
+                                 child: BaseText(
+                                  value:controller.selectedAddressFull.isEmpty ?"${controller.profileData?.value?.address?.flatNo.toString() ?? ""}, ${controller.profileData?.value?.address?.fullAddress.toString() ?? ""}": "${controller.selectedAddressFull}",
+                                  fontSize: 14,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: BaseColors.secondaryColor,
+                                  fontWeight: FontWeight.w400,
+                                                             ),
+                               ),
+                             ),
                             SvgPicture.asset(BaseAssets.icArrowRight)
                           ],
                         ),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +16,8 @@ import 'package:binbeardriver/ui/base_components/base_text.dart';
 import 'package:binbeardriver/ui/onboardings/otp_validation/controller/otp_controller.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key});
-
+const OtpScreen({super.key, this.previousPage = ''});
+  final String previousPage;
   @override
   State<OtpScreen> createState() => _OtpScreenState();
 }
@@ -26,6 +28,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
+     log(widget.previousPage);
     return BaseScaffoldBackground(
       child: Scaffold(
         appBar: const BaseAppBar(),
@@ -45,8 +48,8 @@ class _OtpScreenState extends State<OtpScreen> {
                         fontSize: 28, fontWeight: FontWeight.w600,
                     ),
                     const SizedBox(height: 10),
-                    const BaseText(
-                      value: "Please enter the code that was\nsent to your phone number.",
+                     BaseText(
+                      value: "Please enter the code that was\nsent to your ${widget.previousPage == "forgotPassword" ? "email" : "phone number"}.",
                       textAlign: TextAlign.center,
                       fontSize: 16.4,
                       fontWeight: FontWeight.w700,
@@ -91,7 +94,11 @@ class _OtpScreenState extends State<OtpScreen> {
                       topMargin: 30,
                       title: "Verify",
                       onPressed: (){
-                        controller.callVerifyOtpApi();
+                       if (widget.previousPage == "forgotPassword") {
+                          controller.forgotPasswordVerifyOtpApi();
+                        } else {
+                          controller.callVerifyOtpApi();
+                        }
                       },
                       bottomMargin: 25,
                     ),

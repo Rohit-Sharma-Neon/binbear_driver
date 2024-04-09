@@ -40,4 +40,7 @@ class ApiEndPoints {
   final String driverHomeData = "driver/home/screen";
   final String updateDriverStatus = "driver/statusupdate";
   final String socketUrl = "https://v1.checkprojectstatus.com:2363";
+
+  final String forgotPassword = "forgotPassword";
+  final String resetPassword = "reset_password";
 }

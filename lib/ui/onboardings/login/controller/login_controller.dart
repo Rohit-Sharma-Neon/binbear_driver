@@ -28,7 +28,7 @@ class LoginController extends GetxController {
       "email": emailController.text.trim(),
       "password": passwordController.text.trim(),
       "device_token": "xxxxxxxx",
-      "role_id": BaseStorage.read(StorageKeys.isUserDriver) ? "3" : "2",
+      "role_id": (BaseStorage.read(StorageKeys.isUserDriver)??false) ? "3" : "2",
     };
     BaseApiService()
         .post(apiEndPoint: ApiEndPoints().login, data: data)

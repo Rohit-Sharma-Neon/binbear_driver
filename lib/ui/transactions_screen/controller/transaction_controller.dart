@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'package:binbeardriver/backend/api_end_points.dart';
@@ -15,7 +16,7 @@ class TransactionController extends GetxController{
   RxBool isTransactionLoading = false.obs;
   RefreshController refreshController = RefreshController(initialRefresh: false);
   RxList<BookingData>? transactionData = <BookingData>[].obs;
-  RxInt? totalPayment = 0.obs;
+  RxString? totalPayment = "0".obs;
 
 
   getTransactionHistory() async {
@@ -29,7 +30,7 @@ class TransactionController extends GetxController{
           TransactionResponse response = TransactionResponse.fromJson(value?.data);
           if (response.success??false) {
             transactionData?.value = response.data?.bookingData??[];
-            totalPayment?.value= response.data?.totalPayment??0;
+            totalPayment?.value= response.data?.totalPayment?.toString()??"0";
           }else{
             showSnackBar(message: response.message??"");
           }

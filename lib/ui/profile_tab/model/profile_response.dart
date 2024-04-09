@@ -49,6 +49,8 @@ class ProfileData {
   dynamic deviceToken;
   dynamic createdAt;
   dynamic updatedAt;
+  Address? address;
+
 
   ProfileData(
       {this.id,
@@ -76,7 +78,7 @@ class ProfileData {
         this.phoneVerifiedAt,
         this.deviceToken,
         this.createdAt,
-        this.updatedAt});
+        this.updatedAt, this.address});
 
   ProfileData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -105,6 +107,8 @@ class ProfileData {
     deviceToken = json['device_token'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    address =
+        json['address'] != null ?  Address.fromJson(json['address']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -135,6 +139,81 @@ class ProfileData {
     data['device_token'] = deviceToken;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+     if (address != null) {
+      data['address'] = address!.toJson();
+    }
+    return data;
+  }
+}
+
+
+
+
+class Address {
+  dynamic id;
+  dynamic userId;
+  dynamic flatNo;
+  dynamic apartment;
+  dynamic description;
+  dynamic lat;
+  dynamic lng;
+  dynamic homeType;
+  dynamic fullAddress;
+  dynamic isDeleted;
+  dynamic isDefault;
+  dynamic status;
+  dynamic createdAt;
+  dynamic updatedAt;
+
+  Address(
+      {this.id,
+      this.userId,
+      this.flatNo,
+      this.apartment,
+      this.description,
+      this.lat,
+      this.lng,
+      this.homeType,
+      this.fullAddress,
+      this.isDeleted,
+      this.isDefault,
+      this.status,
+      this.createdAt,
+      this.updatedAt});
+
+  Address.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    flatNo = json['flat_no'];
+    apartment = json['apartment'];
+    description = json['description'];
+    lat = json['lat'];
+    lng = json['lng'];
+    homeType = json['home_type'];
+    fullAddress = json['full_address'];
+    isDeleted = json['is_deleted'];
+    isDefault = json['is_default'];
+    status = json['status'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['user_id'] = this.userId;
+    data['flat_no'] = this.flatNo;
+    data['apartment'] = this.apartment;
+    data['description'] = this.description;
+    data['lat'] = this.lat;
+    data['lng'] = this.lng;
+    data['home_type'] = this.homeType;
+    data['full_address'] = this.fullAddress;
+    data['is_deleted'] = this.isDeleted;
+    data['is_default'] = this.isDefault;
+    data['status'] = this.status;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     return data;
   }
 }

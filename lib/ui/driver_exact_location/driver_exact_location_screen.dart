@@ -1,6 +1,7 @@
 import 'package:binbeardriver/ui/base_components/base_map_header_shadow.dart';
 import 'package:binbeardriver/ui/base_components/base_outlined_button.dart';
 import 'package:binbeardriver/ui/driver_exact_location/controller/driver_excate_location_controller.dart';
+import 'package:binbeardriver/ui/drivers_listing/model/driverlist_response.dart';
 import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
@@ -15,7 +16,8 @@ import 'package:binbeardriver/ui/base_components/base_text.dart';
 
 class DriverExactLocationScreen extends StatefulWidget {
   final LatLng latLng;
-  const DriverExactLocationScreen({super.key, required this.latLng});
+  final DriverData? driverData;
+  const DriverExactLocationScreen({super.key, required this.latLng, this.driverData});
   @override
   State<DriverExactLocationScreen> createState() => _DriverExactLocationScreenState();
 }
@@ -79,9 +81,9 @@ class _DriverExactLocationScreenState extends State<DriverExactLocationScreen> {
                     BaseAssets.icBinBears,
                     height: 32,
                   ),
-                  const BaseText(
+                   BaseText(
                     leftMargin: 10,
-                    value: "Peter Parker",
+                    value: "${widget.driverData?.name ?? ""}",
                     fontSize: 14,
                     color: Colors.black,
                     fontWeight: FontWeight.w400,
@@ -104,10 +106,10 @@ class _DriverExactLocationScreenState extends State<DriverExactLocationScreen> {
                     width: 24,
                     height: 24,
                   ),
-                  const Expanded(
+                   Expanded(
                     child: BaseText(
                       leftMargin: 8,
-                      value: "123, bellaforte, USA",
+                      value: "${widget.driverData?.name ?? ""}",
                       fontSize: 15,
                       color: Colors.black,
                       fontWeight: FontWeight.w700,

@@ -104,7 +104,8 @@ class _HomeTabState extends State<HomeTab> {
                             children: [
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(
@@ -129,7 +130,8 @@ class _HomeTabState extends State<HomeTab> {
                               ),
                               BaseText(
                                 topMargin: 2,
-                                value: "\$ ${double.parse(homeTabController.totalEarning.toString()).toStringAsFixed(2)}",
+                                value:
+                                    "\$ ${double.parse(homeTabController.totalEarning.toString()).toStringAsFixed(2)}",
                                 fontSize: 19,
                                 color: Colors.white,
                                 leftMargin: horizontalScreenPadding + 4,
@@ -253,47 +255,69 @@ class _HomeTabState extends State<HomeTab> {
                                 width: MediaQuery.of(context).size.width,
                                 child: ListView.builder(
                                   shrinkWrap: true,
-                                  itemCount: homeTabController.allbookings?.length ?? 0,
-                                  padding: const EdgeInsets.only(left: horizontalScreenPadding),
+                                  itemCount:
+                                      homeTabController.allbookings?.length ??
+                                          0,
+                                  padding: const EdgeInsets.only(
+                                      left: horizontalScreenPadding),
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) {
                                     return BookingListTile(
                                       showCurrentLocation: false,
                                       isPastBooking: false,
                                       rightMargin: 6,
-                                      location: "${homeTabController.allbookings?[index]?.pickupAddress?.flatNo ?? ""}, ${homeTabController.allbookings?[index]?.pickupAddress?.fullAddress ?? ""}",
-                                      date: formatBackendDate(homeTabController.allbookings?[index]?.createdAt.toString() ?? ""),
-                                      time: homeTabController.allbookings?[index]?.time ?? "",
-                                      bookingId:homeTabController.allbookings?[index]?.id.toString() ?? "",
-                                      distance: "${homeTabController.allbookings?[index]?.distance ?? ""}",
+                                      location:
+                                          "${homeTabController.allbookings?[index]?.pickupAddress?.flatNo ?? ""}, ${homeTabController.allbookings?[index]?.pickupAddress?.fullAddress ?? ""}",
+                                      date: formatBackendDate(homeTabController
+                                              .allbookings?[index]?.createdAt
+                                              .toString() ??
+                                          ""),
+                                      time: homeTabController
+                                              .allbookings?[index]?.time ??
+                                          "",
+                                      bookingId: homeTabController
+                                              .allbookings?[index]?.id
+                                              .toString() ??
+                                          "",
+                                      distance:
+                                          "${homeTabController.allbookings?[index]?.distance ?? ""}",
                                       showAcceptRejectButtons: true,
-                                      showAssignButton: (homeTabController.allbookings?[index]?.assignStatus?.toString() ?? "0") == "1",
-                                       acceptAction: () {
+                                      showAssignButton: (homeTabController
+                                                  .allbookings?[index]
+                                                  ?.assignStatus
+                                                  ?.toString() ??
+                                              "0") ==
+                                          "1",
+                                      acceptAction: () {
                                         homeTabController.bookingActionApi(
-                                          homeTabController.allbookings?[index]?.id?.toString() ?? "",
+                                          homeTabController
+                                                  .allbookings?[index]?.id
+                                                  ?.toString() ??
+                                              "",
                                           "1",
                                           index,
                                         );
-
                                       },
                                       rejectAction: () {
                                         homeTabController.bookingActionApi(
-                                          homeTabController.allbookings?[index]?.id?.toString() ?? "",
+                                          homeTabController
+                                                  .allbookings?[index]?.id
+                                                  ?.toString() ??
+                                              "",
                                           "2",
                                           index,
                                         );
                                       },
-                                       onTap: () {
+                                      onTap: () {
                                         // Start From Here
                                         log("picLat========>>>>>>${homeTabController.allbookings?[index]?.pickupAddress?.lat}");
                                         log("picLng========>>>>>>${homeTabController.allbookings?[index]?.pickupAddress?.lng}");
                                         Get.to(ServiceProviderMapViewScreen(
                                           bookingData: homeTabController
                                               .allbookings?[index],
-                                          showPolyLines:false,
+                                          showPolyLines: false,
                                           showCurrentPosition: false,
-                                          isNewBooking:
-                                              true,
+
                                         ));
                                       },
                                     );
@@ -354,8 +378,12 @@ class _HomeTabState extends State<HomeTab> {
                                 padding: const EdgeInsets.only(
                                     left: horizontalScreenPadding),
                                 scrollDirection: Axis.horizontal,
-                                itemCount:
-                                    (homeTabController.allDrivers?.length??0) > 4 ? 4 : homeTabController.allDrivers?.length ?? 0,
+                                itemCount: (homeTabController
+                                                .allDrivers?.length ??
+                                            0) >
+                                        4
+                                    ? 4
+                                    : homeTabController.allDrivers?.length ?? 0,
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: () {

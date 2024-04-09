@@ -1,4 +1,5 @@
 import 'package:binbeardriver/utils/base_assets.dart';
+import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -20,7 +21,6 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-
   ForgotPasswordController controller = Get.put(ForgotPasswordController());
 
   @override
@@ -38,31 +38,39 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const BaseText(
-                        value: "Forget Password?",
-                        fontSize: 28, fontWeight: FontWeight.w600,
+                      value: "Forget Password?",
+                      fontSize: 28,
+                      fontWeight: FontWeight.w600,
                     ),
                     const SizedBox(height: 10),
                     const BaseText(
-                      value: "Please enter your registered mobile number to send otp for reset password",
+                      value:
+                          "Please enter your registered email address to send otp for reset password",
                       textAlign: TextAlign.center,
                       fontSize: 15.5,
                       fontWeight: FontWeight.w700,
                     ),
                     const SizedBox(height: 60),
                     BaseTextField(
-                      controller: TextEditingController(),
-                      labelText: 'Mobile Number',
-                      hintText: 'Enter Mobile Number',
-                      textInputType: TextInputType.phone,
+                      controller: controller.emailController,
+                      labelText: 'Email Address',
+                      hintText: 'Enter Email Address',
+                      textInputType: TextInputType.emailAddress,
                       prefixIcon: Padding(
                         padding: const EdgeInsets.only(right: 13),
-                        child: SvgPicture.asset(BaseAssets.icPhone),
+                        child: SvgPicture.asset(BaseAssets.icEmail),
                       ),
                     ),
                     BaseButton(
                       topMargin: 24,
                       title: "Send",
-                      onPressed: (){
+                      onPressed: () {
+                        if (!GetUtils.isEmail(
+                            controller.emailController.text)) {
+                          showSnackBar(message: "Please Enter Valid Email");
+                        } else {
+                          controller.sendOtpForgotPassword();
+                        }
                         // Get.off(() => const OtpScreen());
                       },
                     ),

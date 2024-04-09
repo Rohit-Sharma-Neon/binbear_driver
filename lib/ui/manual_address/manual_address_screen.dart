@@ -1,6 +1,8 @@
 import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
 import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/manual_address/controller/manual_address_controller.dart';
+import 'package:binbeardriver/ui/manual_address/model/saved_address_response.dart';
+import 'package:binbeardriver/ui/profile_tab/controller/profile_controller.dart';
 import 'package:binbeardriver/utils/base_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -24,22 +26,24 @@ import 'package:binbeardriver/ui/manual_address/components/manual_address_list_t
 
 class ManualAddressScreen extends StatefulWidget {
   final bool? showSavedAddress;
-  const ManualAddressScreen({super.key, this.showSavedAddress});
+  final bool? isEditProfile;
+  const ManualAddressScreen(
+      {super.key, this.showSavedAddress, this.isEditProfile});
 
   @override
   State<ManualAddressScreen> createState() => _ManualAddressScreenState();
 }
 
 class _ManualAddressScreenState extends State<ManualAddressScreen> {
-
   ManualAddressController controller = Get.put(ManualAddressController());
   MapViewController mapViewController = Get.put(MapViewController());
   BaseController baseController = Get.find<BaseController>();
+  ProfileController profileController = Get.find<ProfileController>();
 
   @override
   void initState() {
     super.initState();
-    if (widget.showSavedAddress??false) {
+    if (widget.showSavedAddress ?? false) {
       baseController.getSavedAddress();
     }
   }
@@ -79,10 +83,12 @@ class _ManualAddressScreenState extends State<ManualAddressScreen> {
               ),
               BaseTextButton(
                 topMargin: 7,
-                btnPadding: const EdgeInsets.only(left: 18, top: 10, bottom: 10),
+                btnPadding:
+                    const EdgeInsets.only(left: 18, top: 10, bottom: 10),
                 child: Row(
                   children: [
-                    SvgPicture.asset(BaseAssets.icLocate, width: 23, height: 23),
+                    SvgPicture.asset(BaseAssets.icLocate,
+                        width: 23, height: 23),
                     const SizedBox(width: 8),
                     const BaseText(
                       value: "Use Current Location",
@@ -92,8 +98,9 @@ class _ManualAddressScreenState extends State<ManualAddressScreen> {
                     ),
                   ],
                 ),
-                onPressed: (){
-                  controller.locateToCurrentLocation(showSavedAddress: widget.showSavedAddress??false);
+                onPressed: () {
+                  controller.locateToCurrentLocation(
+                      showSavedAddress: widget.showSavedAddress ?? false);
                 },
               ),
               Expanded(
@@ -106,46 +113,91 @@ class _ManualAddressScreenState extends State<ManualAddressScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        Obx(()=> baseController.isAddressSuggestionLoading.value ? const BaseGoogleAddressShimmer(itemCount: 5) : baseController.searchResultList.isNotEmpty ?
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: const EdgeInsets.only(left: horizontalScreenPadding, right: 18),
-                          itemCount: baseController.searchResultList.length,
-                          itemBuilder: (context, index){
-                            return GestureDetector(
-                              onTap: () async {
-                                await baseController.getLatLngFromAddress(address: baseController.searchResultList[index].description??"").then((value) {
-                                  Get.to(()=> MapViewScreen(
-                                    lat: value?.latitude??0,
-                                    long: value?.longitude??0,
-                                    fullAddress: baseController.searchResultList[index].description,
-                                    mainAddress: baseController.searchResultList[index].description.toString().split(",").first,
-                                    subAddress: baseController.searchResultList[index].description.toString().replaceAll("${baseController.searchResultList[index].description.toString().split(",").first}, ", ""),
-                                  ));
-                                });
-                              },
-                              child: ManualAddressListTile(
-                                title: baseController.searchResultList[index].description.toString().split(",").first,
-                                subtitle: baseController.searchResultList[index].description.toString().replaceAll("${baseController.searchResultList[index].description.toString().split(",").first}, ", ""),
-                              ),
-                            );
-                            },
-                          ) : const BaseText(
-                          topMargin: 20,
-                          value: "Search Result Will Appear Here.",
-                          fontSize: 14,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w400,
-                          bottomMargin: 18,
-                          ),
+                        Obx(
+                          () => baseController.isAddressSuggestionLoading.value
+                              ? const BaseGoogleAddressShimmer(itemCount: 5)
+                              : baseController.searchResultList.isNotEmpty
+                                  ? ListView.builder(
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      padding: const EdgeInsets.only(
+                                          left: horizontalScreenPadding,
+                                          right: 18),
+                                      itemCount: baseController
+                                          .searchResultList.length,
+                                      itemBuilder: (context, index) {
+                                        return GestureDetector(
+                                          onTap: () async {
+                                            await baseController
+                                                .getLatLngFromAddress(
+                                                    address: baseController
+                                                            .searchResultList[
+                                                                index]
+                                                            .description ??
+                                                        "")
+                                                .then((value) {
+                                              Get.to(() => MapViewScreen(
+                                                    lat: value?.latitude ?? 0,
+                                                    long: value?.longitude ?? 0,
+                                                    showSavedAddress: widget
+                                                            .showSavedAddress ??
+                                                        false,
+                                                    fullAddress: baseController
+                                                        .searchResultList[index]
+                                                        .description,
+                                                    mainAddress: baseController
+                                                        .searchResultList[index]
+                                                        .description
+                                                        .toString()
+                                                        .split(",")
+                                                        .first,
+                                                    subAddress: baseController
+                                                        .searchResultList[index]
+                                                        .description
+                                                        .toString()
+                                                        .replaceAll(
+                                                            "${baseController.searchResultList[index].description.toString().split(",").first}, ",
+                                                            ""),
+                                                  ));
+                                            });
+                                          },
+                                          child: ManualAddressListTile(
+                                            title: baseController
+                                                .searchResultList[index]
+                                                .description
+                                                .toString()
+                                                .split(",")
+                                                .first,
+                                            subtitle: baseController
+                                                .searchResultList[index]
+                                                .description
+                                                .toString()
+                                                .replaceAll(
+                                                    "${baseController.searchResultList[index].description.toString().split(",").first}, ",
+                                                    ""),
+                                          ),
+                                        );
+                                      },
+                                    )
+                                  : const BaseText(
+                                      topMargin: 20,
+                                      value: "Search Result Will Appear Here.",
+                                      fontSize: 14,
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.w400,
+                                      bottomMargin: 18,
+                                    ),
                         ),
                         Visibility(
-                          visible: widget.showSavedAddress??false,
+                          visible: widget.showSavedAddress ?? false,
                           child: Container(
                             width: double.infinity,
                             color: BaseColors.tertiaryColor,
-                            padding: const EdgeInsets.only(left: horizontalScreenPadding, top: 3, bottom: 3),
+                            padding: const EdgeInsets.only(
+                                left: horizontalScreenPadding,
+                                top: 3,
+                                bottom: 3),
                             child: const BaseText(
                               value: "Saved Address",
                               fontSize: 12.5,
@@ -155,39 +207,88 @@ class _ManualAddressScreenState extends State<ManualAddressScreen> {
                           ),
                         ),
                         Visibility(
-                          visible: widget.showSavedAddress??false,
+                          visible: widget.showSavedAddress ?? false,
                           child: GetBuilder<BaseController>(
                             builder: (BaseController controller) {
-                              return controller.isSavedAddressLoading.value ?
-                              const BaseGoogleAddressShimmer(itemCount: 5) :
-                              (controller.savedAddressList?.length??0) == 0 ?
-                              const BaseText(
-                                topMargin: 20,
-                                value: "No Saved Address Found, Please Add",
-                                fontSize: 14,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w400,
-                                bottomMargin: 18,
-                              ) :
-                              ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                padding: const EdgeInsets.only(left: horizontalScreenPadding, right: 18, top: 8, bottom: 50),
-                                itemCount: controller.savedAddressList?.length??0,
-                                itemBuilder: (context, index){
-                                  return GestureDetector(
-                                    onTap: (){
-                                      triggerHapticFeedback();
-                                      Get.back(result: controller.savedAddressList?[index]);
-                                    },
-                                    child: ManualAddressListTile(
-                                      title: controller.savedAddressList?[index].fullAddress?.toString().split(",").first??"N/A",
-                                      subtitle: controller.savedAddressList?[index].fullAddress?.toString().replaceAll("${controller.savedAddressList?[index].fullAddress?.toString().split(",").first}, ", "")??"N/A",
-                                      suffixBtnTitle: getAddressTypeNameByID(addressTypeID: controller.savedAddressList?[index].homeType?.toString()??"1"),
-                                    ),
-                                  );
-                                },
-                              );
+                              return controller.isSavedAddressLoading.value
+                                  ? const BaseGoogleAddressShimmer(itemCount: 5)
+                                  : (controller.savedAddressList?.length ??
+                                              0) ==
+                                          0
+                                      ? const BaseText(
+                                          topMargin: 20,
+                                          value:
+                                              "No Saved Address Found, Please Add",
+                                          fontSize: 14,
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.w400,
+                                          bottomMargin: 18,
+                                        )
+                                      : ListView.builder(
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          padding: const EdgeInsets.only(
+                                              left: horizontalScreenPadding,
+                                              right: 18,
+                                              top: 8,
+                                              bottom: 50),
+                                          itemCount: controller
+                                                  .savedAddressList?.length ??
+                                              0,
+                                          itemBuilder: (context, index) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                triggerHapticFeedback();
+                                                if (widget.isEditProfile ??
+                                                    false) {
+                                                profileController
+                                                      .selectedAddressId
+                                                      .value = controller
+                                                              .savedAddressList?[
+                                                          index].id?.toString() ?? "";
+                                                           profileController
+                                                      .selectedAddressFull
+                                                      .value = "${controller.savedAddressList?[index].flatNo?.toString() ??""}, ${controller.savedAddressList?[index].fullAddress?.toString() ?? ""}";
+                                                    Get.back();
+                                                  Get.back();
+                                                } else {
+                                                  Get.back(
+                                                      result: controller
+                                                              .savedAddressList?[
+                                                          index]);
+                                                }
+                                              },
+                                              child: ManualAddressListTile(
+                                                title: controller
+                                                        .savedAddressList?[
+                                                            index]
+                                                        .fullAddress
+                                                        ?.toString()
+                                                        .split(",")
+                                                        .first ??
+                                                    "N/A",
+                                                subtitle: controller
+                                                        .savedAddressList?[
+                                                            index]
+                                                        .fullAddress
+                                                        ?.toString()
+                                                        .replaceAll(
+                                                            "${controller.savedAddressList?[index].fullAddress?.toString().split(",").first}, ",
+                                                            "") ??
+                                                    "N/A",
+                                                suffixBtnTitle:
+                                                    getAddressTypeNameByID(
+                                                        addressTypeID: controller
+                                                                .savedAddressList?[
+                                                                    index]
+                                                                .homeType
+                                                                ?.toString() ??
+                                                            "1"),
+                                              ),
+                                            );
+                                          },
+                                        );
                             },
                           ),
                         ),
@@ -206,15 +307,17 @@ class _ManualAddressScreenState extends State<ManualAddressScreen> {
           ),
         ),
         bottomNavigationBar: Visibility(
-          visible: widget.showSavedAddress??false,
+          visible: widget.showSavedAddress ?? false,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: horizontalScreenPadding, vertical: 14),
+            padding: const EdgeInsets.symmetric(
+                horizontal: horizontalScreenPadding, vertical: 14),
             width: double.infinity,
             color: Colors.white,
             child: BaseButton(
               title: 'Add Address',
-              onPressed: (){
-                controller.locateToCurrentLocation(showSavedAddress: widget.showSavedAddress??false);
+              onPressed: () {
+                controller.locateToCurrentLocation(
+                    showSavedAddress: widget.showSavedAddress ?? false);
               },
             ),
           ),

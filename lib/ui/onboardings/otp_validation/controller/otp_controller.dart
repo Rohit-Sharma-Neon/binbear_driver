@@ -1,5 +1,7 @@
 import 'package:binbeardriver/backend/api_end_points.dart';
 import 'package:binbeardriver/backend/base_api_service.dart';
+import 'package:binbeardriver/ui/change_password/change_password_screen.dart';
+import 'package:binbeardriver/ui/onboardings/forgot_password/controller/forgot_password_controller.dart';
 import 'package:binbeardriver/ui/onboardings/location/onboarding_location_screen.dart';
 import 'package:binbeardriver/ui/onboardings/login/login_screen.dart';
 import 'package:binbeardriver/ui/onboardings/otp_validation/model/otp_response.dart';
@@ -52,6 +54,40 @@ class OtpController extends GetxController {
                 isSuccess: true,
                 title: "Success");
           }
+        } else {
+          showSnackBar(message: response.message ?? "");
+        }
+      } else {
+        showSnackBar(message: "Something went wrong, please try again");
+      }
+    });
+  }
+
+  forgotPasswordVerifyOtpApi() {
+    Map<String, String> data = {
+      "mobile_or_email":
+          Get.find<ForgotPasswordController>().emailController.text,
+      "verify_type": "email",
+      "deviceType": "android",
+      "deviceId": "device_id",
+      "role": (BaseStorage.read(StorageKeys.isUserDriver) ?? false) ? "3" : "2",
+      "country_code": "+1",
+      "otp": otpController.text.trim(),
+    };
+    BaseApiService()
+        .post(apiEndPoint: ApiEndPoints().verifyOtp, data: data)
+        .then((value) {
+      if (value?.statusCode == 200) {
+        OtpResponse response = OtpResponse.fromJson(value?.data);
+        if (response.success ?? false) {
+          Get.back();
+          Get.off(() => const ChangePasswordScreen(
+                previousPage: "forgotPassword",
+              ));
+          showSnackBar(
+              title: "Success!",
+              message: response.message ?? "",
+              isSuccess: true);
         } else {
           showSnackBar(message: response.message ?? "");
         }

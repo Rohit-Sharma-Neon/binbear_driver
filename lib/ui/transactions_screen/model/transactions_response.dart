@@ -24,7 +24,7 @@ class TransactionResponse {
 
 class Data {
   List<BookingData>? bookingData;
-  int? totalPayment;
+  dynamic totalPayment;
 
   Data({this.bookingData, this.totalPayment});
 

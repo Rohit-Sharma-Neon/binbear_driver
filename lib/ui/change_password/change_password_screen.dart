@@ -7,6 +7,7 @@ import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/base_components/base_text.dart';
 import 'package:binbeardriver/ui/base_components/base_textfield.dart';
 import 'package:binbeardriver/ui/change_password/controller/change_password_controller.dart';
+import 'package:binbeardriver/ui/onboardings/forgot_password/controller/forgot_password_controller.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
-  const ChangePasswordScreen({super.key});
+  const ChangePasswordScreen({super.key, this.previousPage = ''});
+  final String previousPage;
 
   @override
   State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
@@ -22,6 +24,15 @@ class ChangePasswordScreen extends StatefulWidget {
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   ChangePasswordController controller = Get.put(ChangePasswordController());
+   late ForgotPasswordController forgotPasswordController;
+
+  @override
+  void initState() {
+    if (Get.isRegistered<ForgotPasswordController>()) {
+      forgotPasswordController = Get.find<ForgotPasswordController>();
+    }
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldBackground(
@@ -56,6 +67,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   builder: (ChangePasswordController controller) {
                     return Column(
                       children: [
+                          if (widget.previousPage != 'forgotPassword')
                         BaseTextField(
                           topMargin: 14,
                           controller: controller.oldPasswordController,
@@ -171,20 +183,48 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           topMargin: 30,
                           title: "Save",
                           onPressed: (){
-                            if (controller.oldPasswordController.text.trim().isEmpty) {
-                              showSnackBar(message: "Please Enter Old Password");
-                            }else if (controller.oldPasswordController.text.trim().length < 8) {
-                              showSnackBar(message: "Please Enter Valid Old Password");
-                            }else if (controller.newPasswordController.text.trim().isEmpty) {
-                              showSnackBar(message: "Please Enter New Password");
-                            }else if (controller.newPasswordController.text.trim().length < 8) {
-                              showSnackBar(message: "New Password Length Can't Be Less Than 8");
-                            }else if (controller.confirmPasswordController.text.trim().isEmpty) {
-                              showSnackBar(message: "Please Enter Confirm Password");
-                            }else if (controller.confirmPasswordController.text.trim() != controller.newPasswordController.text.trim()) {
-                              showSnackBar(message: "Confirm Password Is Not Matching, Please Check");
-                            }else{
-                              controller.changePassword();
+                             if (controller.oldPasswordController.text
+                                    .trim()
+                                    .isEmpty &&
+                                widget.previousPage != 'forgotPassword') {
+                              showSnackBar(
+                                  message: "Please Enter Old Password");
+                            } else if (controller.oldPasswordController.text
+                                        .trim()
+                                        .length <
+                                    8 &&
+                                widget.previousPage != 'forgotPassword') {
+                              showSnackBar(
+                                  message: "Please Enter Valid Old Password");
+                            } else if (controller.newPasswordController.text
+                                .trim()
+                                .isEmpty) {
+                              showSnackBar(
+                                  message: "Please Enter New Password");
+                            } else if (controller.newPasswordController.text
+                                    .trim()
+                                    .length <
+                                8) {
+                              showSnackBar(
+                                  message:
+                                      "New Password Length Can't Be Less Than 8");
+                            } else if (controller.confirmPasswordController.text
+                                .trim()
+                                .isEmpty) {
+                              showSnackBar(
+                                  message: "Please Enter Confirm Password");
+                            } else if (controller.confirmPasswordController.text
+                                    .trim() !=
+                                controller.newPasswordController.text.trim()) {
+                              showSnackBar(
+                                  message:
+                                      "Confirm Password Is Not Matching, Please Check");
+                            } else{
+                             if (widget.previousPage == 'forgotPassword') {
+                                forgotPasswordController.resetPassword();
+                              } else {
+                                controller.changePassword();
+                              }
                             }
                           },
                         )

@@ -1,3 +1,4 @@
+import 'package:binbeardriver/ui/onboardings/signup/signup_screen.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
@@ -27,7 +28,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   LoginController controller = Get.put(LoginController());
 
   @override
@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Expanded(
               child: BaseContainer(
                 topMargin: 26,
-                bottomMargin: horizontalScreenPadding+6,
+                bottomMargin: horizontalScreenPadding + 6,
                 rightMargin: horizontalScreenPadding,
                 leftMargin: horizontalScreenPadding,
                 child: SingleChildScrollView(
@@ -60,39 +60,49 @@ class _LoginScreenState extends State<LoginScreen> {
                           textAlign: TextAlign.center,
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
-                          height: 1.5
+                          height: 1.5),
+                      Image.asset(
+                        BaseAssets.binBearTextLogo,
+                        width: 70,
                       ),
-                      Image.asset(BaseAssets.binBearTextLogo, width: 70,),
                       const SizedBox(height: 60),
-                      Obx(()=>Row(
-                          children: [
-                            Expanded(
-                              child: SignUpUserTypeSelection(
-                                title: 'Service\nProvider',
-                                imageUrl: BaseAssets.icServiceProvider,
-                                isChecked: controller.selectedUserType.value == "Service Provider",
-                                onTap: () {
-                                  triggerHapticFeedback();
-                                  controller.selectedUserType.value = "Service Provider";
-                                  BaseStorage.write(StorageKeys.isUserDriver, false);
-                                },
+                      Obx(() => Row(
+                            children: [
+                              Expanded(
+                                child: SignUpUserTypeSelection(
+                                  title: 'Service\nProvider',
+                                  imageUrl: BaseAssets.icServiceProvider,
+                                  isChecked:
+                                      controller.selectedUserType.value ==
+                                          "Service Provider",
+                                  onTap: () {
+                                    triggerHapticFeedback();
+                                    controller.selectedUserType.value =
+                                        "Service Provider";
+                                    BaseStorage.write(
+                                        StorageKeys.isUserDriver, false);
+                                  },
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 15),
-                            Expanded(
-                              child: SignUpUserTypeSelection(
-                                title: 'BinBears',
-                                imageUrl: BaseAssets.icBinBears,
-                                isChecked: controller.selectedUserType.value == "BinBears",
-                                onTap: () {
-                                  triggerHapticFeedback();
-                                  controller.selectedUserType.value = "BinBears";
-                                  BaseStorage.write(StorageKeys.isUserDriver, true);
-                                },
+                              const SizedBox(width: 15),
+                              Expanded(
+                                child: SignUpUserTypeSelection(
+                                  title: 'BinBears',
+                                  imageUrl: BaseAssets.icBinBears,
+                                  isChecked:
+                                      controller.selectedUserType.value ==
+                                          "BinBears",
+                                  onTap: () {
+                                    triggerHapticFeedback();
+                                    controller.selectedUserType.value =
+                                        "BinBears";
+                                    BaseStorage.write(
+                                        StorageKeys.isUserDriver, true);
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
-                        )),
+                            ],
+                          )),
                       GetBuilder<LoginController>(
                         builder: (LoginController controller) {
                           return BaseTextField(
@@ -126,14 +136,19 @@ class _LoginScreenState extends State<LoginScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 GestureDetector(
-                                  onTap: (){
+                                  onTap: () {
                                     triggerHapticFeedback();
-                                    controller.obscurePassword =  !(controller.obscurePassword);
+                                    controller.obscurePassword =
+                                        !(controller.obscurePassword);
                                     controller.update();
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 3),
-                                    child: controller.obscurePassword ? const Icon(Icons.visibility_off, size: 24) : const Icon(Icons.visibility, size: 24),
+                                    child: controller.obscurePassword
+                                        ? const Icon(Icons.visibility_off,
+                                            size: 24)
+                                        : const Icon(Icons.visibility,
+                                            size: 24),
                                   ),
                                 ),
                               ],
@@ -144,16 +159,21 @@ class _LoginScreenState extends State<LoginScreen> {
                       BaseButton(
                         topMargin: 24,
                         title: "Login",
-                        onPressed: (){
-                          if(controller.emailController.text.isEmpty){
+                        onPressed: () {
+                          if (controller.emailController.text.isEmpty) {
                             showSnackBar(message: "Please Enter Email");
-                          }else if (!GetUtils.isEmail(controller.emailController.text)) {
+                          } else if (!GetUtils.isEmail(
+                              controller.emailController.text)) {
                             showSnackBar(message: "Please Enter Valid Email");
-                          }else if (controller.passwordController.text.isEmpty) {
+                          } else if (controller
+                              .passwordController.text.isEmpty) {
                             showSnackBar(message: "Please Enter Password");
-                          }else if (controller.passwordController.text.length < 8) {
-                            showSnackBar(message: "Password Length Can't Be Less Than 8");
-                          }else{
+                          } else if (controller.passwordController.text.length <
+                              8) {
+                            showSnackBar(
+                                message:
+                                    "Password Length Can't Be Less Than 8");
+                          } else {
                             controller.getResponse();
                           }
                         },
@@ -161,16 +181,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       BaseTextButton(
                         title: "Forgot Password?",
                         bottomMargin: 15,
-                        onPressed: (){
+                        onPressed: () {
                           Get.to(const ForgotPasswordScreen());
                         },
                       ),
-                      Obx(()=>Visibility(
-                          visible: controller.selectedUserType.value == "Service Provider",
+                      Obx(
+                        () => Visibility(
+                          visible: controller.selectedUserType.value ==
+                              "Service Provider",
                           child: GestureDetector(
-                            onTap: (){
+                            onTap: () {
                               triggerHapticFeedback();
                               Get.back();
+                              Get.to(() => const SignUpScreen());
                             },
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
