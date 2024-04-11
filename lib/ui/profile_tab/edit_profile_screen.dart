@@ -16,14 +16,12 @@ import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/base_sizes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import 'package:binbeardriver/ui/base_components/base_text.dart';
 import 'package:binbeardriver/ui/base_components/base_textfield.dart';
-import 'package:binbeardriver/ui/manage_address/manage_address_screen.dart';
 import 'package:binbeardriver/ui/profile_tab/controller/profile_controller.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -278,8 +276,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             height: 94,
                             alignment: Alignment.center,
                             width: double.infinity,
-                            child: controller.pickedFile?.path.isNotEmpty ??
-                                    false
+                            child: controller.pickedFile?.path.isNotEmpty ?? false
                                 ? Image.file(
                                     controller.pickedFile ?? File(""),
                                     width: 100,

@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:binbeardriver/backend/api_end_points.dart';
 import 'package:binbeardriver/backend/base_api_service.dart';

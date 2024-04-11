@@ -1,7 +1,6 @@
 import 'package:binbeardriver/ui/assign_job_manually/assign_job_manually_screen.dart';
 import 'package:binbeardriver/ui/base_components/base_map_header_shadow.dart';
 import 'package:binbeardriver/ui/bookings_tab/controller/bookings_controller.dart';
-import 'package:binbeardriver/ui/bookings_tab/model/bookings_response.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
@@ -85,7 +84,7 @@ class _ServiceProviderMapViewScreenState
                   myLocationEnabled: widget.showCurrentPosition,
                   polylines: Set<Polyline>.of(controller.polylines.values),
                   initialCameraPosition: controller.getInitialCameraPosition(
-                      lat:  double.parse(
+                      lat:double.parse(
                           widget.bookingData?.pickupAddress?.lat ?? "0"), long:  double.parse(
                           widget.bookingData?.pickupAddress?.lng ?? "0")),
                   onMapCreated: controller.onMapCreated,
@@ -117,7 +116,7 @@ class _ServiceProviderMapViewScreenState
                 children: [
                    BaseText(
                     topMargin: 4,
-                    value:  "${widget.bookingData?.pickupAddress?.flatNo ?? ""}, ${widget.bookingData?.pickupAddress?.fullAddress ?? ""}",
+                    value:"${widget.bookingData?.pickupAddress?.flatNo ?? ""}, ${widget.bookingData?.pickupAddress?.fullAddress ?? ""}",
                     fontSize: 12,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

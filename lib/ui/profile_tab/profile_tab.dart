@@ -158,7 +158,7 @@ class _ProfileTabState extends State<ProfileTab> {
                             ) : BaseText(
                               topMargin: 3,
                               leftMargin: 8,
-                              value: "+1 ${MaskTextInputFormatter().updateMask(mask: '(###) ###-####', newValue: TextEditingValue(text: controller.profileData?.value?.mobile?.toString()??"")).text}",
+                              value: MaskTextInputFormatter().updateMask(mask: '###-###-####', newValue: TextEditingValue(text: controller.profileData?.value?.mobile?.toString()??"")).text,
                               fontSize: 16,
                               color: Colors.black,
                               fontWeight: FontWeight.w600,
