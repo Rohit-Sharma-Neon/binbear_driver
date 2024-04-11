@@ -281,7 +281,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     controller.pickedFile ?? File(""),
                                     width: 100,
                                     height: 100,
-                                    fit: BoxFit.cover,
+                                    fit: BoxFit.fill,
                                   )
                                 : Column(
                               mainAxisAlignment: MainAxisAlignment.center,
