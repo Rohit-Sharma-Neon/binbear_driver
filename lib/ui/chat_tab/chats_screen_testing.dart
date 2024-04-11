@@ -10,6 +10,7 @@ import 'package:binbeardriver/utils/get_storage.dart';
 import 'package:binbeardriver/utils/storage_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 class ChatsScreen extends StatefulWidget {
   final String? otherUserId;
   const ChatsScreen({super.key, this.otherUserId});
@@ -24,11 +25,9 @@ class _ChatsScreenState extends State<ChatsScreen> {
   void initState() {
     Future.microtask(() {
       if(messageController.socket?.active == true){
-        print('already active to server');
         messageController.emitThreadList();
       }else {
         messageController.socketInitialise(callback: () {
-          print('Connected to server yes');
           messageController.emitThreadList();
         });
       }
@@ -78,80 +77,86 @@ class _ChatsScreenState extends State<ChatsScreen> {
                       itemCount: data.length ?? 0,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                    var it = data[index];
-                    var findUser = isUser(it?.chatuser?.first, BaseStorage.read(StorageKeys.userId)?.toString()??"");
-                    return GestureDetector(
-                      onTap: () {
-                        var senderId = it?.chatuser?.where((element) => element.userId.toString() != messageController.userId.toString()).first.userId;
-                        senderId;
-                        Get.to(MessageScreen(convenienceId: it?.chatuser?.last.convenienceId.toString(), senderId: senderId.toString()))?.then((value) {
-                          messageController.emitThreadList();
-                        });
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: Container(
-                                color: Colors.grey.shade100,
-                                height: 45, width: 45,
-                                child: findUser ? it?.chatuser?.last.getUser?.profileImage != null ?
-                                Image.network(
-                                  it?.chatuser?.last.getUser?.profileImage ?? '',
-                                  height: 45,
-                                  width: 45,
-                                  fit: BoxFit.cover,
-                                ) : Image.asset(
-                                  BaseAssets.icPerson,
-                                  height: 45,
-                                  width: 45,
-                                  fit: BoxFit.cover,
-                                ) : it?.chatuser?.first.getUser?.profileImage != null ?
-                                Image.network(it?.chatuser?.first.getUser?.profileImage ?? '', height: 45, width: 45,fit: BoxFit.cover,) : Image.asset(BaseAssets.icPerson, height: 45, width: 45,fit: BoxFit.cover,),
-                              ),
-                            ),
-                            const SizedBox(width: 15),
-                            Expanded(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
+                        var it = data[index];
+                        var findUser = isUser(it?.chatuser?.first, BaseStorage.read(StorageKeys.userId)?.toString()??"");
+                        return GestureDetector(
+                          onTap: () {
+                            var senderId = it?.chatuser?.where((element) => element.userId.toString() != messageController.userId.toString()).first.userId;
+                            senderId;
+                            Get.to(MessageScreen(
+                              convenienceId: it?.chatuser?.last.convenienceId.toString(),
+                              senderId: senderId.toString(),
+                              bookingId: "",
+                              // bookingId: controller.bookings?[index]?.id?.toString()??"",
+                            ))?.then((value) {
+                              messageController.emitThreadList();
+                            });
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 6),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: Container(
+                                    color: Colors.grey.shade100,
+                                    height: 45, width: 45,
+                                    child: findUser ? it?.chatuser?.last.getUser?.profileImage != null ?
+                                    Image.network(
+                                      it?.chatuser?.last.getUser?.profileImage ?? '',
+                                      height: 45,
+                                      width: 45,
+                                      fit: BoxFit.cover,
+                                    ) : Image.asset(
+                                      BaseAssets.icPerson,
+                                      height: 45,
+                                      width: 45,
+                                      fit: BoxFit.cover,
+                                    ) : it?.chatuser?.first.getUser?.profileImage != null ?
+                                    Image.network(it?.chatuser?.first.getUser?.profileImage ?? '', height: 45, width: 45,fit: BoxFit.cover,)
+                                        : Image.asset(BaseAssets.icPerson, height: 45, width: 45,fit: BoxFit.cover,),
+                                  ),
+                                ),
+                                const SizedBox(width: 15),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Expanded(
-                                        child: Text(findUser
-                                            ? it?.chatuser?.last.getUser?.fullName ?? ''
-                                            : it?.chatuser?.first.getUser?.fullName ?? '',
-                                            style: const TextStyle(fontSize: 15)),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: Text(findUser
+                                                ? it?.chatuser?.last.getUser?.fullName ?? ''
+                                                : it?.chatuser?.first.getUser?.fullName ?? '',
+                                                style: const TextStyle(fontSize: 15)),
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Text(it?.updatedAt ?? '',
+                                              style: const TextStyle(fontSize: 13)),
+                                        ],
                                       ),
-                                      const SizedBox(width: 8),
-                                      Text(it?.updatedAt ?? '',
-                                          style: const TextStyle(fontSize: 13)),
+                                      Text(it?.lastMessage ?? '',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(fontSize: 14)),
                                     ],
                                   ),
-                                  Text(it?.lastMessage ?? '',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(fontSize: 14)),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                    );
-                                },
-                              ) : const Center(child: Text("Data not Found")),
+                          ),
+                        );
+                      },
+                    ) : const Center(child: Text("Data not Found")),
                   ),
                 ],
               ),
-                );
-              },
+            );
+          },
           ),
         )
     );

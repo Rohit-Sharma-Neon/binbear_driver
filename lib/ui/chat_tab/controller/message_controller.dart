@@ -12,7 +12,7 @@ import 'package:binbeardriver/ui/chat_tab/model/ticket_chat_model.dart' as tcm;
 
 class MessageController extends GetxController {
   RxList<tcm.DataList>? chatList = <tcm.DataList>[].obs;
-  RxBool isLoading = false.obs;
+  RxBool isLoading = true.obs;
   TextEditingController controller = TextEditingController();
   ScrollController? listController = ScrollController();
   File? file;
@@ -58,15 +58,16 @@ class MessageController extends GetxController {
       if(model.status ==true){
         this.model.value = model;
       }
+      isLoading.value = false;
       chatUserLoading.value = false;
     });
 
     socket?.on('CHAT_LIST_RESPONSE', (res) {
-      //print("chat list response ${res}"),
       print("response Chat List =>>>> ${res}");
       var ress = jsonDecode(res);
       tcm.TicketChatModel model  = tcm.TicketChatModel.fromJson(ress);
-
+      chatUserLoading.value = false;
+      isLoading.value = false;
       if(model.data?.data?.data != null) {
         isLoading.value = false;
         addDataAll(model.data!.data!.data!);
@@ -99,13 +100,13 @@ class MessageController extends GetxController {
 
   void scrollToMaxExtent() {
     if(listController != null) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          listController!.animateTo(
-            listController!.position.maxScrollExtent,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.fastOutSlowIn,
-          );
-        });
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        listController!.animateTo(
+          listController!.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.fastOutSlowIn,
+        );
+      });
     }
 
   }

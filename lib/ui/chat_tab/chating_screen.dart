@@ -9,7 +9,6 @@ class ChattingScreen extends StatefulWidget {
   @override
   State<ChattingScreen> createState() => _ChattingScreenState();
 }
-
 class _ChattingScreenState extends State<ChattingScreen> with TickerProviderStateMixin{
   ChatController ctrl = Get.find<ChatController>();
   String userID = "";
@@ -32,7 +31,7 @@ class _ChattingScreenState extends State<ChattingScreen> with TickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
       // body: Obx(()=>ListView.builder(
       //     controller: ctrl.scrollController,

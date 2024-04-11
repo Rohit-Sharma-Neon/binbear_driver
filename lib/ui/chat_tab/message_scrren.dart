@@ -12,8 +12,9 @@ class MessageScreen extends StatefulWidget {
   final String? name;
   final String? convenienceId;
   final String? senderId;
+  final String bookingId;
 
-  const MessageScreen({super.key, this.name, this.convenienceId, this.senderId});
+  const MessageScreen({super.key, this.name, this.convenienceId, this.senderId, required this.bookingId});
   @override
   State<MessageScreen> createState() => _MessageScreenState();
 }
@@ -26,17 +27,22 @@ class _MessageScreenState extends State<MessageScreen> {
     Future.microtask(() {
       messageController.init();
       if(messageController.socket?.active == true){
-        messageController.socketInitialise();
-        print('already active to server');
-        //messageController.socket?.emit("CHAT_LIST", [messageController.userId, widget.convenienceId, 1]);
         messageController.isLoading.value = true;
-        messageController.socket?.emit("CHAT_LIST", {"senderId":messageController.userId,"roomId":widget.convenienceId,"page":1});
+        messageController.socket?.emit("CHAT_LIST", {
+          "senderId":messageController.userId?.toString()??"",
+          "roomId":widget.convenienceId?.toString()??"",
+          "page":1,
+          "booking_id":widget.bookingId.toString(),
+        });
       }else {
         messageController.socketInitialise(callback: () {
-          messageController.socketInitialise();
           messageController.isLoading.value = true;
-          print('Connected to server yes');
-          messageController.socket?.emit("CHAT_LIST", {"senderId":messageController.userId,"roomId":widget.convenienceId,"page":1});
+          messageController.socket?.emit("CHAT_LIST", {
+            "senderId":messageController.userId?.toString()??"",
+            "roomId":widget.convenienceId?.toString()??"",
+            "page":1,
+            "booking_id":widget.bookingId.toString(),
+          });
         });
       }
     });
@@ -88,6 +94,8 @@ class _MessageScreenState extends State<MessageScreen> {
 
   @override
   void dispose() {
+    messageController.socket?.disconnect();
+    messageController.socket?.dispose();
     super.dispose();
   }
   @override
@@ -97,34 +105,34 @@ class _MessageScreenState extends State<MessageScreen> {
         appBar: const BaseAppBar(title: "Chat", contentColor: Colors.white, fontWeight: FontWeight.w600, titleSize: 20,),
         resizeToAvoidBottomInset: true,
         body: Obx((){
-            return messageController.isLoading.value
-                ? const Center(
-              child: SizedBox(
-                height: 30, width: 30,
-                child: CircularProgressIndicator(),
+          return messageController.isLoading.value
+              ? const Center(
+            child: SizedBox(
+              height: 30, width: 30,
+              child: CircularProgressIndicator(),
+            ),
+          )
+              : (messageController.chatList ?? []).isEmpty
+              ? const Center(
+            child: Text("No chats available.",
+              style: TextStyle(
+                fontSize: 16,
               ),
-            )
-                : (messageController.chatList ?? []).isEmpty
-                ? const Center(
-              child: Text("No chats available.",
-                style: TextStyle(
-                  fontSize: 16,
-                ),
+            ),
+          ) : GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ListView.builder(
+                controller: messageController.listController,
+                shrinkWrap: true,
+                itemCount: messageController.chatList?.length ?? 0,
+                itemBuilder: (context, index) => item(messageController.chatList?[index]),
               ),
-            ) : GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ListView.builder(
-                  controller: messageController.listController,
-                  shrinkWrap: true,
-                  itemCount: messageController.chatList?.length ?? 0,
-                  itemBuilder: (context, index) => item(messageController.chatList?[index]),
-                ),
-              ),
-            );}),
+            ),
+          );}),
         bottomNavigationBar: Padding(
           padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: Container(
@@ -194,23 +202,20 @@ class _MessageScreenState extends State<MessageScreen> {
     }
   }
   void scrollToMaxExtent() {
-   var list =  messageController.chatList ;
+    var list =  messageController.chatList ;
     if((list ?? []).isNotEmpty)
-      {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          messageController.listController!.animateTo(
-            messageController.listController!.position.maxScrollExtent,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.fastOutSlowIn,
-          );
-        });
-      }
+    {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        messageController.listController!.animateTo(
+          messageController.listController!.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.fastOutSlowIn,
+        );
+      });
+    }
 
   }
   item(DataList? data) {
-    print("object ${(data?.fromId?.toString()??'')}");
-    print("object ${messageController.userId}");
-    print("object ${(data?.fromId?.toString()??'') == messageController.userId }");
     return (data?.fromId?.toString()??'') == (messageController.userId?.toString()??"") ? right(data) : left(data);
   }
 
@@ -231,22 +236,22 @@ class _MessageScreenState extends State<MessageScreen> {
                   // mDialog(context, PhotoViewDialog(url: data.file!));
                 },
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.width / 2.5,
-                  width: MediaQuery.of(context).size.width / 1.5,
-                  child: Image.network(
-                    data!.file!  ?? '',
-                    fit: BoxFit.cover,
-                  )
+                    height: MediaQuery.of(context).size.width / 2.5,
+                    width: MediaQuery.of(context).size.width / 1.5,
+                    child: Image.network(
+                      data!.file!  ?? '',
+                      fit: BoxFit.cover,
+                    )
                 ),
               ),
             )
-          : Container(
+                : Container(
               margin: const EdgeInsets.symmetric(vertical: 8),
               constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 100, minHeight: 40),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                  color: const Color(0xffDE875A),
-                  borderRadius: BorderRadius.circular(15),
+                color: const Color(0xffDE875A),
+                borderRadius: BorderRadius.circular(15),
               ),
               child: Text(data?.message ?? '', style: const TextStyle(fontSize: 15, color: Colors.white),),
             ),
@@ -275,19 +280,19 @@ class _MessageScreenState extends State<MessageScreen> {
                   // mDialog(context, PhotoViewDialog(url: data.file!));
                 },
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.width / 2.5,
-                  width: MediaQuery.of(context).size.width / 1.5,
+                    height: MediaQuery.of(context).size.width / 2.5,
+                    width: MediaQuery.of(context).size.width / 1.5,
 
-                  child:
-                  Image.network(
-                    data?.file  ?? '',
-                    fit: BoxFit.cover,
-                  )
+                    child:
+                    Image.network(
+                      data?.file  ?? '',
+                      fit: BoxFit.cover,
+                    )
 
                 ),
               ),
             )
-            :
+                :
             Container(
               margin: const EdgeInsets.symmetric(vertical: 8),
               constraints: BoxConstraints(

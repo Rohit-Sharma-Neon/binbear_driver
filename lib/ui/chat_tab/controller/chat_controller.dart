@@ -28,48 +28,44 @@ class ChatController extends GetxController{
     socket?.on('connect', (_) {
       socket?.emit("CONNECT", BaseStorage.read(StorageKeys.userId, showLog: false)??"");
       socket?.on('THREADS_LIST_RESPONSE', (res) {
-        print("chat list response ${res}");
         var ress = jsonDecode(res);
       });
     });
 
     socket?.onDisconnect((_) {
-      print("Socket Disconnect");
       // connectSocket(receiverId: receiverId, schoolId: schoolId);
     });
     socket?.onConnectError((_) {
-      print("Socket Connection Error: $_");
       // connectSocket();
     });
     socket?.on('error', (data) {
-      print(data+"_________");
     });
   }
 
-  // sendMessage(receiverId, String message, String type) async {
-  //   final String userId = await BaseSharedPreference().getString(SpKeys().userId);
-  //   try {
-  //     socket?.emitWithAck("NEW_MESSAGE", {
-  //       "roomId": joinRoomData["data"]["roomId"],
-  //       "senderId": userId,
-  //       "receiverId": receiverId,
-  //       "message": message,
-  //       "type": type
-  //     }, ack: (data) {
-  //       print("NEW_MESSAGE:- $data");
-  //     });
-  //     socket?.on("NEW_MESSAGE_RESPONSE", (data) {
-  //       print("NEW_MESSAGE_RESPONSE:- $data");
-  //       if (jsonDecode(data)['status'] == true) {
-  //         socket?.emitWithAck("CHAT_DETAIL_NEW",{joinRoomData["data"]["roomId"], userId,receiverId}, ack: (data) {
-  //           print("CHAT_DETAIL_NEW:- $data");
-  //         });
-  //       } else {
-  //         baseToast(message: (jsonDecode(data)['message'] ?? ""));
-  //       }
-  //     });
-  //   }catch(_){
-  //     print("Exception....$_....");
-  //   }
-  // }
+// sendMessage(receiverId, String message, String type) async {
+//   final String userId = await BaseSharedPreference().getString(SpKeys().userId);
+//   try {
+//     socket?.emitWithAck("NEW_MESSAGE", {
+//       "roomId": joinRoomData["data"]["roomId"],
+//       "senderId": userId,
+//       "receiverId": receiverId,
+//       "message": message,
+//       "type": type
+//     }, ack: (data) {
+//       print("NEW_MESSAGE:- $data");
+//     });
+//     socket?.on("NEW_MESSAGE_RESPONSE", (data) {
+//       print("NEW_MESSAGE_RESPONSE:- $data");
+//       if (jsonDecode(data)['status'] == true) {
+//         socket?.emitWithAck("CHAT_DETAIL_NEW",{joinRoomData["data"]["roomId"], userId,receiverId}, ack: (data) {
+//           print("CHAT_DETAIL_NEW:- $data");
+//         });
+//       } else {
+//         baseToast(message: (jsonDecode(data)['message'] ?? ""));
+//       }
+//     });
+//   }catch(_){
+//     print("Exception....$_....");
+//   }
+// }
 }

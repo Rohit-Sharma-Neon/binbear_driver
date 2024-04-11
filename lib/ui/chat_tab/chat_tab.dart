@@ -101,7 +101,7 @@ class _ChatTabState extends State<ChatTab> {
                           const Divider(color: Colors.grey)
                         ],
                       );
-                }),
+                    }),
               )
             ],
           ),
