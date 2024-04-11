@@ -1,7 +1,11 @@
 import 'dart:async';
 
+import 'package:binbeardriver/backend/api_end_points.dart';
+import 'package:binbeardriver/backend/base_api_service.dart';
+import 'package:binbeardriver/ui/driver_exact_location/model/booking_details_response.dart';
 import 'package:binbeardriver/ui/onboardings/base_success_screen.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
+import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -24,12 +28,14 @@ class DriverExactLocationController extends GetxController{
     const LatLng(26.849257634454656, 75.765309534498),
   ];
   final Completer<GoogleMapController> mapController = Completer<GoogleMapController>();
-
+  RxBool isLoading = false.obs;
+  Rx<BookingDetailData?> bookingDetailData = BookingDetailData().obs;
   @override
   void onInit() {
     currentWorkStatus.value = "Pick-Up!";
     super.onInit();
   }
+
 
   CameraPosition getInitialCameraPosition({required LatLng latLng}){
     return CameraPosition(
@@ -134,5 +140,38 @@ class DriverExactLocationController extends GetxController{
         break;
       }
     }
+  }
+
+    getMyBookingsApi(String bookingId) async {
+
+      isLoading.value = true;
+     
+      Map<String, String> data = {
+        "booking_id": bookingId,
+      };
+      try {
+        await BaseApiService()
+            .post(
+                apiEndPoint: ApiEndPoints().bookingsDetails,
+                data: data,
+                showLoader: true)
+            .then((value) {
+          if (value?.statusCode == 200) {
+            BookingDetailsResponse response =
+                BookingDetailsResponse.fromJson(value?.data);
+            if (response.success ?? false) {
+              bookingDetailData.value = response.data ;
+            } else {
+              showSnackBar(message: response.message ?? "");
+            }
+          } else {
+            showSnackBar(message: "Something went wrong, please try again");
+          }
+          isLoading.value = false;
+        });
+      } on Exception catch (e) {
+        isLoading.value = false;
+      }
+
   }
 }

@@ -53,8 +53,8 @@ class _DriversListingState extends State<DriversListing> {
                   showEditDeleteButtons: true,
                   onTap: () {
                     Get.to(() => DriverExactLocationScreen(latLng: controller.testingLatLngList[index],
-                                driverData:
-                                    homeTabController.listDriver?[index],
+                                bookingId:
+                                    homeTabController.listDriver?[index].bookingIds.toString() ?? "",
                               ));
                   },
                   onEdit: (){

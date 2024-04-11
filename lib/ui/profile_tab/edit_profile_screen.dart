@@ -315,7 +315,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           children: [
                             Obx(() =>  Flexible(
                                  child: BaseText(
-                                  value:controller.selectedAddressFull.isEmpty ?"${controller.profileData?.value?.address?.flatNo.toString() ?? ""}, ${controller.profileData?.value?.address?.fullAddress.toString() ?? ""}": "${controller.selectedAddressFull}",
+                                  value:controller.selectedAddressId.isEmpty ?"${controller.profileData?.value?.address?.flatNo.toString() ?? ""}, ${controller.profileData?.value?.address?.fullAddress.toString() ?? ""}": "${controller.selectedAddress.value.fullAddress}",
                                   fontSize: 14,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,

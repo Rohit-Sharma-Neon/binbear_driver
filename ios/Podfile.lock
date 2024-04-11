@@ -3,8 +3,9 @@ PODS:
     - Flutter
     - ReachabilitySwift
   - Flutter (1.0.0)
-  - flutter_webview_plugin (0.0.1):
+  - flutter_jailbreak_detection (1.0.0):
     - Flutter
+    - IOSSecuritySuite
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -25,6 +26,7 @@ PODS:
     - TOCropViewController (~> 2.6.1)
   - image_picker_ios (0.0.1):
     - Flutter
+  - IOSSecuritySuite (2.0.1)
   - libwebp (1.3.2):
     - libwebp/demux (= 1.3.2)
     - libwebp/mux (= 1.3.2)
@@ -59,7 +61,7 @@ PODS:
 DEPENDENCIES:
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - Flutter (from `Flutter`)
-  - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
+  - flutter_jailbreak_detection (from `.symlinks/plugins/flutter_jailbreak_detection/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - geocoding_ios (from `.symlinks/plugins/geocoding_ios/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
@@ -76,6 +78,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - GoogleMaps
+    - IOSSecuritySuite
     - libwebp
     - ReachabilitySwift
     - Toast
@@ -86,8 +89,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/connectivity_plus/ios"
   Flutter:
     :path: Flutter
-  flutter_webview_plugin:
-    :path: ".symlinks/plugins/flutter_webview_plugin/ios"
+  flutter_jailbreak_detection:
+    :path: ".symlinks/plugins/flutter_jailbreak_detection/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
   geocoding_ios:
@@ -116,7 +119,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   connectivity_plus: bf0076dd84a130856aa636df1c71ccaff908fa1d
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
+  flutter_jailbreak_detection: c5bf66ff6c0c4230769b6ba0bd63eb6ac4148a76
   fluttertoast: fafc4fa4d01a6a9e4f772ecd190ffa525e9e2d9c
   geocoding_ios: d7460f56e80e118d57678efe5c2cdc888739ff18
   geolocator_apple: 9157311f654584b9bb72686c55fc02a97b73f461
@@ -124,6 +127,7 @@ SPEC CHECKSUMS:
   GoogleMaps: 20d7b12be49a14287f797e88e0e31bc4156aaeb4
   image_cropper: a3291c624a953049bc6a02e1f8c8ceb162a24b25
   image_picker_ios: b545a5f16c0fa88e3ecbbce3ed4de45567a8ec18
+  IOSSecuritySuite: 9f9ff40a083e1587929c21c6de5d25a673d2a7fe
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c

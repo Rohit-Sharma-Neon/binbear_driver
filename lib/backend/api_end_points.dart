@@ -20,6 +20,7 @@ class ApiEndPoints {
   final String editUserProfile = "edituserprofile";
   final String getHomeData = "home/screen";
   final String myBookings = "bookings/data";
+  final String bookingsDetails = "bookings/detail";
   final String notificationList = "notificationlist";
   final String markAllAsRead = "allmarkasread";
   final String bookingDetail = "booking_detail";

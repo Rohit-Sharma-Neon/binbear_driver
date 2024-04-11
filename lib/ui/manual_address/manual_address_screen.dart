@@ -242,15 +242,20 @@ class _ManualAddressScreenState extends State<ManualAddressScreen> {
                                                 triggerHapticFeedback();
                                                 if (widget.isEditProfile ??
                                                     false) {
-                                                profileController
+                                                  profileController
                                                       .selectedAddressId
                                                       .value = controller
+                                                          .savedAddressList?[
+                                                              index]
+                                                          .id
+                                                          ?.toString() ??
+                                                      "";
+                                                  profileController
+                                                          .selectedAddress.value =
+                                                      controller
                                                               .savedAddressList?[
-                                                          index].id?.toString() ?? "";
-                                                           profileController
-                                                      .selectedAddressFull
-                                                      .value = "${controller.savedAddressList?[index].flatNo?.toString() ??""}, ${controller.savedAddressList?[index].fullAddress?.toString() ?? ""}";
-                                                    Get.back();
+                                                          index] ?? SavedAddressListData();
+                                                  Get.back();
                                                   Get.back();
                                                 } else {
                                                   Get.back(

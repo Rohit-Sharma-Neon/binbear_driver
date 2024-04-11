@@ -388,9 +388,9 @@ class _HomeTabState extends State<HomeTab> {
                                   return GestureDetector(
                                     onTap: () {
                                       triggerHapticFeedback();
-                                      Get.to(() => DriverExactLocationScreen(
-                                          latLng: homeTabController
-                                              .testingLatLngList[index]));
+                                      // Get.to(() => DriverExactLocationScreen(
+                                      //     latLng: homeTabController
+                                      //         .testingLatLngList[index]));
                                     },
                                     child: Stack(
                                       clipBehavior: Clip.hardEdge,

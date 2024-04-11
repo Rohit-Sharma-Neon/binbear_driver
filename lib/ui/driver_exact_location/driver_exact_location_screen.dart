@@ -16,14 +16,24 @@ import 'package:binbeardriver/ui/base_components/base_text.dart';
 
 class DriverExactLocationScreen extends StatefulWidget {
   final LatLng latLng;
-  final DriverData? driverData;
-  const DriverExactLocationScreen({super.key, required this.latLng, this.driverData});
+  // final DriverData? driverData;
+  final String? bookingId;
+  const DriverExactLocationScreen(
+      {super.key, required this.latLng, this.bookingId});
   @override
-  State<DriverExactLocationScreen> createState() => _DriverExactLocationScreenState();
+  State<DriverExactLocationScreen> createState() =>
+      _DriverExactLocationScreenState();
 }
 
 class _DriverExactLocationScreenState extends State<DriverExactLocationScreen> {
-  DriverExactLocationController controller = Get.put(DriverExactLocationController());
+  DriverExactLocationController controller =
+      Get.put(DriverExactLocationController());
+
+  @override
+  void initState() {
+    super.initState();
+    controller.getMyBookingsApi(widget.bookingId ?? "");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +53,8 @@ class _DriverExactLocationScreenState extends State<DriverExactLocationScreen> {
           children: [
             GoogleMap(
               mapType: MapType.normal,
-              initialCameraPosition: controller.getInitialCameraPosition(latLng: widget.latLng),
+              initialCameraPosition:
+                  controller.getInitialCameraPosition(latLng: widget.latLng),
               onMapCreated: (GoogleMapController googleMapController) {
                 if (!(controller.mapController.isCompleted)) {
                   controller.mapController.complete(googleMapController);
@@ -61,120 +72,129 @@ class _DriverExactLocationScreenState extends State<DriverExactLocationScreen> {
               },
             ),
             const BaseMapHeaderShadow()
+            
           ],
         ),
         bottomNavigationBar: Container(
           width: double.infinity,
-          padding: const EdgeInsets.only(left: horizontalScreenPadding, right: horizontalScreenPadding, top: 20, bottom: 10),
-          margin: const EdgeInsets.only(right: horizontalScreenPadding, left: horizontalScreenPadding, bottom: 36),
+          padding: const EdgeInsets.only(
+              left: horizontalScreenPadding,
+              right: horizontalScreenPadding,
+              top: 20,
+              bottom: 10),
+          margin: const EdgeInsets.only(
+              right: horizontalScreenPadding,
+              left: horizontalScreenPadding,
+              bottom: 36),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(15),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    BaseAssets.icBinBears,
-                    height: 32,
-                  ),
-                   BaseText(
-                    leftMargin: 10,
-                    value: "${widget.driverData?.name ?? ""}",
-                    fontSize: 14,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 6),
-              Divider(color: Colors.grey.shade300),
-              const BaseText(
-                value: "Assigned Jobs",
-                fontSize: 10.5,
-                color: Color(0xffAAAAAA),
-                fontWeight: FontWeight.w400,
-              ),
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    BaseAssets.icPin,
-                    color: BaseColors.primaryColor,
-                    width: 24,
-                    height: 24,
-                  ),
-                   Expanded(
-                    child: BaseText(
-                      leftMargin: 8,
-                      value: "${widget.driverData?.name ?? ""}",
-                      fontSize: 15,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
+          child: Obx(() =>  Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      BaseAssets.icBinBears,
+                      height: 32,
                     ),
-                  ),
-                  GestureDetector(
-                    // onTap: (){
-                    // triggerHapticFeedback();
-                    // Get.to(() => const ChatTab());
-                    // },
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 8, left: 4),
-                      child: SvgPicture.asset(BaseAssets.icPinDrop),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    BaseAssets.icCalendar,
-                    width: 18,
-                    height: 18,
-                  ),
-                  const BaseText(
-                    leftMargin: 10,
-                    value: "01-16-2024",
-                    fontSize: 13,
-                    color: Color(0xff30302E),
-                    fontWeight: FontWeight.w400,
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    BaseAssets.icClock,
-                    width: 18,
-                    height: 18,
-                  ),
-                  const Expanded(
-                    child: BaseText(
+                    BaseText(
                       leftMargin: 10,
-                      value: "Before 1 pm",
+                      value: "${controller.bookingDetailData.value?.binbearData?.name ?? ""}",
+                      fontSize: 14,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                Divider(color: Colors.grey.shade300),
+                const BaseText(
+                  value: "Assigned Jobs",
+                  fontSize: 10.5,
+                  color: Color(0xffAAAAAA),
+                  fontWeight: FontWeight.w400,
+                ),
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      BaseAssets.icPin,
+                      color: BaseColors.primaryColor,
+                      width: 24,
+                      height: 24,
+                    ),
+                    Expanded(
+                      child: BaseText(
+                        leftMargin: 8,
+                        value: "${controller.bookingDetailData.value?.binbearData?.name ?? ""}",
+                        fontSize: 15,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    GestureDetector(
+                      // onTap: (){
+                      // triggerHapticFeedback();
+                      // Get.to(() => const ChatTab());
+                      // },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8, left: 4),
+                        child: SvgPicture.asset(BaseAssets.icPinDrop),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      BaseAssets.icCalendar,
+                      width: 18,
+                      height: 18,
+                    ),
+                    const BaseText(
+                      leftMargin: 10,
+                      value: "01-16-2024",
                       fontSize: 13,
                       color: Color(0xff30302E),
                       fontWeight: FontWeight.w400,
                     ),
-                  ),
-                  const BaseOutlinedButton(
-                    topMargin: 0,
-                    bottomMargin: 0,
-                    leftMargin: 8,
-                    btnTopPadding: 6,
-                    btnBottomPadding: 6,
-                    btnRightPadding: 7,
-                    btnLeftPadding: 7,
-                    borderRadius: 8,
-                    title: "3 miles",
-                    titleColor: BaseColors.primaryColor,
-                  )
-                ],
-              ),
-            ],
+                  ],
+                ),
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      BaseAssets.icClock,
+                      width: 18,
+                      height: 18,
+                    ),
+                    const Expanded(
+                      child: BaseText(
+                        leftMargin: 10,
+                        value: "Before 1 pm",
+                        fontSize: 13,
+                        color: Color(0xff30302E),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    const BaseOutlinedButton(
+                      topMargin: 0,
+                      bottomMargin: 0,
+                      leftMargin: 8,
+                      btnTopPadding: 6,
+                      btnBottomPadding: 6,
+                      btnRightPadding: 7,
+                      btnLeftPadding: 7,
+                      borderRadius: 8,
+                      title: "3 miles",
+                      titleColor: BaseColors.primaryColor,
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

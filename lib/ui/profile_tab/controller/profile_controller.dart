@@ -29,8 +29,8 @@ class ProfileController extends GetxController {
   TextEditingController mobileController = TextEditingController();
   Rx<File?>? selectedImage = File("").obs;
   File? pickedFile = File("");
+  Rx<SavedAddressListData> selectedAddress = SavedAddressListData().obs;
   RxString selectedAddressId = "".obs;
-  RxString selectedAddressFull = "".obs;
 
   @override
   void onInit() {
@@ -62,8 +62,16 @@ class ProfileController extends GetxController {
     dio.FormData data = dio.FormData.fromMap({
       "name": nameController.text.trim(),
       "gender": selectedGender.value,
-      "address_id": selectedAddressId.value
+      "address_id": selectedAddressId.value,
+      "flat_no": selectedAddress.value.flatNo,
+      "apartment": selectedAddress.value.apartment,
+      "description": selectedAddress.value.description,
+      "lat": selectedAddress.value.lat,
+      "lng": selectedAddress.value.lng,
+      "full_address": selectedAddress.value.fullAddress
     });
+
+    log("${selectedAddress.value.toJson()}");
     if ((selectedImage?.value?.path ?? '').isNotEmpty) {
       data.files.add(MapEntry(
           "profile",
@@ -86,8 +94,9 @@ class ProfileController extends GetxController {
         if (response.success ?? false) {
           triggerHapticFeedback();
           Get.back();
-          selectedAddressFull.value = "";
+          // selectedAddressFull.value = "";
           selectedAddressId.value = "";
+          selectedAddress.value = SavedAddressListData();
           showSnackBar(isSuccess: true, message: response.message ?? "");
           getProfileData();
           update();
