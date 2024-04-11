@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:binbeardriver/ui/base_components/base_drawer.dart';
 import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 
-import 'package:binbeardriver/ui/chat_tab/chat_tab.dart';
 import 'package:binbeardriver/ui/home_tab/home_tab.dart';
 import 'package:binbeardriver/ui/profile_tab/profile_tab.dart';
 import 'package:binbeardriver/ui/dashboard_module/dashboard_screen/components/bottom_nav_items.dart';

@@ -19,7 +19,6 @@ import 'package:binbeardriver/ui/base_components/base_outlined_button.dart';
 import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/base_components/base_text.dart';
 import 'package:binbeardriver/ui/base_components/base_textfield.dart';
-import 'package:binbeardriver/ui/onboardings/location/onboarding_location_screen.dart';
 import 'package:binbeardriver/ui/onboardings/signup/controller/signup_controller.dart';
 
 class SignUpScreen extends StatefulWidget {

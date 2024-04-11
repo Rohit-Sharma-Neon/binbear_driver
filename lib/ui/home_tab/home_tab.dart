@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:binbeardriver/ui/driver_exact_location/driver_exact_location_screen.dart';
 import 'package:binbeardriver/ui/drivers_listing/drivers_listing.dart';
 import 'package:binbeardriver/ui/home_tab/components/home_booking_shimmer.dart';
 import 'package:binbeardriver/ui/home_tab/components/home_drivers_shimmer.dart';

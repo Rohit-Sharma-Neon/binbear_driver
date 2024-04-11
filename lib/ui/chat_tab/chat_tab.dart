@@ -6,9 +6,7 @@ import 'package:binbeardriver/ui/chat_tab/chating_screen.dart';
 import 'package:binbeardriver/ui/chat_tab/controller/chat_controller.dart';
 import 'package:binbeardriver/ui/manual_address/components/address_search_field.dart';
 import 'package:binbeardriver/utils/base_sizes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class ChatTab extends StatefulWidget {

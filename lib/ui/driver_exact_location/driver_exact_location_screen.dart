@@ -1,7 +1,6 @@
 import 'package:binbeardriver/ui/base_components/base_map_header_shadow.dart';
 import 'package:binbeardriver/ui/base_components/base_outlined_button.dart';
 import 'package:binbeardriver/ui/driver_exact_location/controller/driver_excate_location_controller.dart';
-import 'package:binbeardriver/ui/drivers_listing/model/driverlist_response.dart';
 import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';

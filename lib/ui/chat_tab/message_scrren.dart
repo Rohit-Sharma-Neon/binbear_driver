@@ -3,11 +3,9 @@ import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/chat_tab/controller/message_controller.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-import 'model/ticket_chat_model.dart';
+import 'package:binbeardriver/ui/chat_tab/model/ticket_chat_model.dart';
 class MessageScreen extends StatefulWidget {
   final String? name;
   final String? convenienceId;
