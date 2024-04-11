@@ -32,7 +32,6 @@ class MapViewController extends GetxController{
     dio = Dio();
     String baseURL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
     String request = '$baseURL?input=$input&key=$googleApiKey&sessiontoken=$sessionToken';
-    print("Input: $input");
     as_dio.Response response = await dio.get(request);
     if (response.statusCode == 200) {
         searchResultList.value = response.data['predictions'];

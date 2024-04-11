@@ -5,4 +5,6 @@ class BaseColors{
   static const Color primaryColor = Color(0xffB23C14);
   static const Color secondaryColor = Color(0xffDE875A);
   static const Color tertiaryColor = Color(0xffFFDAC6);
+  static const Color readNotification = Color(0xff00731E);
+
 }
