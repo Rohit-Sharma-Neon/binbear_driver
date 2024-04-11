@@ -47,6 +47,9 @@ class _ChatsScreenState extends State<ChatsScreen> {
     return Scaffold(
         appBar: const BaseAppBar(
           title: "Message",
+          showNotification: true,
+          showBackButton: false,
+          showDrawerIcon: true,
           contentColor: Colors.white,
           titleSize: 20,
           fontWeight: FontWeight.w600,
