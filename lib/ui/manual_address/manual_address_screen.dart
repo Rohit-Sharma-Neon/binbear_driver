@@ -104,7 +104,7 @@ class _ManualAddressScreenState extends State<ManualAddressScreen> {
                   ],
                 ),
                 onPressed: () {
-                  controller.locateToCurrentLocation(showSavedAddress: widget.showSavedAddress ?? false);
+                  controller.locateToCurrentLocation(showSavedAddress: false);
                 },
               ),
               Expanded(
