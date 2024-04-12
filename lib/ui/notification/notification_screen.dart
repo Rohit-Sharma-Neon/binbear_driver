@@ -80,7 +80,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       ? const NotificationShimmer()
                       : (controller.list?.length??0) == 0 ? const BaseNoData(textColor: Colors.grey, message: "No Notifications Found!",) : ListView.builder(
                       itemCount: controller.list?.length??0,
-                      padding: const EdgeInsets.only(right: 15, left: 17,),
+                      padding: const EdgeInsets.only(right: 15, left: 17,top: 10),
                       shrinkWrap: true,
                         itemBuilder: (context, index){
                           return Stack(
@@ -175,7 +175,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
       ),
     );
   }
-
   Widget divider(){
     return Container(
       width: double.infinity,
