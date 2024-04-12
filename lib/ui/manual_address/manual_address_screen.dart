@@ -38,7 +38,7 @@ class _ManualAddressScreenState extends State<ManualAddressScreen> {
   ManualAddressController controller = Get.put(ManualAddressController());
   MapViewController mapViewController = Get.put(MapViewController());
   BaseController baseController = Get.find<BaseController>();
-  ProfileController profileController = Get.find<ProfileController>();
+  ProfileController profileController =Get.isRegistered<ProfileController>() ?Get.find<ProfileController>() :Get.put(ProfileController());
 
   @override
   void initState() {
