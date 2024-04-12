@@ -38,10 +38,15 @@ class _ManualAddressScreenState extends State<ManualAddressScreen> {
   ManualAddressController controller = Get.put(ManualAddressController());
   MapViewController mapViewController = Get.put(MapViewController());
   BaseController baseController = Get.find<BaseController>();
-  ProfileController profileController = Get.find<ProfileController>();
+  late ProfileController profileController;
 
   @override
   void initState() {
+    if (Get.isRegistered<ProfileController>()) {
+      profileController = Get.find<ProfileController>();
+    }else{
+      profileController = Get.put(ProfileController());
+    }
     super.initState();
     if (widget.showSavedAddress ?? false) {
       baseController.getSavedAddress();
@@ -99,8 +104,7 @@ class _ManualAddressScreenState extends State<ManualAddressScreen> {
                   ],
                 ),
                 onPressed: () {
-                  controller.locateToCurrentLocation(
-                      showSavedAddress: widget.showSavedAddress ?? false);
+                  controller.locateToCurrentLocation(showSavedAddress: widget.showSavedAddress ?? false);
                 },
               ),
               Expanded(
@@ -212,13 +216,10 @@ class _ManualAddressScreenState extends State<ManualAddressScreen> {
                             builder: (BaseController controller) {
                               return controller.isSavedAddressLoading.value
                                   ? const BaseGoogleAddressShimmer(itemCount: 5)
-                                  : (controller.savedAddressList?.length ??
-                                              0) ==
-                                          0
+                                  : (controller.savedAddressList?.length ?? 0) == 0
                                       ? const BaseText(
                                           topMargin: 20,
-                                          value:
-                                              "No Saved Address Found, Please Add",
+                                          value: "No Saved Address Found, Please Add",
                                           fontSize: 14,
                                           color: Colors.grey,
                                           fontWeight: FontWeight.w400,
@@ -226,70 +227,33 @@ class _ManualAddressScreenState extends State<ManualAddressScreen> {
                                         )
                                       : ListView.builder(
                                           shrinkWrap: true,
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
+                                          physics: const NeverScrollableScrollPhysics(),
                                           padding: const EdgeInsets.only(
                                               left: horizontalScreenPadding,
                                               right: 18,
                                               top: 8,
                                               bottom: 50),
-                                          itemCount: controller
-                                                  .savedAddressList?.length ??
+                                          itemCount: controller.savedAddressList?.length ??
                                               0,
                                           itemBuilder: (context, index) {
                                             return GestureDetector(
                                               onTap: () {
                                                 triggerHapticFeedback();
-                                                if (widget.isEditProfile ??
-                                                    false) {
-                                                  profileController
-                                                      .selectedAddressId
-                                                      .value = controller
-                                                          .savedAddressList?[
-                                                              index]
-                                                          .id
-                                                          ?.toString() ??
-                                                      "";
-                                                  profileController
-                                                          .selectedAddress.value =
-                                                      controller
-                                                              .savedAddressList?[
-                                                          index] ?? SavedAddressListData();
+                                                if (widget.isEditProfile ?? false) {
+                                                  profileController.selectedAddressId.value = controller.savedAddressList?[index].id?.toString() ?? "";
+                                                  profileController.selectedAddress.value = controller.savedAddressList?[index] ?? SavedAddressListData();
                                                   Get.back();
                                                   Get.back();
                                                 } else {
-                                                  Get.back(
-                                                      result: controller
-                                                              .savedAddressList?[
-                                                          index]);
+                                                  Get.back(result: controller.savedAddressList?[index]);
                                                 }
                                               },
                                               child: ManualAddressListTile(
-                                                title: controller
-                                                        .savedAddressList?[
-                                                            index]
-                                                        .fullAddress
-                                                        ?.toString()
-                                                        .split(",")
-                                                        .first ??
-                                                    "N/A",
-                                                subtitle: controller
-                                                        .savedAddressList?[
-                                                            index]
-                                                        .fullAddress
-                                                        ?.toString()
-                                                        .replaceAll(
+                                                title: controller.savedAddressList?[index].fullAddress?.toString().split(",").first ?? "N/A",
+                                                subtitle: controller.savedAddressList?[index].fullAddress?.toString().replaceAll(
                                                             "${controller.savedAddressList?[index].fullAddress?.toString().split(",").first}, ",
-                                                            "") ??
-                                                    "N/A",
-                                                suffixBtnTitle:
-                                                    getAddressTypeNameByID(
-                                                        addressTypeID: controller
-                                                                .savedAddressList?[
-                                                                    index]
-                                                                .homeType
-                                                                ?.toString() ??
-                                                            "1"),
+                                                            "") ?? "N/A",
+                                                suffixBtnTitle: getAddressTypeNameByID(addressTypeID: controller.savedAddressList?[index].homeType?.toString() ?? "1"),
                                               ),
                                             );
                                           },

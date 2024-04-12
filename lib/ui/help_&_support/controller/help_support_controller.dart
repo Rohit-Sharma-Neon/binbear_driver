@@ -6,7 +6,9 @@ import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/ui/help_&_support/model/help_support_response.dart';
 
 class HelpSupportController extends GetxController{
-  RxList<HelpSupportData?>? list = <HelpSupportData?>[].obs;
+  RxList<Faq?>? list = <Faq?>[].obs;
+  HelpSupportData helpSupportData = HelpSupportData();
+
 
   @override
   void onInit() {
@@ -21,7 +23,8 @@ class HelpSupportController extends GetxController{
       if (value?.statusCode ==  200) {
         HelpSupportResponse response = HelpSupportResponse.fromJson(value?.data);
         if (response.success??false) {
-          list?.value = response.data??[];
+          list?.value = response.data?.faq??[];
+          helpSupportData = response.data ?? HelpSupportData();
         }else{
           showSnackBar(message: response.message??"");
         }

@@ -35,7 +35,7 @@ class MapViewScreen extends StatefulWidget {
 
 class _MapViewScreenState extends State<MapViewScreen> {
 
-  final MapViewController controller = Get.find<MapViewController>();
+  final MapViewController controller = Get.put(MapViewController());
   final BaseController baseController = Get.find<BaseController>();
 
   @override
@@ -43,6 +43,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
     super.initState();
     controller.addMarker(latitude: widget.lat??0, longitude: widget.long??0);
     controller.searchController.clear();
+    controller.searchController.text = (widget.fullAddress??"").split(",").first;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.selectedLocation.value = widget.fullAddress??"";
     });

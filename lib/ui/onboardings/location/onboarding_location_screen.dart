@@ -1,6 +1,8 @@
+import 'package:binbeardriver/ui/map_view/map_view_screen.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
-import 'package:binbeardriver/utils/base_colors.dart';
+import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 
 import 'package:binbeardriver/ui/base_components/animated_column.dart';
@@ -9,7 +11,6 @@ import 'package:binbeardriver/ui/base_components/base_button.dart';
 import 'package:binbeardriver/ui/base_components/base_container.dart';
 import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/base_components/base_text.dart';
-import 'package:binbeardriver/ui/manual_address/manual_address_screen.dart';
 import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:binbeardriver/ui/onboardings/location/controller/onboarding_location_controller.dart';
 
@@ -17,7 +18,6 @@ class OnboardingLocationScreen extends StatelessWidget {
   OnboardingLocationScreen({super.key,this.showSavedAddress, this.isEditProfile});
    final bool? showSavedAddress;
   final bool? isEditProfile;
-
   final OnBoardingLocationController controller = Get.put(OnBoardingLocationController());
   final BaseController baseController = Get.find<BaseController>();
 
@@ -53,19 +53,56 @@ class OnboardingLocationScreen extends StatelessWidget {
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
                     ),
-                    BaseButton(
-                      topMargin: 35,
-                      title: "Enable Location",
-                      btnColor: BaseColors.secondaryColor,
-                      onPressed: (){
-                        baseController.getCurrentLocation();
-                      },
-                    ),
+                    // BaseButton(
+                    //   topMargin: 35,
+                    //   title: "Enable Location",
+                    //   btnColor: BaseColors.secondaryColor,
+                    //   onPressed: (){
+                    //     showBaseLoader();
+                    //     baseController.getCurrentLocation(showLoader: false).then((value) async {
+                    //       if ((value?.latitude.toString()??"").isNotEmpty && (value?.longitude.toString()??"").isNotEmpty) {
+                    //         var placeMarks = await placemarkFromCoordinates(value?.latitude??0, value?.longitude??0);
+                    //         Placemark place = placeMarks[0];
+                    //         String finalAddress = '${place.name}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.country}, ${place.postalCode}';
+                    //         dismissBaseLoader();
+                    //         Get.to(()=> MapViewScreen(
+                    //           lat: value?.latitude??0,
+                    //           long: value?.longitude??0,
+                    //           fullAddress: finalAddress,
+                    //           mainAddress: place.street,
+                    //           subAddress: "${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.country}, ${place.postalCode}",
+                    //           showSavedAddress: showSavedAddress??false,
+                    //         ));
+                    //       }
+                    //     });
+                    //   },
+                    // ),
                     BaseButton(
                       topMargin: 18,
-                      title: "Add Location Manually",
+                      title: "Add Location",
+                      // onPressed: (){
+                      //   Get.to(() =>  ManualAddressScreen(showSavedAddress: showSavedAddress,isEditProfile: isEditProfile ?? false,));
+                      // },
                       onPressed: (){
-                        Get.to(() =>  ManualAddressScreen(showSavedAddress: showSavedAddress,isEditProfile: isEditProfile ?? false,));
+                        showBaseLoader();
+                        baseController.getCurrentLocation(showLoader: false).then((value) async {
+                          if ((value?.latitude.toString()??"").isNotEmpty && (value?.longitude.toString()??"").isNotEmpty) {
+                            var placeMarks = await placemarkFromCoordinates(value?.latitude??0, value?.longitude??0);
+                            Placemark place = placeMarks[0];
+                            String finalAddress = '${place.name}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.country}, ${place.postalCode}';
+                            dismissBaseLoader();
+                            Get.to(()=> MapViewScreen(
+                              lat: value?.latitude??0,
+                              long: value?.longitude??0,
+                              fullAddress: finalAddress,
+                              mainAddress: place.street,
+                              subAddress: "${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.country}, ${place.postalCode}",
+                              showSavedAddress: showSavedAddress??false,
+                            ));
+                          }else{
+                            showSnackBar(message: "Please Try Again!");
+                          }
+                        });
                       },
                     ),
                   ],

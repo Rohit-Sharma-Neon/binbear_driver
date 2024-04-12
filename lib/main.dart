@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:binbeardriver/backend/firebase_notification_service.dart';
 import 'package:binbeardriver/backend/http_overrider.dart';
 import 'package:binbeardriver/ui/base_components/base_text.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
@@ -12,8 +13,13 @@ import 'package:get/get.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:scaled_app/scaled_app.dart';
 import 'package:binbeardriver/ui/onboardings/splash/splash_screen.dart';
+
+import 'ui/base_components/base_main_builder.dart';
 void main() {
   HttpOverrides.global = MyHttpOverrides();
+  if (kReleaseMode) {
+    debugPrint = (String? message, {int? wrapWidth}) {};
+  }
   runAppScaled(const MyApp(), scaleFactor: (deviceSize){
     const double widthOfDesign = 375;
     return deviceSize.width / widthOfDesign;
@@ -30,6 +36,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   @override
+  void initState() {
+    super.initState();
+    FirebaseNotificationService().initFirebase();
+  }
+  @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'BinBear Driver',
@@ -37,65 +48,8 @@ class _MyAppState extends State<MyApp> {
       translations: BaseLocalization(),
       locale: const Locale('en', 'US'),
       fallbackLocale: const Locale('en', 'US'),
-      
       builder: (BuildContext context, Widget? child) {
-         ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
-          return CustomError(errorDetails: errorDetails);
-        };
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
-          child: Column(
-            children: [
-              Expanded(
-                child: LoaderOverlay(
-                  useDefaultLoading: false,
-                  overlayColor: Colors.black.withOpacity(0.6),
-                  overlayWidgetBuilder: (_) {
-                    return const Center(
-                      child: SpinKitFoldingCube(
-                        color: BaseColors.primaryColor,
-                        size: 50,
-                      ),
-                    );
-                  },
-                  child: MediaQuery(
-                    data: MediaQuery.of(context).scale(),
-                    child: child!,
-                  ),
-                ),
-              ),
-              StreamBuilder(
-                stream: Connectivity().onConnectivityChanged,
-                builder: (BuildContext context, AsyncSnapshot<ConnectivityResult> connectivity) {
-                  return Visibility(
-                    visible: connectivity.data != ConnectivityResult.mobile && connectivity.data != ConnectivityResult.wifi,
-                    child: SizedBox(
-                      height: 20,
-                      child: Scaffold(
-                        backgroundColor: Colors.red,
-                        body: Visibility(
-                          visible: connectivity.data != ConnectivityResult.mobile && connectivity.data != ConnectivityResult.wifi,
-                          child: Container(
-                            height: 20,
-                            color: (connectivity.data != ConnectivityResult.mobile && connectivity.data != ConnectivityResult.wifi) ? Colors.red : Colors.green.shade800,
-                            width: MediaQuery.of(context).size.width,
-                            alignment: Alignment.center,
-                            child: const BaseText(
-                              value: "No Connection!",
-                              fontSize: 11,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        );
+        return BaseMainBuilder(context: context, child: child);
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: BaseColors.primaryColor),

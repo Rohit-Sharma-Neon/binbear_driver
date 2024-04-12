@@ -112,16 +112,13 @@ class ProfileController extends GetxController {
   getProfileData() async {
     isProfileLoading.value = true;
     try {
-      await BaseApiService()
-          .get(apiEndPoint: ApiEndPoints().getUserProfile, showLoader: false)
-          .then((value) {
+      await BaseApiService().get(apiEndPoint: ApiEndPoints().getUserProfile, showLoader: false).then((value) {
         isProfileLoading.value = false;
         refreshController.refreshCompleted();
         if (value?.statusCode == 200) {
           ProfileResponse response = ProfileResponse.fromJson(value?.data);
           if (response.success ?? false) {
-            BaseStorage.write(
-                StorageKeys.profilePhoto, response.data?.profile ?? "");
+            BaseStorage.write(StorageKeys.profilePhoto, response.data?.profile ?? "");
             BaseStorage.write(StorageKeys.userName, response.data?.name ?? "");
             profileData?.value = response.data;
             log(response.data?.toJson().toString() ?? "fgjko");

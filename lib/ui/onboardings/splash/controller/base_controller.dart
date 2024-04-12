@@ -84,8 +84,8 @@ class BaseController extends GetxController{
     }
   }
 
-  Future<Position?> getCurrentLocation() async {
-    showBaseLoader();
+  Future<Position?> getCurrentLocation({bool? showLoader}) async {
+    showBaseLoader(showLoader: showLoader??true);
     Position? position;
     bool isPermissionGranted = false;
     isPermissionGranted = await checkLocationPermission();
@@ -99,9 +99,10 @@ class BaseController extends GetxController{
         );
       } catch (e) {
         log(e.toString());
+        return position;
       }
     }
-    dismissBaseLoader();
+    dismissBaseLoader(showLoader: showLoader??true);
     return position;
   }
 

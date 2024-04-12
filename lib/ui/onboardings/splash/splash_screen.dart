@@ -45,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (await FlutterJailbreakDetection.jailbroken) {
         Get.offAll(() => const BaseErrorScreen());
       }else{
-        if (((BaseStorage.read(StorageKeys.apiToken)??"").toString().isNotEmpty && (BaseStorage.read(StorageKeys.isLoggedIn) ?? false) ==true) && BaseStorage.read(StorageKeys.isUserDriver) != null) {
+        if (((BaseStorage.read(StorageKeys.apiToken)??"").toString().isNotEmpty && (BaseStorage.read(StorageKeys.isLoggedIn) ?? false) == true) && BaseStorage.read(StorageKeys.isUserDriver) != null) {
           if (BaseStorage.read(StorageKeys.isUserDriver)) {
             Get.offAll(() => const JobsScreen());
           }else{

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyCXhWasy22SesJfKRhANxeXlbVJf2M1g-o</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1020023361698</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.jploft.binbeardriver</string>
+	<key>PROJECT_ID</key>
+	<string>binbear-driver</string>
+	<key>STORAGE_BUCKET</key>
+	<string>binbear-driver.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1020023361698:ios:a8f29e9be002ca9ef887fb</string>
+</dict>
+</plist>

@@ -1,3 +1,6 @@
+import 'package:binbeardriver/ui/chat_tab/message_scrren.dart';
+import 'package:binbeardriver/utils/get_storage.dart';
+import 'package:binbeardriver/utils/storage_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
@@ -144,7 +147,12 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                       bottomMargin: 20,
                       title: "Chat With Us",
                       onPressed: (){
-                        Get.to(() => const ChatTab());
+                        Get.to(() => MessageScreen(
+                          name: controller.helpSupportData.user?.name?.toString()??"",
+                          convenienceId: controller.helpSupportData.user?.roomId?.toString()??"0",
+                          senderId: BaseStorage.read(StorageKeys.userId)?.toString()??"",
+                          bookingId: "",
+                        ));
                       },
                     )
                   ],

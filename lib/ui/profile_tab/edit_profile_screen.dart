@@ -309,7 +309,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         btnRightPadding: 20,
                         borderRadius: 13,
                         onPressed: () {
-                          Get.to(() => OnboardingLocationScreen(showSavedAddress: true,isEditProfile: true,));
+                          Get.to(() => OnboardingLocationScreen(showSavedAddress: false,isEditProfile: true,));
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -322,7 +322,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   overflow: TextOverflow.ellipsis,
                                   color: BaseColors.secondaryColor,
                                   fontWeight: FontWeight.w400,
-                                                             ),
+                                 ),
                                ),
                              ),
                             SvgPicture.asset(BaseAssets.icArrowRight)
