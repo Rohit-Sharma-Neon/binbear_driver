@@ -264,7 +264,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       showMediaPicker().then((value) {
                         if ((value?.path??"").isNotEmpty) {
                           controller.pickedFile = File(value?.path??"");
-                          setState(() { });
+                          setState(() {});
                         }
                       });
                     },
@@ -279,14 +279,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             width: double.infinity,
                             child: controller.pickedFile?.path.isNotEmpty ?? false
                                 ? ClipRRect(
-                                    borderRadius:BorderRadius.circular(12),
-                                  child: Image.file(
-                                      controller.pickedFile ?? File(""),
-                                      width: double.maxFinite,
-                                      height: 100,
-                                      fit: BoxFit.fill,
-                                    ),
-                                )
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.file(
+                                controller.pickedFile ?? File(""),
+                                width: double.maxFinite,
+                                height: 100,
+                                fit: BoxFit.fill,
+                              ),
+                            )
                                 : Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [

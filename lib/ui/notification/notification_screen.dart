@@ -8,7 +8,6 @@ import 'package:binbeardriver/ui/notification/controller/notification_controller
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/base_sizes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -81,7 +80,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       ? const NotificationShimmer()
                       : (controller.list?.length??0) == 0 ? const BaseNoData(textColor: Colors.grey, message: "No Notifications Found!",) : ListView.builder(
                       itemCount: controller.list?.length??0,
-                      padding: const EdgeInsets.only(right: 15, left: 17,),
+                      padding: const EdgeInsets.only(right: 15, left: 17,top: 10),
                       shrinkWrap: true,
                         itemBuilder: (context, index){
                           return Stack(
@@ -176,7 +175,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
       ),
     );
   }
-
   Widget divider(){
     return Container(
       width: double.infinity,

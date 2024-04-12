@@ -259,14 +259,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               child: controller.pickedFile?.path.isNotEmpty ??
                                       false
                                   ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(12),
-                                      child: Image.file(
-                                        controller.pickedFile ?? File(""),
-                                        width: double.maxFinite,
-                                        height: 100,
-                                        fit: BoxFit.fill,
-                                      ),
-                                    )
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.file(
+                                  controller.pickedFile ?? File(""),
+                                  width: double.maxFinite,
+                                  height: 100,
+                                  fit: BoxFit.fill,
+                                ),
+                              )
                                   : Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
