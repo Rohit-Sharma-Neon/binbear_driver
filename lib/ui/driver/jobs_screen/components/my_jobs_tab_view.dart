@@ -12,12 +12,18 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class MyJobsTabview extends StatelessWidget {
+class MyJobsTabview extends StatefulWidget {
   const MyJobsTabview({super.key});
 
   @override
+  State<MyJobsTabview> createState() => _MyJobsTabviewState();
+}
+
+class _MyJobsTabviewState extends State<MyJobsTabview> {
+  final JobsController controller = Get.find<JobsController>();
+
+  @override
   Widget build(BuildContext context) {
-    final JobsController controller = Get.find<JobsController>();
     return AnimationLimiter(
       child: Obx(
         () => SmartRefresher(

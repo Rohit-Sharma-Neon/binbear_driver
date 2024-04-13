@@ -19,24 +19,27 @@ import 'package:binbeardriver/ui/driver/drivers_map_view/controller/drivers_map_
 class DriverMapViewScreen extends StatefulWidget {
   final Jobs? jobsData;
   final bool isNewBooking;
-  const DriverMapViewScreen({super.key, required this.jobsData, required this.isNewBooking});
+  const DriverMapViewScreen(
+      {super.key, required this.jobsData, required this.isNewBooking});
 
   @override
   State<DriverMapViewScreen> createState() => _DriverMapViewScreenState();
 }
 
 class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
-
   DriversMapViewController controller = Get.put(DriversMapViewController());
 
   @override
   void initState() {
     super.initState();
     controller.currentWorkStatus.value = "Pick-Up!";
-    if ((widget.jobsData?.pickupAddress?.lat?.toString()??"").isNotEmpty && (widget.jobsData?.pickupAddress?.lng?.toString()??"").isNotEmpty) {
+    if ((widget.jobsData?.pickupAddress?.lat?.toString() ?? "").isNotEmpty &&
+        (widget.jobsData?.pickupAddress?.lng?.toString() ?? "").isNotEmpty) {
       controller.addMarker(
-          latitude: double.parse((widget.jobsData?.pickupAddress?.lat??defaultLat).toString()),
-          longitude: double.parse((widget.jobsData?.pickupAddress?.lng??defaultLng).toString()),
+        latitude: double.parse(
+            (widget.jobsData?.pickupAddress?.lat ?? defaultLat).toString()),
+        longitude: double.parse(
+            (widget.jobsData?.pickupAddress?.lng ?? defaultLng).toString()),
       );
     }
   }
@@ -62,13 +65,17 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                   mapType: MapType.normal,
                   myLocationEnabled: true,
                   initialCameraPosition: controller.getInitialCameraPosition(
-                    lat: double.parse((widget.jobsData?.pickupAddress?.lat??defaultLat).toString()),
-                    long: double.parse((widget.jobsData?.pickupAddress?.lng??defaultLng).toString()),
+                    lat: double.parse(
+                        (widget.jobsData?.pickupAddress?.lat ?? defaultLat)
+                            .toString()),
+                    long: double.parse(
+                        (widget.jobsData?.pickupAddress?.lng ?? defaultLng)
+                            .toString()),
                   ),
                   markers: Set<Marker>.of(controller.markers),
                   zoomControlsEnabled: false,
                   onMapCreated: (GoogleMapController googleMapController) {
-                    if(!controller.mapController.isCompleted){
+                    if (!controller.mapController.isCompleted) {
                       controller.mapController.complete(googleMapController);
                     }
                   },
@@ -99,14 +106,19 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                 children: [
                   BaseText(
                     topMargin: 4,
-                    value: (widget.jobsData?.pickupAddress?.fullAddress?.toString()??"").split(",").first,
+                    value: (widget.jobsData?.pickupAddress?.fullAddress
+                                ?.toString() ??
+                            "")
+                        .split(",")
+                        .first,
                     fontSize: 12,
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
                   ),
                   BaseText(
                     topMargin: 2,
-                    value: "${widget.jobsData?.distance?.toString() ?? "0"} miles",
+                    value:
+                        "${widget.jobsData?.distance?.toString() ?? "0"} miles",
                     fontSize: 11,
                     color: const Color(0xffFBE6D3),
                     fontWeight: FontWeight.w400,
@@ -146,7 +158,9 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                   ),
                   BaseText(
                     topMargin: 2,
-                    value: getServiceTitleById(serviceId: widget.jobsData?.categoryId?.toString()??""),
+                    value: getServiceTitleById(
+                        serviceId:
+                            widget.jobsData?.categoryId?.toString() ?? ""),
                     fontSize: 13,
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
@@ -161,14 +175,20 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SvgPicture.asset(BaseAssets.icPin, color: BaseColors.secondaryColor, height: 12),
+                      SvgPicture.asset(BaseAssets.icPin,
+                          color: BaseColors.secondaryColor, height: 12),
                       Expanded(
                         child: BaseText(
                           topMargin: 2,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           leftMargin: 3.5,
-                          value: (widget.jobsData?.pickupAddress?.flatNo?.toString()??"")+(widget.jobsData?.pickupAddress?.fullAddress?.toString()??""),
+                          value: (widget.jobsData?.pickupAddress?.flatNo
+                                      ?.toString() ??
+                                  "") +
+                              (widget.jobsData?.pickupAddress?.fullAddress
+                                      ?.toString() ??
+                                  ""),
                           fontSize: 13,
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -178,31 +198,46 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                   ),
                   Visibility(
                     visible: widget.isNewBooking == false,
-                    child: Obx(()=>Visibility(
-                      replacement: const SizedBox(height: 32),
-                      visible: controller.currentWorkStatus.value == "Pick-Up!" || controller.currentWorkStatus.value == "Deliver Back To Home",
-                      child: GestureDetector(
-                        onTap: (){
-                          triggerHapticFeedback();
-                          showMediaPicker(isCropEnabled: true).then((value) {
-                            if ((value?.path??"").isNotEmpty) {
-                              controller.selectedImageFile?.value = value;
-                            }
-                          });
-                        },
-                        child: Padding(
+                    child: Obx(
+                      () => Visibility(
+                        replacement: const SizedBox(height: 32),
+                        visible:
+                           ( controller.currentWorkStatus.value == "Pick-Up!" ||
+                                controller.currentWorkStatus.value ==
+                                    "Deliver Back To Home") && widget.jobsData?.serviceStatus?.toString() != "5",
+                        child: GestureDetector( 
+                          onTap: () {
+                            triggerHapticFeedback();
+                            showMediaPicker(isCropEnabled: true).then((value) {
+                              if ((value?.path ?? "").isNotEmpty) {
+                                controller.selectedImageFile?.value = value;
+                              }
+                            });
+                          },
+                          child: Padding(
                             padding: const EdgeInsets.only(top: 11),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                SvgPicture.asset(BaseAssets.icUpload, color: BaseColors.secondaryColor, height: 15),
+                                SvgPicture.asset(BaseAssets.icUpload,
+                                    color: BaseColors.secondaryColor,
+                                    height: 15),
                                 Expanded(
                                   child: BaseText(
                                     topMargin: 2,
                                     leftMargin: 7,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    value: (controller.selectedImageFile?.value?.path??"").isEmpty ? "Upload a picture" : (controller.selectedImageFile?.value?.path??"").split("/").last,
+                                    value: (controller.selectedImageFile?.value
+                                                    ?.path ??
+                                                "")
+                                            .isEmpty
+                                        ? "Upload a picture"
+                                        : (controller.selectedImageFile?.value
+                                                    ?.path ??
+                                                "")
+                                            .split("/")
+                                            .last,
                                     fontSize: 13,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w400,
@@ -211,22 +246,38 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                               ],
                             ),
                           ),
+                        ),
                       ),
-                    ),
                     ),
                   ),
                   Visibility(
                     visible: widget.isNewBooking == false,
-                    child: Obx(()=>BaseButton(
-                        title: controller.currentWorkStatus.value,
-                        topMargin: 11,
-                        bottomMargin: 12,
-                        onPressed: (){
-                          controller.onButtonTap(bookingId: widget.jobsData?.id?.toString()??"");
-                        },
-                        child: controller.getButtonContent(),
-                      ),
-                    ),
+                    child:widget.jobsData?.serviceStatus?.toString() != "5"
+                          ? Obx(
+                      () =>  BaseButton(
+                              title: controller.currentWorkStatus.value,
+                              topMargin: 11,
+                              bottomMargin: 12,
+                              onPressed: () {
+                                controller.onButtonTap(
+                                    bookingId:
+                                        widget.jobsData?.id?.toString() ?? "");
+                              },
+                              child: controller.getButtonContent(),
+                            )
+                          
+                    ) : BaseButton(
+                              title: "Completed",
+                              topMargin: 11,
+                              btnColor: Colors.grey,
+                              bottomMargin: 12,
+                              onPressed: () {},
+                              child: const BaseText(
+                                value: "Completed",
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                              )),
                   )
                 ],
               ),
