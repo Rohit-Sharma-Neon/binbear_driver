@@ -333,6 +333,27 @@ String getServiceTitleById({required String serviceId}) {
   }
 }
 
+String getBookingDetailsStatusTitle(
+    {required String bookingDetailStatusNumber}) {
+  switch (bookingDetailStatusNumber) {
+    case "0":
+      return "Not Accepted";
+    case "1":
+      return "Not Accepted";
+    case "2":
+      return "Pick-Up!";
+    case "3":
+      return "On The Way";
+    case "4":
+      return "Deliver Back To Home";
+    case "5":
+      return "Completed";
+    default:
+      return "Not Accepted";
+  }
+}
+
+
 void clearSessionData() {
    triggerHapticFeedback();
    BaseStorage.box.erase();

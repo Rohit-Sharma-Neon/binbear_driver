@@ -1,5 +1,6 @@
 import 'package:binbeardriver/ui/base_components/base_map_header_shadow.dart';
 import 'package:binbeardriver/ui/driver/jobs_screen/model/my_jobs_response.dart';
+import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
@@ -29,19 +30,48 @@ class DriverMapViewScreen extends StatefulWidget {
 class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
   DriversMapViewController controller = Get.put(DriversMapViewController());
 
+  final BaseController baseController = Get.find<BaseController>();
+
   @override
   void initState() {
     super.initState();
+
     controller.currentWorkStatus.value = "Pick-Up!";
-    if ((widget.jobsData?.pickupAddress?.lat?.toString() ?? "").isNotEmpty &&
-        (widget.jobsData?.pickupAddress?.lng?.toString() ?? "").isNotEmpty) {
-      controller.addMarker(
-        latitude: double.parse(
-            (widget.jobsData?.pickupAddress?.lat ?? defaultLat).toString()),
-        longitude: double.parse(
-            (widget.jobsData?.pickupAddress?.lng ?? defaultLng).toString()),
-      );
-    }
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      showBaseLoader();
+      baseController.getCurrentLocation(showLoader: false).then((value) async {
+        dismissBaseLoader();
+        if ((value?.latitude.toString() ?? "").isNotEmpty &&
+            (value?.longitude.toString() ?? "").isNotEmpty) {
+          await controller.addMarkersAndPolyLines(
+            southwest: LatLng(
+                double.parse(value?.latitude.toString() ??
+                    "0"),
+                double.parse(value?.longitude.toString() ??
+                    "0")),
+            northeast: LatLng(
+              double.parse(widget.jobsData?.pickupAddress?.lat ?? "0"),
+              double.parse(widget.jobsData?.pickupAddress?.lng ?? "0"),
+            ),
+          );
+          setState(() {});
+        } else {
+          showSnackBar(message: "Please Try Again!");
+        }
+      });
+       
+
+    });
+    controller.currentWorkStatus.value = "Pick-Up!";
+    // if ((widget.jobsData?.pickupAddress?.lat?.toString() ?? "").isNotEmpty &&
+    //     (widget.jobsData?.pickupAddress?.lng?.toString() ?? "").isNotEmpty) {
+    //   controller.addMarker(
+    //     latitude: double.parse(
+    //         (widget.jobsData?.pickupAddress?.lat ?? defaultLat).toString()),
+    //     longitude: double.parse(
+    //         (widget.jobsData?.pickupAddress?.lng ?? defaultLng).toString()),
+    //   );
+    // }
   }
 
   @override
@@ -72,6 +102,8 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                         (widget.jobsData?.pickupAddress?.lng ?? defaultLng)
                             .toString()),
                   ),
+
+                  polylines: Set<Polyline>.of(controller.polylines.values),
                   markers: Set<Marker>.of(controller.markers),
                   zoomControlsEnabled: false,
                   onMapCreated: (GoogleMapController googleMapController) {

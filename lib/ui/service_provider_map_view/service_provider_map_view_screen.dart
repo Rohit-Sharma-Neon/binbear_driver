@@ -142,12 +142,7 @@ class _ServiceProviderMapViewScreenState
                       ),
                       BaseText(
                         topMargin: 2,
-                        value: controller.tabController.index != 0 &&
-                                (widget.bookingData?.driverDetail?.name ??
-                                        "") !=
-                                    ""
-                            ? "Picked Up"
-                            : "Waiting for Driver Response",
+                        value:getBookingDetailsStatusTitle(bookingDetailStatusNumber: widget.bookingData?.serviceStatus?.toString() ??"0",),
                         fontSize: 11,
                         color: const Color(0xffFBE6D3),
                         fontWeight: FontWeight.w400,

@@ -1,5 +1,4 @@
 class ApiEndPoints {
-
   /// Debug Server: https://v1.checkprojectstatus.com/binbear/api/
 
   final String baseUrl = 'https://v1.checkprojectstatus.com/binbear/api/';
@@ -36,6 +35,7 @@ class ApiEndPoints {
   final String driverDelete = "delete/binbear";
   final String addDriver = "create/beanbear";
   final String providerBookingAction = "bookings/action";
+  final String providerAvailablity = "available";
   final String bookingAction = "driver/actions";
   final String assignBooking = "assign/booking";
   final String driverHomeData = "driver/home/screen";

@@ -1,5 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:binbeardriver/ui/driver/jobs_screen/controller/jobs_controller.dart';
+import 'package:binbeardriver/ui/home_tab/controller/home_tab_controller.dart';
+import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/base_sizes.dart';
@@ -25,7 +27,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    DashboardController dashboardController = Get.find<DashboardController>();
+    BaseController baseController = Get.find<BaseController>();
     return AppBar(
       title: FadeInDown(
           duration: const Duration(milliseconds: 400),
@@ -72,7 +74,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: Transform.scale(
               scale: 0.75,
               child: Obx(()=> Switch(
-                  value: dashboardController.isDashboardsSwitchButtonEnabled.value,
+                  value: baseController.isAvailable.value == "1" ? true : false,
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   inactiveThumbColor: Colors.black,
                   inactiveTrackColor: Colors.white,
@@ -90,7 +92,8 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                   onChanged: (val){
                     triggerHapticFeedback();
-                    dashboardController.isDashboardsSwitchButtonEnabled.value = val;
+                    baseController.setAvailabilityApi(
+                          baseController.isAvailable.value == "1" ? "0" : "1");
                   },
                 ),
               ),
