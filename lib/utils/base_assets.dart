@@ -52,4 +52,5 @@ class BaseAssets {
   static const String icVideoPlayButton = "assets/images/ic_video_play_btn.svg";
   static const String dummyProfileLottie = "assets/images/dummy_profile_lottie.json";
   static const String bgCoupon = "assets/images/bg_coupon.svg";
+  static const String icSend = "assets/images/ic_send.svg";
 }

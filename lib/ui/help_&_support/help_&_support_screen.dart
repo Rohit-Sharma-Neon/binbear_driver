@@ -14,7 +14,6 @@ import 'package:binbeardriver/ui/base_components/base_container.dart';
 import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/base_components/base_text.dart';
 import 'package:binbeardriver/ui/base_components/listview_builder_animation.dart';
-import 'package:binbeardriver/ui/chat_tab/chat_tab.dart';
 import 'package:binbeardriver/ui/help_&_support/controller/help_support_controller.dart';
 
 class HelpSupportScreen extends StatefulWidget {

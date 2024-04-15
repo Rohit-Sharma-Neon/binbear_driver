@@ -1,8 +1,10 @@
 import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
 import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/chat_tab/controller/message_controller.dart';
+import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import 'package:binbeardriver/ui/chat_tab/model/ticket_chat_model.dart';
@@ -172,10 +174,10 @@ class _MessageScreenState extends State<MessageScreen> {
                       messageController.controller.clear();
                     }
                   },
-                  child: const Padding(
-                    padding: EdgeInsets.only(
-                        right: 15, left: 15, top: 10, bottom: 10),
-                    child: Icon(Icons.send_rounded),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        right: 15, left: 25, top: 10, bottom: 10),
+                    child: SvgPicture.asset(BaseAssets.icSend),
                   ),
                 ),
                 disabledBorder: InputBorder.none,
