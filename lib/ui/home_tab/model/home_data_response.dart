@@ -40,12 +40,14 @@ class Data {
   List<AllDriver>? allDrivers;
   dynamic totalBooking;
   dynamic totalEarning;
+  dynamic loginServiceProviderStatus;
 
   Data({
     this.bookings,
     this.allDrivers,
     this.totalBooking,
     this.totalEarning,
+    this.loginServiceProviderStatus
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -59,6 +61,7 @@ class Data {
                 json["all_drivers"]!.map((x) => AllDriver.fromJson(x))),
         totalBooking: json["total_booking"],
         totalEarning: json["total_earning"],
+loginServiceProviderStatus: json["login_service_provider_status"]
       );
 
   Map<String, dynamic> toJson() => {
@@ -70,6 +73,7 @@ class Data {
             : List<dynamic>.from(allDrivers!.map((x) => x.toJson())),
         "total_booking": totalBooking,
         "total_earning": totalEarning,
+        "login_service_provider_status":loginServiceProviderStatus
       };
 }
 
@@ -189,7 +193,7 @@ class AllDriver {
         "mobile": mobile,
         "stripe_account_id": stripeAccountId,
         "dob":
-            "${dob!.year.toString().padLeft(4, '0')}-${dob!.month.toString().padLeft(2, '0')}-${dob!.day.toString().padLeft(2, '0')}",
+            "${dob?.year.toString().padLeft(4, '0')}-${dob?.month.toString().padLeft(2, '0')}-${dob?.day.toString().padLeft(2, '0') ?? ""}",
         "gender": gender,
         "is_online": isOnline,
         "country_code": countryCode,
@@ -295,7 +299,9 @@ class Booking {
         pickupAddress: json["pickup_address"] == null
             ? null
             : PickupAddress.fromJson(json["pickup_address"]),
-    driverDetail: json["assigned_driver_details"] == null ? null : DriverDetails.fromJson(json["assigned_driver_details"]),
+        driverDetail: json["assigned_driver_details"] == null
+            ? null
+            : DriverDetails.fromJson(json["assigned_driver_details"]),
         distance: json["distance"],
         time: json["time"],
       );
@@ -321,7 +327,7 @@ class Booking {
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "pickup_address": pickupAddress?.toJson(),
-      "assigned_driver_details": driverDetail?.toJson(),
+        "assigned_driver_details": driverDetail?.toJson(),
         "distance": distance,
         "time": time,
       };
@@ -399,40 +405,38 @@ class PickupAddress {
       };
 }
 
-
-
 class UserDetail {
-  dynamic  id;
-  dynamic  name;
+  dynamic id;
+  dynamic name;
   dynamic middleName;
   dynamic lastName;
-  dynamic  email;
-  dynamic  mobile;
-  dynamic  stripeAccountId;
+  dynamic email;
+  dynamic mobile;
+  dynamic stripeAccountId;
   dynamic dob;
   dynamic gender;
-  dynamic  isOnline;
-  dynamic  countryCode;
-  dynamic  otp;
-  dynamic  token;
+  dynamic isOnline;
+  dynamic countryCode;
+  dynamic otp;
+  dynamic token;
   dynamic profile;
   dynamic bio;
-  dynamic  roleId;
+  dynamic roleId;
   dynamic serviceProviderId;
   dynamic businessName;
   dynamic idProof;
-  dynamic  isVerify;
-  dynamic  adminApproval;
-  dynamic  status;
-  dynamic  binbearStatus;
+  dynamic isVerify;
+  dynamic adminApproval;
+  dynamic status;
+  dynamic binbearStatus;
   dynamic binbearCurrentBooking;
-  dynamic  isSendNotification;
-  dynamic  emailVerifiedAt;
-  dynamic  phoneVerifiedAt;
-  dynamic  deviceToken;
+  dynamic isSendNotification;
+  dynamic emailVerifiedAt;
+  dynamic phoneVerifiedAt;
+  dynamic deviceToken;
   dynamic socketId;
-  dynamic  createdAt;
-  dynamic  updatedAt;
+  dynamic createdAt;
+  dynamic updatedAt;
 
   UserDetail({
     this.id,
@@ -543,39 +547,38 @@ class UserDetail {
       };
 }
 
-
 class DriverDetails {
-  dynamic  id;
-  dynamic  name;
+  dynamic id;
+  dynamic name;
   dynamic middleName;
   dynamic lastName;
-  dynamic  email;
-  dynamic  mobile;
-  dynamic  stripeAccountId;
+  dynamic email;
+  dynamic mobile;
+  dynamic stripeAccountId;
   dynamic dob;
-  dynamic  gender;
-  dynamic  isOnline;
-  dynamic  countryCode;
-  dynamic  otp;
-  dynamic  token;
-  dynamic  profile;
+  dynamic gender;
+  dynamic isOnline;
+  dynamic countryCode;
+  dynamic otp;
+  dynamic token;
+  dynamic profile;
   dynamic bio;
-  dynamic  roleId;
-  dynamic  serviceProviderId;
+  dynamic roleId;
+  dynamic serviceProviderId;
   dynamic businessName;
   dynamic idProof;
   dynamic isVerify;
-  dynamic  adminApproval;
-  dynamic  status;
-  dynamic  binbearStatus;
+  dynamic adminApproval;
+  dynamic status;
+  dynamic binbearStatus;
   dynamic binbearCurrentBooking;
-  dynamic  isSendNotification;
-  dynamic  emailVerifiedAt;
-  dynamic  phoneVerifiedAt;
-  dynamic  deviceToken;
+  dynamic isSendNotification;
+  dynamic emailVerifiedAt;
+  dynamic phoneVerifiedAt;
+  dynamic deviceToken;
   dynamic socketId;
-  dynamic  createdAt;
-  dynamic  updatedAt;
+  dynamic createdAt;
+  dynamic updatedAt;
 
   DriverDetails({
     this.id,
@@ -612,70 +615,76 @@ class DriverDetails {
   });
 
   factory DriverDetails.fromJson(Map<String, dynamic> json) => DriverDetails(
-    id: json["id"],
-    name: json["name"],
-    middleName: json["middle_name"],
-    lastName: json["last_name"],
-    email: json["email"],
-    mobile: json["mobile"],
-    stripeAccountId: json["stripe_account_id"],
-    dob: json["dob"],
-    gender: json["gender"],
-    isOnline: json["is_online"],
-    countryCode: json["country_code"],
-    otp: json["otp"],
-    token: json["token"],
-    profile: json["profile"],
-    bio: json["bio"],
-    roleId: json["role_id"],
-    serviceProviderId: json["service_provider_id"],
-    businessName: json["business_name"],
-    idProof: json["id_proof"],
-    isVerify: json["is_verify"],
-    adminApproval: json["admin_approval"],
-    status: json["status"],
-    binbearStatus: json["binbear_status"],
-    binbearCurrentBooking: json["binbear_current_booking"],
-    isSendNotification: json["is_send_notification"],
-    emailVerifiedAt: json["email_verified_at"] == null ? null : DateTime.parse(json["email_verified_at"]),
-    phoneVerifiedAt: json["phone_verified_at"],
-    deviceToken: json["device_token"],
-    socketId: json["socket_id"],
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-  );
+        id: json["id"],
+        name: json["name"],
+        middleName: json["middle_name"],
+        lastName: json["last_name"],
+        email: json["email"],
+        mobile: json["mobile"],
+        stripeAccountId: json["stripe_account_id"],
+        dob: json["dob"],
+        gender: json["gender"],
+        isOnline: json["is_online"],
+        countryCode: json["country_code"],
+        otp: json["otp"],
+        token: json["token"],
+        profile: json["profile"],
+        bio: json["bio"],
+        roleId: json["role_id"],
+        serviceProviderId: json["service_provider_id"],
+        businessName: json["business_name"],
+        idProof: json["id_proof"],
+        isVerify: json["is_verify"],
+        adminApproval: json["admin_approval"],
+        status: json["status"],
+        binbearStatus: json["binbear_status"],
+        binbearCurrentBooking: json["binbear_current_booking"],
+        isSendNotification: json["is_send_notification"],
+        emailVerifiedAt: json["email_verified_at"] == null
+            ? null
+            : DateTime.parse(json["email_verified_at"]),
+        phoneVerifiedAt: json["phone_verified_at"],
+        deviceToken: json["device_token"],
+        socketId: json["socket_id"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "middle_name": middleName,
-    "last_name": lastName,
-    "email": email,
-    "mobile": mobile,
-    "stripe_account_id": stripeAccountId,
-    "dob": dob,
-    "gender": gender,
-    "is_online": isOnline,
-    "country_code": countryCode,
-    "otp": otp,
-    "token": token,
-    "profile": profile,
-    "bio": bio,
-    "role_id": roleId,
-    "service_provider_id": serviceProviderId,
-    "business_name": businessName,
-    "id_proof": idProof,
-    "is_verify": isVerify,
-    "admin_approval": adminApproval,
-    "status": status,
-    "binbear_status": binbearStatus,
-    "binbear_current_booking": binbearCurrentBooking,
-    "is_send_notification": isSendNotification,
-    "email_verified_at": emailVerifiedAt?.toIso8601String(),
-    "phone_verified_at": phoneVerifiedAt,
-    "device_token": deviceToken,
-    "socket_id": socketId,
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
-  };
+        "id": id,
+        "name": name,
+        "middle_name": middleName,
+        "last_name": lastName,
+        "email": email,
+        "mobile": mobile,
+        "stripe_account_id": stripeAccountId,
+        "dob": dob,
+        "gender": gender,
+        "is_online": isOnline,
+        "country_code": countryCode,
+        "otp": otp,
+        "token": token,
+        "profile": profile,
+        "bio": bio,
+        "role_id": roleId,
+        "service_provider_id": serviceProviderId,
+        "business_name": businessName,
+        "id_proof": idProof,
+        "is_verify": isVerify,
+        "admin_approval": adminApproval,
+        "status": status,
+        "binbear_status": binbearStatus,
+        "binbear_current_booking": binbearCurrentBooking,
+        "is_send_notification": isSendNotification,
+        "email_verified_at": emailVerifiedAt?.toIso8601String(),
+        "phone_verified_at": phoneVerifiedAt,
+        "device_token": deviceToken,
+        "socket_id": socketId,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+      };
 }

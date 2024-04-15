@@ -135,6 +135,7 @@ class DriverBookingListTile extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
+                  if(distance!="0"&&distance!="0.0"&&distance!="0.00")
                   BaseOutlinedButton(
                     topMargin: 0,
                     leftMargin: 8,
