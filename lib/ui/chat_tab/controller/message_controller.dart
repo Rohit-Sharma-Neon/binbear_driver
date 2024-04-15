@@ -1,11 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:binbeardriver/backend/api_end_points.dart';
+import 'package:binbeardriver/backend/base_api_service.dart';
 import 'package:binbeardriver/ui/chat_tab/model/chat_model.dart';
+import 'package:binbeardriver/ui/chat_tab/model/file_upload_response.dart';
+import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/get_storage.dart';
 import 'package:binbeardriver/utils/storage_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:binbeardriver/ui/chat_tab/model/SentMessageUpdateModel.dart';
 import 'package:binbeardriver/ui/chat_tab/model/ticket_chat_model.dart' as tcm;
@@ -109,6 +113,26 @@ class MessageController extends GetxController {
       });
     }
 
+  }
+
+  Future<String> getUploadUrl({required File selectedImage}) async {
+    String returnValue = "";
+    dio.FormData data = dio.FormData.fromMap({
+      "attachment": await dio.MultipartFile.fromFile(selectedImage.path, filename: selectedImage.path.split("/").last)
+    });
+    await BaseApiService().post(apiEndPoint: ApiEndPoints().fileUpload, data: data).then((value){
+      if (value?.statusCode ==  200) {
+        FileUploadResponse response = FileUploadResponse.fromJson(value?.data);
+        if (response.success??false) {
+          returnValue = response.data?.image??"";
+        }else{
+          showSnackBar(message: response.message??"");
+        }
+      }else{
+        showSnackBar(message: "Something went wrong, please try again");
+      }
+    });
+    return returnValue;
   }
 
   emitThreadList(){

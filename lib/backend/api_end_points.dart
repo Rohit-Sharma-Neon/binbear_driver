@@ -44,4 +44,5 @@ class ApiEndPoints {
 
   final String forgotPassword = "forgotPassword";
   final String resetPassword = "reset_password";
+  final String fileUpload = "fileUpload";
 }

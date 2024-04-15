@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
 import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/ui/chat_tab/controller/message_controller.dart';
@@ -51,7 +53,7 @@ class _MessageScreenState extends State<MessageScreen> {
   sendMsg(String? txt, type, file) {
     var mFile = type == "TEXT" ? '' : file;
     //messageController.socket?.emit('SEND_MESSAGE',{messageController.userId, "1", widget.convenienceId, txt, type, mFile }, );
-    messageController.socket?.emit('SEND_MESSAGE',{"senderId":messageController.userId,"receiveId":widget.senderId,"roomId":widget.convenienceId,"message":txt,"messageType": type,"messageFile": mFile,"tipId":"0"}, );
+    messageController.socket?.emit('SEND_MESSAGE',{"senderId":messageController.userId,"receiveId":widget.senderId?.toString()??"","roomId":widget.convenienceId,"message":txt,"messageType": type,"messageFile": mFile,"tipId":"0"}, );
   }
 
   // sendImage(int val) async {
@@ -152,14 +154,22 @@ class _MessageScreenState extends State<MessageScreen> {
                 hintText: "Type here".tr,
                 hintStyle: const TextStyle(
                     fontWeight: FontWeight.w500, fontSize: 14),
-                counterStyle:
-                const TextStyle(color: Colors.transparent, fontSize: 0),
+                counterStyle: const TextStyle(color: Colors.transparent, fontSize: 0),
                 counterText: null,
                 counter: null,
                 prefixIcon: GestureDetector(
                   onTap: () {
                     triggerHapticFeedback();
-                    showMediaPicker();
+                    showMediaPicker().then((value) {
+                      if ((value?.path??"").isNotEmpty) {
+                        messageController.getUploadUrl(selectedImage: value??File("")).then((value) {
+                          if (value.isNotEmpty) {
+                            triggerHapticFeedback();
+                            sendMsg("", "IMAGE", value);
+                          }
+                        });
+                      }
+                    });
                   },
                   child: const Padding(
                     padding: EdgeInsets.only(right: 10, left: 15),
@@ -176,7 +186,8 @@ class _MessageScreenState extends State<MessageScreen> {
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        right: 15, left: 25, top: 10, bottom: 10),
+                      right: 15, left: 25, top: 10, bottom: 10,
+                    ),
                     child: SvgPicture.asset(BaseAssets.icSend),
                   ),
                 ),

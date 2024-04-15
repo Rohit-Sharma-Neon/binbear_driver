@@ -76,10 +76,13 @@ class BaseController extends GetxController{
   }
 
   Future<LatLng?> getLatLngFromAddress({required String address}) async {
+    showBaseLoader();
     var locations = await locationFromAddress(address);
     if (locations.isNotEmpty) {
+      dismissBaseLoader();
       return LatLng(locations.first.latitude, locations.first.longitude);
     }else {
+      dismissBaseLoader();
       return const LatLng(0, 0);
     }
   }
