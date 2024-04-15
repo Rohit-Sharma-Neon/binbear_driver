@@ -183,12 +183,8 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           leftMargin: 3.5,
-                          value: (widget.jobsData?.pickupAddress?.flatNo
-                                      ?.toString() ??
-                                  "") +
-                              (widget.jobsData?.pickupAddress?.fullAddress
-                                      ?.toString() ??
-                                  ""),
+                          value:
+                              "${widget.jobsData?.pickupAddress?.flatNo?.toString() ?? ""}, ${widget.jobsData?.pickupAddress?.fullAddress?.toString() ?? ""}",
                           fontSize: 13,
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -201,11 +197,12 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                     child: Obx(
                       () => Visibility(
                         replacement: const SizedBox(height: 32),
-                        visible:
-                           ( controller.currentWorkStatus.value == "Pick-Up!" ||
+                        visible: (controller.currentWorkStatus.value ==
+                                    "Pick-Up!" ||
                                 controller.currentWorkStatus.value ==
-                                    "Deliver Back To Home") && widget.jobsData?.serviceStatus?.toString() != "5",
-                        child: GestureDetector( 
+                                    "Deliver Back To Home") &&
+                            widget.jobsData?.serviceStatus?.toString() != "5",
+                        child: GestureDetector(
                           onTap: () {
                             triggerHapticFeedback();
                             showMediaPicker(isCropEnabled: true).then((value) {
@@ -252,9 +249,8 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                   ),
                   Visibility(
                     visible: widget.isNewBooking == false,
-                    child:widget.jobsData?.serviceStatus?.toString() != "5"
-                          ? Obx(
-                      () =>  BaseButton(
+                    child: widget.jobsData?.serviceStatus?.toString() != "5"
+                        ? Obx(() => BaseButton(
                               title: controller.currentWorkStatus.value,
                               topMargin: 11,
                               bottomMargin: 12,
@@ -264,20 +260,19 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                                         widget.jobsData?.id?.toString() ?? "");
                               },
                               child: controller.getButtonContent(),
-                            )
-                          
-                    ) : BaseButton(
-                              title: "Completed",
-                              topMargin: 11,
-                              btnColor: Colors.grey,
-                              bottomMargin: 12,
-                              onPressed: () {},
-                              child: const BaseText(
-                                value: "Completed",
-                                fontSize: 14,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              )),
+                            ))
+                        : BaseButton(
+                            title: "Completed",
+                            topMargin: 11,
+                            btnColor: Colors.grey,
+                            bottomMargin: 12,
+                            onPressed: () {},
+                            child: const BaseText(
+                              value: "Completed",
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                            )),
                   )
                 ],
               ),
