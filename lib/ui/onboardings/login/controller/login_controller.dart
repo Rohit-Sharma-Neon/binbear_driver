@@ -48,7 +48,7 @@ class LoginController extends GetxController {
             Get.to(() => OnboardingLocationScreen());
           } else {
             BaseStorage.write(StorageKeys.isLoggedIn, true);
-            if (BaseStorage.read(StorageKeys.isUserDriver)) {
+            if (BaseStorage.read(StorageKeys.isUserDriver)??false) {
               Get.offAll(() => const JobsScreen());
             } else {
               Get.offAll(() => const DashBoardScreen());

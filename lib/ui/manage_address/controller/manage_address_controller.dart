@@ -51,7 +51,7 @@ class ManageAddressController extends GetxController {
             Get.back();
             Get.find<BaseController>().getSavedAddress();
           } else {
-            if (BaseStorage.read(StorageKeys.isUserDriver)) {
+            if (BaseStorage.read(StorageKeys.isUserDriver)??false) {
               Get.offAll(() => const JobsScreen());
             } else {
               if (Get.find<BaseController>().isAddressTappedOnSignUp.value ==

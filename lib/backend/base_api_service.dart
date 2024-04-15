@@ -63,7 +63,7 @@ class BaseApiService {
       final Response response = await _dio.get(
         ApiEndPoints().baseUrl+apiEndPoint,
           queryParameters: queryParameters,
-          options: Options(headers: {"Authorization": "Bearer ${BaseStorage.read(StorageKeys.apiToken)}"}),
+          options: Options(headers: {"Authorization": "Bearer ${BaseStorage.read(StorageKeys.apiToken)??""}"}),
       );
       dismissBaseLoader(showLoader: showLoader??true);
       return response;
@@ -84,7 +84,7 @@ class BaseApiService {
         final Response response = await _dio.post(
           ApiEndPoints().baseUrl+apiEndPoint,
           data: data,
-          options: Options(headers: {"Authorization": "Bearer ${BaseStorage.read(StorageKeys.apiToken)}"}),
+          options: Options(headers: {"Authorization": "Bearer ${BaseStorage.read(StorageKeys.apiToken)??""}"}),
         );
         dismissBaseLoader(showLoader: showLoader??true);
         return response;
@@ -105,7 +105,7 @@ class BaseApiService {
       final Response response = await _dio.put(
         ApiEndPoints().baseUrl+apiEndPoint,
         data: data,
-        options: Options(headers: {"Authorization": "Bearer ${BaseStorage.read(StorageKeys.apiToken)}"}),
+        options: Options(headers: {"Authorization": "Bearer ${BaseStorage.read(StorageKeys.apiToken)??""}"}),
       );
       dismissBaseLoader(showLoader: showLoader??true,
       );

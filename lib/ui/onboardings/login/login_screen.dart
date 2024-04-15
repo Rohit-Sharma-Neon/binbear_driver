@@ -96,8 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     triggerHapticFeedback();
                                     controller.selectedUserType.value =
                                         "BinBears";
-                                    BaseStorage.write(
-                                        StorageKeys.isUserDriver, true);
+                                    BaseStorage.write(StorageKeys.isUserDriver, true);
                                   },
                                 ),
                               ),

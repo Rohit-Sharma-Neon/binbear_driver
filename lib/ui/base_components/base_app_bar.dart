@@ -46,7 +46,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
         ///   Drawer Icon
             ? GestureDetector(onTap: (){
               triggerHapticFeedback();
-          if (BaseStorage.read(StorageKeys.isUserDriver)) {
+          if (BaseStorage.read(StorageKeys.isUserDriver)??false) {
             Get.find<JobsController>().jobsScaffoldKey.currentState?.openDrawer();
           }else{
             Get.find<DashboardController>().scaffoldKey.currentState?.openDrawer();
