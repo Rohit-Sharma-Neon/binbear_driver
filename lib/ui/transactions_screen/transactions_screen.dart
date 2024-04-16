@@ -52,6 +52,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                   bottomPadding: 14,
                   border: Border.all(width: 1.5, color: BaseColors.secondaryColor),
                   child: DropdownButton<String>(
+                    hint: const Text('Please Select Month'),
                     value: controller.dropdownValue,
                     onChanged: (String? value) {
                       setState(() {

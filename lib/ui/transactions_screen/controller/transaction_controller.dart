@@ -8,9 +8,8 @@ import 'package:binbeardriver/ui/transactions_screen/model/transactions_response
 
 
 class TransactionController extends GetxController{
-  // List<String> options = <String>['Monthly Total Compensation', 'Two', 'Three', 'Four'];
-  List<String> options = <String>['Monthly Total Compensation'];
-  String? dropdownValue ="Monthly Total Compensation";
+  List<String> options = <String>['January','February','March','April','May','June','July','August','September','October','November','December'];
+  String? dropdownValue ;
   final now = DateTime.now();
   RxBool isTransactionLoading = false.obs;
   RefreshController refreshController = RefreshController(initialRefresh: false);
