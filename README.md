@@ -6,6 +6,7 @@ BinBear Driver Side App
 
 2 => Pickup, 3 => On the Way, 4 => Deliver Back to Home, 5 => Completed, 6 => rejected
 
+
 // Git Commands
 # git remote set-url --add origin https://github.com/Rohit-Sharma-Neon/binbear_driver.git
 # git add .
