@@ -75,7 +75,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                       hintText: 'e.g. Landmark etc',
                       textInputType: TextInputType.name,
                     ),
-                    const BaseText(
+                    /*const BaseText(
                       topMargin: 14,
                       value: "SAVE AS",
                       fontSize: 15,
@@ -96,7 +96,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                           ),
                         );
                       }).toList(),
-                    ),
+                    ),*/
                     BaseButton(
                       title: "Submit",
                       topMargin: 5,

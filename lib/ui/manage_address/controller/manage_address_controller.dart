@@ -33,8 +33,7 @@ class ManageAddressController extends GetxController {
       "flat_no": houseNoController.text.trim(),
       "apartment": apartmentController.text.trim(),
       "description": landmarkController.text.trim(),
-      "home_type":
-          getAddressTypeNumber(getAddressTypeName: selectedAddressType.value),
+      "home_type": "2", // default type is "2" defined by backend
       "full_address": fullAddress,
       "lat": lat.toString(),
       "lng": lng.toString(),
@@ -86,8 +85,7 @@ class ManageAddressController extends GetxController {
       "flat_no": houseNoController.text.trim(),
       "apartment": apartmentController.text.trim(),
       "description": landmarkController.text.trim(),
-      "home_type":
-          getAddressTypeNumber(getAddressTypeName: selectedAddressType.value),
+      "home_type": "2", // default type is "2" defined by backend
       "full_address": fullAddress,
       "lat": lat.toString(),
       "lng": lng.toString(),
