@@ -71,7 +71,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                     BaseTextField(
                       topMargin: 16,
                       controller: controller.landmarkController,
-                      labelText: 'Description',
+                      labelText: 'Description (Optional)',
                       hintText: 'e.g. Landmark etc',
                       textInputType: TextInputType.name,
                     ),
@@ -105,9 +105,9 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                           showSnackBar(message: "Please Enter House / Flat / Block Number");
                         }/*else if (controller.apartmentController.text.trim().isEmpty) {
                           showSnackBar(subtitle: "Please Enter Apartment / Road / Area");
-                        }*/else if (controller.landmarkController.text.trim().isEmpty) {
+                        }*/ /*else if (controller.landmarkController.text.trim().isEmpty) {
                           showSnackBar(message: "Please Enter Description");
-                        }else{
+                        }*/else{
                           controller.saveAddress(
                             lat: widget.lat??0,
                             lng: widget.long??0,

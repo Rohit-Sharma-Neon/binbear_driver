@@ -22,7 +22,7 @@ class JobsController extends GetxController with GetSingleTickerProviderStateMix
   void onInit() {
     super.onInit();
     tabController = TabController(length: 2, vsync: this);
-     getMyJobsApi();
+    getMyJobsApi();
     tabController.addListener(() {
       if (!(tabController.indexIsChanging)) {
         getMyJobsApi();

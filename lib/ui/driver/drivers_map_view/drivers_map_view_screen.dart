@@ -19,9 +19,10 @@ import 'package:binbeardriver/ui/driver/drivers_map_view/controller/drivers_map_
 
 class DriverMapViewScreen extends StatefulWidget {
   final Jobs? jobsData;
+  final int index;
   final bool isNewBooking;
   const DriverMapViewScreen(
-      {super.key, required this.jobsData, required this.isNewBooking});
+      {super.key, required this.jobsData, required this.isNewBooking, required this.index});
 
   @override
   State<DriverMapViewScreen> createState() => _DriverMapViewScreenState();
@@ -35,20 +36,17 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
   @override
   void initState() {
     super.initState();
-
-    controller.currentWorkStatus.value = "Pick-Up!";
+    controller.currentWorkStatus.value = widget.jobsData?.serviceStatus?.toString()??"";
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       showBaseLoader();
       baseController.getCurrentLocation(showLoader: false).then((value) async {
         dismissBaseLoader();
-        if ((value?.latitude.toString() ?? "").isNotEmpty &&
-            (value?.longitude.toString() ?? "").isNotEmpty) {
+        if ((value?.latitude.toString() ?? "").isNotEmpty && (value?.longitude.toString() ?? "").isNotEmpty) {
           await controller.addMarkersAndPolyLines(
             southwest: LatLng(
-                double.parse(value?.latitude.toString() ??
-                    "0"),
-                double.parse(value?.longitude.toString() ??
-                    "0")),
+                double.parse(value?.latitude.toString() ?? "0"),
+                double.parse(value?.longitude.toString() ?? "0"),
+            ),
             northeast: LatLng(
               double.parse(widget.jobsData?.pickupAddress?.lat ?? "0"),
               double.parse(widget.jobsData?.pickupAddress?.lng ?? "0"),
@@ -59,8 +57,6 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
           showSnackBar(message: "Please Try Again!");
         }
       });
-       
-
     });
     controller.currentWorkStatus.value = "Pick-Up!";
     // if ((widget.jobsData?.pickupAddress?.lat?.toString() ?? "").isNotEmpty &&
@@ -95,14 +91,9 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                   mapType: MapType.normal,
                   myLocationEnabled: true,
                   initialCameraPosition: controller.getInitialCameraPosition(
-                    lat: double.parse(
-                        (widget.jobsData?.pickupAddress?.lat ?? defaultLat)
-                            .toString()),
-                    long: double.parse(
-                        (widget.jobsData?.pickupAddress?.lng ?? defaultLng)
-                            .toString()),
+                    lat: double.parse((widget.jobsData?.pickupAddress?.lat ?? defaultLat).toString()),
+                    long: double.parse((widget.jobsData?.pickupAddress?.lng ?? defaultLng).toString()),
                   ),
-
                   polylines: Set<Polyline>.of(controller.polylines.values),
                   markers: Set<Marker>.of(controller.markers),
                   zoomControlsEnabled: false,
@@ -138,19 +129,14 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                 children: [
                   BaseText(
                     topMargin: 4,
-                    value: (widget.jobsData?.pickupAddress?.fullAddress
-                                ?.toString() ??
-                            "")
-                        .split(",")
-                        .first,
+                    value: (widget.jobsData?.pickupAddress?.fullAddress?.toString() ?? "").split(",").first,
                     fontSize: 12,
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
                   ),
                   BaseText(
                     topMargin: 2,
-                    value:
-                        "${widget.jobsData?.distance?.toString() ?? "0"} miles",
+                    value: "${widget.jobsData?.distance?.toString() ?? "0"} miles",
                     fontSize: 11,
                     color: const Color(0xffFBE6D3),
                     fontWeight: FontWeight.w400,
@@ -191,8 +177,8 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                   BaseText(
                     topMargin: 2,
                     value: getServiceTitleById(
-                        serviceId:
-                            widget.jobsData?.categoryId?.toString() ?? ""),
+                        serviceId: widget.jobsData?.categoryId?.toString() ?? "",
+                    ),
                     fontSize: 13,
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
@@ -208,15 +194,15 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SvgPicture.asset(BaseAssets.icPin,
-                          color: BaseColors.secondaryColor, height: 12),
+                          color: BaseColors.secondaryColor, height: 12,
+                      ),
                       Expanded(
                         child: BaseText(
                           topMargin: 2,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           leftMargin: 3.5,
-                          value:
-                              "${widget.jobsData?.pickupAddress?.flatNo?.toString() ?? ""}, ${widget.jobsData?.pickupAddress?.fullAddress?.toString() ?? ""}",
+                          value: "${widget.jobsData?.pickupAddress?.flatNo?.toString() ?? ""}, ${widget.jobsData?.pickupAddress?.fullAddress?.toString() ?? ""}",
                           fontSize: 13,
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -229,11 +215,7 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                     child: Obx(
                       () => Visibility(
                         replacement: const SizedBox(height: 32),
-                        visible: (controller.currentWorkStatus.value ==
-                                    "Pick-Up!" ||
-                                controller.currentWorkStatus.value ==
-                                    "Deliver Back To Home") &&
-                            widget.jobsData?.serviceStatus?.toString() != "5",
+                        visible: (controller.currentWorkStatus.value == "Pick-Up!" || controller.currentWorkStatus.value == "Deliver Back To Home") && widget.jobsData?.serviceStatus?.toString() != "5",
                         child: GestureDetector(
                           onTap: () {
                             triggerHapticFeedback();
@@ -257,16 +239,9 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                                     leftMargin: 7,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    value: (controller.selectedImageFile?.value
-                                                    ?.path ??
-                                                "")
-                                            .isEmpty
+                                    value: (controller.selectedImageFile?.value?.path ?? "").isEmpty
                                         ? "Upload a picture"
-                                        : (controller.selectedImageFile?.value
-                                                    ?.path ??
-                                                "")
-                                            .split("/")
-                                            .last,
+                                        : (controller.selectedImageFile?.value?.path ?? "").split("/").last,
                                     fontSize: 13,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w400,
@@ -288,8 +263,9 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                               bottomMargin: 12,
                               onPressed: () {
                                 controller.onButtonTap(
-                                    bookingId:
-                                        widget.jobsData?.id?.toString() ?? "");
+                                  bookingId: widget.jobsData?.id?.toString() ?? "",
+                                  index: widget.index,
+                                );
                               },
                               child: controller.getButtonContent(),
                             ))
@@ -304,7 +280,8 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                               fontSize: 14,
                               color: Colors.white,
                               fontWeight: FontWeight.w400,
-                            )),
+                            ),
+                    ),
                   )
                 ],
               ),

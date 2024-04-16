@@ -28,8 +28,7 @@ class DriversMapViewController extends GetxController{
   Map<PolylineId, Polyline> polylines = {};
 
   late LatLngBounds bound;
-  addMarkersAndPolyLines(
-      {required LatLng southwest, required LatLng northeast}) async {
+  addMarkersAndPolyLines({required LatLng southwest, required LatLng northeast}) async {
     polylinePoints = PolylinePoints();
     markers.clear();
     polylineCoordinates.clear();
@@ -164,12 +163,14 @@ class DriversMapViewController extends GetxController{
     }
   }
 
-  void onButtonTap({required String bookingId}){
+  void onButtonTap({required String bookingId, required int index}){
     switch (currentWorkStatus.value) {
       case "Pick-Up!": {
         if ((selectedImageFile?.value?.path??"").isNotEmpty) {
           updateDriverStatus(bookingId: bookingId, status: "2").then((value) {
             if (value??false) {
+              Get.find<JobsController>().list?[index].serviceStatus = "2";
+              Get.find<JobsController>().list?.refresh();
               currentWorkStatus.value = "On The Way";
               selectedImageFile?.value = File("");
             }
@@ -182,6 +183,8 @@ class DriversMapViewController extends GetxController{
       case "On The Way": {
         updateDriverStatus(bookingId: bookingId, status: "3").then((value) {
           if (value??false) {
+            Get.find<JobsController>().list?[index].serviceStatus = "3";
+            Get.find<JobsController>().list?.refresh();
             currentWorkStatus.value = "Deliver Back To Home";
             selectedImageFile?.value = File("");
           }
@@ -192,6 +195,8 @@ class DriversMapViewController extends GetxController{
         if ((selectedImageFile?.value?.path??"").isNotEmpty) {
           updateDriverStatus(bookingId: bookingId, status: "4").then((value) {
             if (value??false) {
+              Get.find<JobsController>().list?[index].serviceStatus = "4";
+              Get.find<JobsController>().list?.refresh();
               currentWorkStatus.value = "Completed";
               selectedImageFile?.value = File("");
             }
@@ -204,6 +209,8 @@ class DriversMapViewController extends GetxController{
       case "Completed": {
         updateDriverStatus(bookingId: bookingId, status: "5").then((value) {
           if (value??false) {
+            Get.find<JobsController>().list?[index].serviceStatus = "5";
+            Get.find<JobsController>().list?.refresh();
             Get.off(() => BaseSuccessScreen(
               title: "Completed",
               description: "Please continue on to your next\nstop and remember to ALWAYS\ndrive safe!",
@@ -218,6 +225,8 @@ class DriversMapViewController extends GetxController{
         break;
       }
       default: {
+        Get.find<JobsController>().list?[index].serviceStatus = "2";
+        Get.find<JobsController>().list?.refresh();
         currentWorkStatus.value = "Pick-Up!";
         break;
       }
