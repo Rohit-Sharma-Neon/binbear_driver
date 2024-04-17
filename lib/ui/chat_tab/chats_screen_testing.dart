@@ -112,14 +112,26 @@ class _ChatsScreenState extends State<ChatsScreen> {
                                       height: 45,
                                       width: 45,
                                       fit: BoxFit.cover,
-                                    ) : Image.asset(
-                                      BaseAssets.icPerson,
-                                      height: 45,
-                                      width: 45,
-                                      fit: BoxFit.cover,
-                                    ) : it?.chatuser?.first.getUser?.profileImage != null ?
-                                    Image.network(it?.chatuser?.first.getUser?.profileImage ?? '', height: 45, width: 45,fit: BoxFit.cover,)
-                                        : Image.asset(BaseAssets.icPerson, height: 45, width: 45,fit: BoxFit.cover,),
+                                      errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                        return const Center(
+                                          child: Padding(
+                                            padding: EdgeInsets.only(right: 2, left: 6),
+                                            child: Icon(Icons.person),
+                                          ),
+                                        );
+                                      },
+                                    ) : const Icon(Icons.person) : it?.chatuser?.first.getUser?.profileImage != null ?
+                                    Image.network(it?.chatuser?.first.getUser?.profileImage ?? '', height: 45, width: 45,fit: BoxFit.cover,
+                                      errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                                        return const Center(
+                                          child: Padding(
+                                            padding: EdgeInsets.only(right: 2, left: 6),
+                                            child: Icon(Icons.person),
+                                          ),
+                                        );
+                                      },
+                                    )
+                                         :const Icon(Icons.person),
                                   ),
                                 ),
                                 const SizedBox(width: 15),
