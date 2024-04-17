@@ -233,7 +233,9 @@ class _MapViewScreenState extends State<MapViewScreen> {
                         fontSize: 13,
                         btnColor: const Color(0xffDE875A),
                         padding: const EdgeInsets.only(top: 4, bottom: 4, right: 16, left: 16),
-                        onPressed: (){},
+                        onPressed: (){
+                          Get.back();
+                        },
                       ),
                     ],
                   ),
