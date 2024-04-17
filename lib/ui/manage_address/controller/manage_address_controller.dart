@@ -38,25 +38,27 @@ class ManageAddressController extends GetxController {
       "lat": lat.toString(),
       "lng": lng.toString(),
     };
-    BaseApiService().post(apiEndPoint: ApiEndPoints().addAddress, data: data).then((value) {
+    BaseApiService()
+        .post(apiEndPoint: ApiEndPoints().addAddress, data: data)
+        .then((value) {
       if (value?.statusCode == 200) {
-        BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
+        BaseSuccessResponse response =
+            BaseSuccessResponse.fromJson(value?.data);
         if (response.success ?? false) {
           if (showSavedAddress ?? false) {
             Get.back();
             Get.back();
-            Get.find<BaseController>().searchResultList.clear();
-            Get.find<BaseController>().searchResultList.refresh();
             Get.find<BaseController>().getSavedAddress();
           } else {
             if (BaseStorage.read(StorageKeys.isUserDriver)??false) {
               Get.offAll(() => const JobsScreen());
             } else {
-              if (Get.find<BaseController>().isAddressTappedOnSignUp.value == true) {
+              if (Get.find<BaseController>().isAddressTappedOnSignUp.value ==
+                  true) {
                 Get.to(BaseSuccessScreen(
                   btnTitle: "Login",
                   onBtnTap: () {
-                    Get.offAll(const WelcomeScreen());
+                    Get.offAll(WelcomeScreen());
                   },
                 ));
               } else {

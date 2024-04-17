@@ -46,7 +46,8 @@ class OtpController extends GetxController {
           // BaseStorage.write(StorageKeys.isUserDriver, false);
           if (Get.find<BaseController>().isAddressTappedOnSignUp.value ==
               true) {
-             Get.offAll(() => OnboardingLocationScreen());
+            Get.offAll(() => const LoginScreen());
+            Get.to(() => OnboardingLocationScreen());
           } else {
             Get.offAll(() => const LoginScreen());
             showSnackBar(
