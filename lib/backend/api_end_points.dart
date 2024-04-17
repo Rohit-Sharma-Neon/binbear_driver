@@ -1,7 +1,7 @@
 class ApiEndPoints {
   /// Debug Server: https://v1.checkprojectstatus.com/binbear/api/
 
-  final String baseUrl = 'https://v1.checkprojectstatus.com/binbear/api/';
+  final String baseUrl = 'https://v5.checkprojectstatus.com/binbear/api/';
 
   /// OnBoarding EndPoints
   final String signUpEndPoint = "register";
@@ -40,8 +40,7 @@ class ApiEndPoints {
   final String assignBooking = "assign/booking";
   final String driverHomeData = "driver/home/screen";
   final String updateDriverStatus = "driver/statusupdate";
-  final String socketUrl = "https://v1.checkprojectstatus.com:2363";
-
+  final String socketUrl = "https://v5.checkprojectstatus.com:2363";
   final String forgotPassword = "forgotPassword";
   final String resetPassword = "reset_password";
   final String fileUpload = "fileUpload";

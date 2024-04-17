@@ -36,7 +36,7 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
   @override
   void initState() {
     super.initState();
-    controller.currentWorkStatus.value = widget.jobsData?.serviceStatus?.toString()??"";
+    controller.currentWorkStatus.value = widget.jobsData?.serviceStatus?.toString()??"0";
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       showBaseLoader();
       baseController.getCurrentLocation(showLoader: false).then((value) async {
@@ -58,7 +58,6 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
         }
       });
     });
-    controller.currentWorkStatus.value = "Pick-Up!";
     // if ((widget.jobsData?.pickupAddress?.lat?.toString() ?? "").isNotEmpty &&
     //     (widget.jobsData?.pickupAddress?.lng?.toString() ?? "").isNotEmpty) {
     //   controller.addMarker(
@@ -177,7 +176,7 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                   BaseText(
                     topMargin: 2,
                     value: getServiceTitleById(
-                        serviceId: widget.jobsData?.categoryId?.toString() ?? "",
+                      serviceId: widget.jobsData?.categoryId?.toString() ?? "",
                     ),
                     fontSize: 13,
                     color: Colors.white,
@@ -215,7 +214,7 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                     child: Obx(
                       () => Visibility(
                         replacement: const SizedBox(height: 32),
-                        visible: (controller.currentWorkStatus.value == "Pick-Up!" || controller.currentWorkStatus.value == "Deliver Back To Home") && widget.jobsData?.serviceStatus?.toString() != "5",
+                        visible: (controller.currentWorkStatus.value == "7" || controller.currentWorkStatus.value == "3") && controller.currentWorkStatus.value != "5",
                         child: GestureDetector(
                           onTap: () {
                             triggerHapticFeedback();
@@ -256,7 +255,7 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                   ),
                   Visibility(
                     visible: widget.isNewBooking == false,
-                    child: widget.jobsData?.serviceStatus?.toString() != "5"
+                    child: controller.currentWorkStatus.value != "5" && controller.currentWorkStatus.value != "6"
                         ? Obx(() => BaseButton(
                               title: controller.currentWorkStatus.value,
                               topMargin: 11,
@@ -270,7 +269,7 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                               child: controller.getButtonContent(),
                             ))
                         : BaseButton(
-                            title: "Completed",
+                            title: controller.currentWorkStatus.value == "6" ? "Rejected" : "Completed",
                             topMargin: 11,
                             btnColor: Colors.grey,
                             bottomMargin: 12,
