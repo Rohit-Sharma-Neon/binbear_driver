@@ -25,8 +25,7 @@ class _MyJobsTabviewState extends State<MyJobsTabview> {
   @override
   Widget build(BuildContext context) {
     return AnimationLimiter(
-      child: Obx(
-        () => SmartRefresher(
+      child: Obx(() => SmartRefresher(
           controller: (controller.tabController.index == 0)
               ? controller.upcomingRefreshController
               : controller.pastRefreshController,
@@ -44,7 +43,8 @@ class _MyJobsTabviewState extends State<MyJobsTabview> {
                       padding: const EdgeInsets.only(
                           right: horizontalScreenPadding,
                           left: horizontalScreenPadding,
-                          bottom: 80),
+                          bottom: 80,
+                      ),
                       itemBuilder: (context, index) {
                         return AnimatedListBuilder(
                           index: index,
@@ -56,7 +56,7 @@ class _MyJobsTabviewState extends State<MyJobsTabview> {
                             date: formatBackendDate(controller.list?[index].createdAt?.toString()??""),
                             time: controller.list?[index].time?.toString() ?? "",
                             distance: controller.list?[index].distance?.toString() ?? "",
-                            bookingId:controller.list?[index].id.toString() ?? "" ,
+                            bookingId:controller.list?[index].id.toString() ?? "",
                             showCurrentLocation: false,
                             showAssignButton: (controller.list?[index].assignStatus?.toString() ?? "0") == "1",
                             acceptAction: () {
@@ -77,6 +77,7 @@ class _MyJobsTabviewState extends State<MyJobsTabview> {
                               Get.to( DriverMapViewScreen(
                                 jobsData: controller.list?[index],
                                 isNewBooking: controller.tabController.index == 0,
+                                index: index,
                               ));
                               },
                           ),

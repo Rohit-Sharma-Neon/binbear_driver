@@ -10,6 +10,7 @@ import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.d
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -21,6 +22,59 @@ class DriversMapViewController extends GetxController{
   Rx<File?>? selectedImageFile = File("").obs;
   List<Marker> markers = <Marker>[];
   final Completer<GoogleMapController> mapController = Completer<GoogleMapController>();
+
+  List<LatLng> polylineCoordinates = <LatLng>[];
+  late PolylinePoints polylinePoints;
+  Map<PolylineId, Polyline> polylines = {};
+
+  late LatLngBounds bound;
+  addMarkersAndPolyLines({required LatLng southwest, required LatLng northeast}) async {
+    polylinePoints = PolylinePoints();
+    markers.clear();
+    polylineCoordinates.clear();
+    bound = LatLngBounds(southwest: southwest, northeast: northeast);
+    markers.add(Marker(
+      markerId: const MarkerId("starting_marker"),
+      position: southwest,
+      infoWindow: const InfoWindow(
+        title: "Starting Location",
+      ),
+      icon: Get.find<BaseController>().icStartMarkerPin,
+    ));
+    markers.add(Marker(
+      markerId: const MarkerId("ending_marker"),
+      position: northeast,
+      infoWindow: const InfoWindow(
+        title: "Ending Location",
+      ),
+      icon: Get.find<BaseController>().icEndMarkerPin,
+    ));
+
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      "AIzaSyCKM6nu9hXYksgFuz1flo2zQtPRC_lw7NM", // Google Maps API Key
+      PointLatLng(southwest.latitude, southwest.longitude),
+      PointLatLng(northeast.latitude, northeast.longitude),
+      travelMode: TravelMode.driving,
+    );
+
+    if (result.points.isNotEmpty) {
+      for (var point in result.points) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      }
+    }
+    PolylineId id = const PolylineId('poly');
+
+    Polyline polyline = Polyline(
+      polylineId: id,
+      color: const Color(0xffDE875A),
+      points: polylineCoordinates,
+      width: 3,
+    );
+
+    polylines[id] = polyline;
+    update();
+  }
+
 
   CameraPosition kGooglePlex = const CameraPosition(
     target: LatLng(26.8506252, 75.7616548),
@@ -109,12 +163,14 @@ class DriversMapViewController extends GetxController{
     }
   }
 
-  void onButtonTap({required String bookingId}){
+  void onButtonTap({required String bookingId, required int index}){
     switch (currentWorkStatus.value) {
       case "Pick-Up!": {
         if ((selectedImageFile?.value?.path??"").isNotEmpty) {
           updateDriverStatus(bookingId: bookingId, status: "2").then((value) {
             if (value??false) {
+              Get.find<JobsController>().list?[index].serviceStatus = "2";
+              Get.find<JobsController>().list?.refresh();
               currentWorkStatus.value = "On The Way";
               selectedImageFile?.value = File("");
             }
@@ -127,6 +183,8 @@ class DriversMapViewController extends GetxController{
       case "On The Way": {
         updateDriverStatus(bookingId: bookingId, status: "3").then((value) {
           if (value??false) {
+            Get.find<JobsController>().list?[index].serviceStatus = "3";
+            Get.find<JobsController>().list?.refresh();
             currentWorkStatus.value = "Deliver Back To Home";
             selectedImageFile?.value = File("");
           }
@@ -137,6 +195,8 @@ class DriversMapViewController extends GetxController{
         if ((selectedImageFile?.value?.path??"").isNotEmpty) {
           updateDriverStatus(bookingId: bookingId, status: "4").then((value) {
             if (value??false) {
+              Get.find<JobsController>().list?[index].serviceStatus = "4";
+              Get.find<JobsController>().list?.refresh();
               currentWorkStatus.value = "Completed";
               selectedImageFile?.value = File("");
             }
@@ -149,6 +209,8 @@ class DriversMapViewController extends GetxController{
       case "Completed": {
         updateDriverStatus(bookingId: bookingId, status: "5").then((value) {
           if (value??false) {
+            Get.find<JobsController>().list?[index].serviceStatus = "5";
+            Get.find<JobsController>().list?.refresh();
             Get.off(() => BaseSuccessScreen(
               title: "Completed",
               description: "Please continue on to your next\nstop and remember to ALWAYS\ndrive safe!",
@@ -163,6 +225,8 @@ class DriversMapViewController extends GetxController{
         break;
       }
       default: {
+        Get.find<JobsController>().list?[index].serviceStatus = "2";
+        Get.find<JobsController>().list?.refresh();
         currentWorkStatus.value = "Pick-Up!";
         break;
       }

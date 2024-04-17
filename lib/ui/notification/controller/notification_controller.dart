@@ -21,6 +21,7 @@ class NotificationController extends GetxController{
 
   getNotificationsList() async {
     list?.value = [];
+    list?.refresh();
     isNotificationLoading.value = true;
     try {
       await BaseApiService().get(apiEndPoint: ApiEndPoints().notificationList, showLoader: false).then((value){

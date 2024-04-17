@@ -43,11 +43,48 @@ class BaseController extends GetxController{
   RxInt selectedDriverIndex = 0.obs;
   RxList<DriverData>? listDriver = <DriverData>[].obs;
   RefreshController refreshController = RefreshController(initialRefresh: false);
+  
+
+  RxString isAvailable = "0".obs;
 
   @override
   void onInit() {
     super.onInit();
     loadMarkers();
+  }
+
+
+
+// Set Availability
+  setAvailabilityApi(
+    String availability,
+  ) async {
+    Map<String, String> data = {
+      "service_provider_status": availability,
+    };
+    try {
+      await BaseApiService()
+          .post(
+              apiEndPoint: ApiEndPoints().providerAvailablity,
+              data: data,
+              showLoader: true)
+          .then((value) async {
+        if (value?.statusCode == 200) {
+          BaseSuccessResponse response =
+              BaseSuccessResponse.fromJson(value?.data);
+          if (response.success ?? false) {
+            isAvailable.value = availability;
+            update();
+          } else {
+            showSnackBar(message: response.message ?? "");
+          }
+        } else {
+          showSnackBar(message: "Something went wrong, please try again");
+        }
+      });
+    } on Exception catch (e) {
+      print(e.toString());
+    }
   }
 
   getSuggestionsList(String input) {
@@ -76,10 +113,13 @@ class BaseController extends GetxController{
   }
 
   Future<LatLng?> getLatLngFromAddress({required String address}) async {
+    showBaseLoader();
     var locations = await locationFromAddress(address);
     if (locations.isNotEmpty) {
+      dismissBaseLoader();
       return LatLng(locations.first.latitude, locations.first.longitude);
     }else {
+      dismissBaseLoader();
       return const LatLng(0, 0);
     }
   }

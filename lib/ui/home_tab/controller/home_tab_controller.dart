@@ -1,8 +1,10 @@
+import 'dart:developer';
 
 import 'package:binbeardriver/backend/api_end_points.dart';
 import 'package:binbeardriver/backend/base_api_service.dart';
 import 'package:binbeardriver/backend/base_responses/base_success_response.dart';
 import 'package:binbeardriver/ui/home_tab/model/home_data_response.dart';
+import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -37,7 +39,8 @@ class HomeTabController extends GetxController {
   RxList<AllDriver?>? allDrivers = <AllDriver?>[].obs;
   RxString? totalBooking = "0".obs;
   RxString? totalEarning = "0".obs;
-  RefreshController refreshController = RefreshController(initialRefresh: false);
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void onInit() {
@@ -49,16 +52,20 @@ class HomeTabController extends GetxController {
     isHomeLoading.value = true;
 
     try {
-      await BaseApiService().get(apiEndPoint: ApiEndPoints().getHomeData, showLoader: false).then((value) {
+      await BaseApiService()
+          .get(apiEndPoint: ApiEndPoints().getHomeData, showLoader: false)
+          .then((value) {
         refreshController.refreshCompleted();
         isHomeLoading.value = false;
         if (value?.statusCode == 200) {
           HomeDataResponse response = HomeDataResponse.fromJson(value?.data);
           if (response.success ?? false) {
+            log(response.data?.toJson().toString()??"dthhdtf");
             allbookings?.value = response.data?.bookings ?? [];
             allDrivers?.value = response.data?.allDrivers ?? [];
             totalBooking?.value = response.data?.totalBooking.toString() ?? "0";
             totalEarning?.value = response.data?.totalEarning.toString() ?? "0";
+            Get.find<BaseController>().isAvailable.value = response.data?.loginServiceProviderStatus.toString() ?? "0";
             update();
           } else {
             showSnackBar(message: response.message ?? "");
@@ -72,7 +79,6 @@ class HomeTabController extends GetxController {
       refreshController.refreshCompleted();
     }
   }
-
 
   //Booking Action(Accept or Reject Bookingt)
   bookingActionApi(String bookingId, String action, int index) async {
@@ -92,8 +98,8 @@ class HomeTabController extends GetxController {
                 isSuccess: action == "1",
                 title: action == "1" ? "Booking Accepted" : "Booking Rejected",
                 message: response.message ?? "");
-              allbookings?.removeAt(index);
-             getHomeData();
+            allbookings?.removeAt(index);
+            getHomeData();
             update();
           } else {
             showSnackBar(message: response.message ?? "");
@@ -101,7 +107,6 @@ class HomeTabController extends GetxController {
         } else {
           showSnackBar(message: "Something went wrong, please try again");
         }
-
       });
     } on Exception catch (e) {
       print(e.toString());
