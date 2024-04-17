@@ -4,6 +4,8 @@ import 'package:binbeardriver/ui/base_components/base_button.dart';
 import 'package:binbeardriver/ui/base_components/base_container.dart';
 import 'package:binbeardriver/ui/base_components/base_scaffold_background.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
+import 'package:binbeardriver/utils/get_storage.dart';
+import 'package:binbeardriver/utils/storage_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,7 +39,7 @@ class BaseSuccessScreen extends StatelessWidget {
                       fit: BoxFit.fitHeight,
                     ),
                     BaseText(
-                      value: title??"Welcome Jeck!",
+                      value: title??"Welcome ${BaseStorage.read(StorageKeys.userName)??""}",
                       fontSize: 30,
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
