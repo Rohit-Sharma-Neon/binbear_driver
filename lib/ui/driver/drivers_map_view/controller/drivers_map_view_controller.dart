@@ -18,7 +18,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:binbeardriver/ui/base_components/base_text.dart';
 
 class DriversMapViewController extends GetxController{
-  RxString currentWorkStatus = "Pick-Up!".obs;
+  RxString currentWorkStatus = "0".obs;
   Rx<File?>? selectedImageFile = File("").obs;
   List<Marker> markers = <Marker>[];
   final Completer<GoogleMapController> mapController = Completer<GoogleMapController>();
@@ -99,7 +99,15 @@ class DriversMapViewController extends GetxController{
 
   Widget getButtonContent(){
     switch (currentWorkStatus.value) {
-      case "Pick-Up!": {
+      case "1": {
+        return const BaseText(
+          value: "Start",
+          fontSize: 14,
+          color: Colors.white,
+          fontWeight: FontWeight.w400,
+        );
+      }
+      case "7": {
         return const BaseText(
           value: "Pick-Up!",
           fontSize: 14,
@@ -107,26 +115,19 @@ class DriversMapViewController extends GetxController{
           fontWeight: FontWeight.w400,
         );
       }
-      case "On The Way": {
+      case "2": {
+        return const BaseText(
+          value: "On The Way",
+          fontSize: 14,
+          color: Colors.white,
+          fontWeight: FontWeight.w400,
+        );
+      }
+      case "3": {
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             SvgPicture.asset(BaseAssets.icOnTheWay),
-            const BaseText(
-              value: "On The Way",
-              fontSize: 14,
-              leftMargin: 9,
-              color: Colors.white,
-              fontWeight: FontWeight.w400,
-            ),
-          ],
-        );
-      }
-      case "Deliver Back To Home": {
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SvgPicture.asset(BaseAssets.icDeliverBackToHome),
             const BaseText(
               value: "Deliver Back To Home",
               fontSize: 14,
@@ -137,13 +138,43 @@ class DriversMapViewController extends GetxController{
           ],
         );
       }
-      case "Completed": {
+      case "4": {
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(BaseAssets.icDeliverBackToHome),
+            const BaseText(
+              value: "Completed",
+              fontSize: 14,
+              leftMargin: 9,
+              color: Colors.white,
+              fontWeight: FontWeight.w400,
+            ),
+          ],
+        );
+      }
+      case "5": {
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             SvgPicture.asset(BaseAssets.icCompleted),
             const BaseText(
               value: "Completed",
+              fontSize: 14,
+              leftMargin: 9,
+              color: Colors.white,
+              fontWeight: FontWeight.w400,
+            ),
+          ],
+        );
+      }
+      case "6": {
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(BaseAssets.icCompleted),
+            const BaseText(
+              value: "Rejected",
               fontSize: 14,
               leftMargin: 9,
               color: Colors.white,
@@ -165,39 +196,26 @@ class DriversMapViewController extends GetxController{
 
   void onButtonTap({required String bookingId, required int index}){
     switch (currentWorkStatus.value) {
-      case "Pick-Up!": {
-        if ((selectedImageFile?.value?.path??"").isNotEmpty) {
-          updateDriverStatus(bookingId: bookingId, status: "2").then((value) {
-            if (value??false) {
-              Get.find<JobsController>().list?[index].serviceStatus = "2";
-              Get.find<JobsController>().list?.refresh();
-              currentWorkStatus.value = "On The Way";
-              selectedImageFile?.value = File("");
-            }
-          });
-        }else{
-          showSnackBar(message: "Please Upload A Picture First!");
-        }
-        break;
-      }
-      case "On The Way": {
-        updateDriverStatus(bookingId: bookingId, status: "3").then((value) {
+      case "1": {
+        // 1 -> Accepted
+        updateDriverStatus(bookingId: bookingId, status: "7").then((value) {
           if (value??false) {
-            Get.find<JobsController>().list?[index].serviceStatus = "3";
+            Get.find<JobsController>().list?[index].serviceStatus = "7";
             Get.find<JobsController>().list?.refresh();
-            currentWorkStatus.value = "Deliver Back To Home";
+            currentWorkStatus.value = "7";
             selectedImageFile?.value = File("");
           }
         });
         break;
       }
-      case "Deliver Back To Home": {
+      case "7": {
+        // 7 -> Started
         if ((selectedImageFile?.value?.path??"").isNotEmpty) {
-          updateDriverStatus(bookingId: bookingId, status: "4").then((value) {
+          updateDriverStatus(bookingId: bookingId, status: "2").then((value) {
             if (value??false) {
-              Get.find<JobsController>().list?[index].serviceStatus = "4";
+              Get.find<JobsController>().list?[index].serviceStatus = "2";
               Get.find<JobsController>().list?.refresh();
-              currentWorkStatus.value = "Completed";
+              currentWorkStatus.value = "2";
               selectedImageFile?.value = File("");
             }
           });
@@ -206,11 +224,42 @@ class DriversMapViewController extends GetxController{
         }
         break;
       }
-      case "Completed": {
+      case "2": {
+        // 2 -> Pick Up
+        updateDriverStatus(bookingId: bookingId, status: "3").then((value) {
+          if (value??false) {
+            Get.find<JobsController>().list?[index].serviceStatus = "3";
+            Get.find<JobsController>().list?.refresh();
+            currentWorkStatus.value = "3";
+            selectedImageFile?.value = File("");
+          }
+        });
+        break;
+      }
+      case "3": {
+        // 3 -> On The Way
+        if ((selectedImageFile?.value?.path??"").isNotEmpty) {
+          updateDriverStatus(bookingId: bookingId, status: "4").then((value) {
+            if (value??false) {
+              Get.find<JobsController>().list?[index].serviceStatus = "4";
+              Get.find<JobsController>().list?.refresh();
+              currentWorkStatus.value = "4";
+              selectedImageFile?.value = File("");
+            }
+          });
+        }else{
+          showSnackBar(message: "Please Upload A Picture First!");
+        }
+        break;
+      }
+      case "4": {
+        // 4 -> Deliver Back To Home
         updateDriverStatus(bookingId: bookingId, status: "5").then((value) {
           if (value??false) {
             Get.find<JobsController>().list?[index].serviceStatus = "5";
             Get.find<JobsController>().list?.refresh();
+            currentWorkStatus.value = "5";
+            selectedImageFile?.value = File("");
             Get.off(() => BaseSuccessScreen(
               title: "Completed",
               description: "Please continue on to your next\nstop and remember to ALWAYS\ndrive safe!",
