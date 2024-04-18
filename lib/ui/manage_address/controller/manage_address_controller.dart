@@ -12,6 +12,8 @@ import 'package:binbeardriver/utils/storage_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../onboardings/login/login_screen.dart';
+
 class ManageAddressController extends GetxController {
   RxString selectedAddressType = "Home".obs;
   TextEditingController houseNoController = TextEditingController();
@@ -55,10 +57,13 @@ class ManageAddressController extends GetxController {
             } else {
               if (Get.find<BaseController>().isAddressTappedOnSignUp.value ==
                   true) {
+                Get.offAll(() => const LoginScreen());
                 Get.to(BaseSuccessScreen(
+                  title: 'Excellent!',
+                  description: "Thank you for your interest in\nbecoming a BinBear! The BinBear\nteam will reach out to you within\n24 hours and provide you with\nmore information. Talk soon!",
                   btnTitle: "Login",
                   onBtnTap: () {
-                    Get.offAll(WelcomeScreen());
+                    Get.offAll(const WelcomeScreen());
                   },
                 ));
               } else {

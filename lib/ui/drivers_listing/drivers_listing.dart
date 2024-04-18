@@ -6,6 +6,7 @@ import 'package:binbeardriver/ui/driver_exact_location/driver_exact_location_scr
 import 'package:binbeardriver/ui/drivers_listing/controller/home_tab_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 import 'package:binbeardriver/utils/base_sizes.dart';
@@ -13,6 +14,8 @@ import 'package:binbeardriver/ui/base_components/base_no_data.dart';
 import 'package:binbeardriver/ui/base_components/drivers_listing_tile.dart';
 import 'package:binbeardriver/ui/base_components/base_button.dart';
 import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
+
+import '../../utils/base_functions.dart';
 
 class DriversListing extends StatefulWidget {
   const DriversListing({super.key});
@@ -52,10 +55,15 @@ class _DriversListingState extends State<DriversListing> {
                   isChecked: false,
                   showEditDeleteButtons: true,
                   onTap: () {
-                    Get.to(() => DriverExactLocationScreen(latLng: controller.testingLatLngList[index],
+                    if(homeTabController.listDriver?[index].bookingIds!= null) {
+                      Get.to(() => DriverExactLocationScreen(latLng: controller.testingLatLngList[index],
                                 bookingId:
                                     homeTabController.listDriver?[index].bookingIds.toString() ?? "",
                               ));
+                    }
+                    else{
+                      Fluttertoast.showToast(msg: "No Booking Assign");
+                    }
                   },
                   onEdit: (){
                     Get.to(() =>  AddEditDriverScreen(isEditing: true,driverData: homeTabController.listDriver?[index],));

@@ -19,7 +19,7 @@ class TransactionController extends GetxController{
 
   getTransactionHistory() async {
     Map<String, dynamic> params = {
-      'filter':'',
+      'filter': dropdownValue != null ? options.indexOf(dropdownValue??'') :'',
     };
     try {
       await BaseApiService().post(apiEndPoint: ApiEndPoints().transactionHistory,data: params).then((value){
@@ -28,9 +28,11 @@ class TransactionController extends GetxController{
           TransactionResponse response = TransactionResponse.fromJson(value?.data);
           if (response.success??false) {
             transactionData?.value = response.data?.bookingData??[];
-            totalPayment?.value= response.data?.totalPayment?.toString()??"0";
+            if(response.data?.totalPayment != null) {
+              totalPayment?.value = response.data?.totalPayment?.toString()??"0";
+            }
           }else{
-            showSnackBar(message: response.message??"");
+            showSnackBar(message: response.message??"");///TODO
           }
         }else{
           showSnackBar(message: "Something went wrong, please try again");
@@ -39,5 +41,6 @@ class TransactionController extends GetxController{
     } on Exception catch (e) {
       refreshController.refreshCompleted();
     }
+
   }
 }
