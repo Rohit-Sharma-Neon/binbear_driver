@@ -58,7 +58,7 @@ class ManageAddressController extends GetxController {
                 Get.to(BaseSuccessScreen(
                   btnTitle: "Login",
                   onBtnTap: () {
-                    Get.offAll(WelcomeScreen());
+                    Get.offAll(const WelcomeScreen());
                   },
                 ));
               } else {
