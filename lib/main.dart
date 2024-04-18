@@ -2,15 +2,11 @@ import 'dart:io';
 
 import 'package:binbeardriver/backend/firebase_notification_service.dart';
 import 'package:binbeardriver/backend/http_overrider.dart';
-import 'package:binbeardriver/ui/base_components/base_text.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
 import 'package:binbeardriver/utils/base_localization.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 import 'package:scaled_app/scaled_app.dart';
 import 'package:binbeardriver/ui/onboardings/splash/splash_screen.dart';
 

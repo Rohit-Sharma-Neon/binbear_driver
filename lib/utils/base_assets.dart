@@ -53,4 +53,6 @@ class BaseAssets {
   static const String dummyProfileLottie = "assets/images/dummy_profile_lottie.json";
   static const String bgCoupon = "assets/images/bg_coupon.svg";
   static const String icSend = "assets/images/ic_send.svg";
+  static const String logo = "assets/images/launcher_icon_final.png";
+
 }

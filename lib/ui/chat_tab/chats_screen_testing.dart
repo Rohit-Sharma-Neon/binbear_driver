@@ -4,7 +4,6 @@ import 'package:binbeardriver/ui/chat_tab/controller/message_controller.dart';
 import 'package:binbeardriver/ui/chat_tab/message_scrren.dart';
 import 'package:binbeardriver/ui/chat_tab/model/chat_model.dart';
 import 'package:binbeardriver/ui/manual_address/components/address_search_field.dart';
-import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_sizes.dart';
 import 'package:binbeardriver/utils/get_storage.dart';
 import 'package:binbeardriver/utils/storage_keys.dart';

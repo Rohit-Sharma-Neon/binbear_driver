@@ -14,6 +14,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'package:binbeardriver/ui/base_components/base_text.dart';
 
+import '../../utils/base_assets.dart';
+
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
 
@@ -41,7 +43,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 children: [
                   const BaseText(
                     value: "Mark all as read",
-                    fontSize: 12,
+                    fontSize: 14,
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
                   ),
@@ -99,10 +101,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                             width: 35,
                                             height: 35,
                                             errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                                              return const Center(
+                                              return  Center(
                                                   child: Padding(
-                                                    padding: EdgeInsets.only(right: 2, left: 6),
-                                                    child: Icon(Icons.broken_image_rounded),
+                                                    padding: const EdgeInsets.only(right: 2, left: 6),
+                                                    child: Image.asset(
+                                                      BaseAssets.logo,
+                                                      width: 35,
+                                                      height: 35,
+                                                    ),
                                                   ),
                                               );
                                             },

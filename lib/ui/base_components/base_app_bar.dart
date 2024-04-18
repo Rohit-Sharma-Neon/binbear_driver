@@ -1,6 +1,5 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:binbeardriver/ui/driver/jobs_screen/controller/jobs_controller.dart';
-import 'package:binbeardriver/ui/home_tab/controller/home_tab_controller.dart';
 import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:binbeardriver/utils/base_assets.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
