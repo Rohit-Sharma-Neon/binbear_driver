@@ -49,7 +49,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     ),
                     const SizedBox(height: 10),
                      BaseText(
-                      value: "Please enter the code that was\nsent to your ${widget.previousPage == "forgotPassword" ? "email" : "phone number"}.",
+                      value: "Please enter the code that was\nsent to your ${widget.previousPage != "forgotPassword" ? "email" : "phone number"}.",
                       textAlign: TextAlign.center,
                       fontSize: 16.4,
                       fontWeight: FontWeight.w700,
