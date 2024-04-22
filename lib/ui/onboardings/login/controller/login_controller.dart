@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:binbeardriver/backend/api_end_points.dart';
 import 'package:binbeardriver/backend/base_api_service.dart';
 import 'package:binbeardriver/ui/dashboard_module/dashboard_screen/dashboard_screen.dart';
@@ -28,8 +30,11 @@ class LoginController extends GetxController {
   }
 
   getResponse() async {
-    String? token = await FirebaseMessaging.instance.getToken();
-    debugPrint("FCM Token -> ${token??""}");
+    String? token;
+    if (Platform.isAndroid) {
+      token = await FirebaseMessaging.instance.getToken();
+      debugPrint("FCM Token -> ${token??""}");
+    }
     Map<String, String> data = {
       "email": emailController.text.trim(),
       "password": passwordController.text.trim(),

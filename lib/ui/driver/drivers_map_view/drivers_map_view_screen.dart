@@ -262,6 +262,8 @@ class _DriverMapViewScreenState extends State<DriverMapViewScreen> {
                               bottomMargin: 12,
                               onPressed: () {
                                 controller.onButtonTap(
+                                  lat: double.parse(widget.jobsData?.pickupAddress?.lat?.toString()??"0"),
+                                  lng: double.parse(widget.jobsData?.pickupAddress?.lng?.toString()??"0"),
                                   bookingId: widget.jobsData?.id?.toString() ?? "",
                                   index: widget.index,
                                 );

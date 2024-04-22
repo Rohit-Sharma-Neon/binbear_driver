@@ -74,7 +74,7 @@ class _MyJobsTabviewState extends State<MyJobsTabview> {
                               );
                             },
                             onTap: (){
-                              Get.to( DriverMapViewScreen(
+                              Get.to(DriverMapViewScreen(
                                 jobsData: controller.list?[index],
                                 isNewBooking: controller.tabController.index == 0,
                                 index: index,
@@ -82,8 +82,8 @@ class _MyJobsTabviewState extends State<MyJobsTabview> {
                               },
                           ),
                         );
-                      },
-                    ),
+                        },
+          ),
         ),
       ),
     );

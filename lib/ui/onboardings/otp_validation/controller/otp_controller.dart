@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:binbeardriver/backend/api_end_points.dart';
 import 'package:binbeardriver/backend/base_api_service.dart';
 import 'package:binbeardriver/ui/change_password/change_password_screen.dart';
@@ -27,8 +29,8 @@ class OtpController extends GetxController {
           .replaceAll(")", "")
           .replaceAll("-", "")
           .replaceAll(" ", ""),
-      "verify_type": "mobile",
-      "deviceType": "android",
+      "verify_type": "email",
+      "deviceType" : Platform.isAndroid ? "android" : "ios",
       "deviceId": "device_id",
       "role": "2",
       "country_code": "+1",
@@ -69,7 +71,7 @@ class OtpController extends GetxController {
       "mobile_or_email":
           Get.find<ForgotPasswordController>().emailController.text,
       "verify_type": "email",
-      "deviceType": "android",
+      "deviceType" : Platform.isAndroid ? "android" : "ios",
       "deviceId": "device_id",
       "role": (BaseStorage.read(StorageKeys.isUserDriver) ?? false) ? "3" : "2",
       "country_code": "+1",

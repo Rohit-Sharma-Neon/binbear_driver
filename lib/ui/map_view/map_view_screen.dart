@@ -26,8 +26,8 @@ class MapViewScreen extends StatefulWidget {
   final String? mainAddress;
   final String? subAddress;
   final String? fullAddress;
-  final bool? showSavedAddress;
-  const MapViewScreen({super.key, this.lat, this.long, this.mainAddress, this.subAddress, this.fullAddress, this.showSavedAddress});
+  final bool? showSavedAddress, isUpdatingMapLocation;
+  const MapViewScreen({super.key, this.lat, this.long, this.mainAddress, this.subAddress, this.fullAddress, this.showSavedAddress, this.isUpdatingMapLocation});
 
   @override
   State<MapViewScreen> createState() => _MapViewScreenState();
@@ -252,6 +252,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
                     bottomMargin: 12,
                     onPressed: (){
                       Get.to(()=> ManageAddressScreen(
+                        isUpdatingMapLocation: widget.isUpdatingMapLocation??false,
                         lat: widget.lat??0,
                         long: widget.long??0,
                         fullAddress: controller.selectedLocation.value,

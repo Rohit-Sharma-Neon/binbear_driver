@@ -1,5 +1,8 @@
 import 'package:binbeardriver/ui/base_components/custom_radio_button.dart';
+import 'package:binbeardriver/ui/onboardings/location/onboarding_location_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import 'package:binbeardriver/utils/base_functions.dart';
@@ -15,15 +18,23 @@ import 'package:binbeardriver/ui/manage_address/controller/manage_address_contro
 
 class ManageAddressScreen extends StatefulWidget {
   final double? lat, long;
-  final String? fullAddress;
-  final bool? showSavedAddress;
-  const ManageAddressScreen({super.key, this.lat, this.long, this.fullAddress, this.showSavedAddress});
+  final String? fullAddress, houseNo, apartment, description, addressId;
+  final bool? showSavedAddress, isUpdatingMapLocation;
+  const ManageAddressScreen({super.key, this.lat, this.long, this.fullAddress, this.showSavedAddress, this.houseNo, this.apartment, this.description, this.addressId, this.isUpdatingMapLocation});
   @override
   State<ManageAddressScreen> createState() => _ManageAddressScreenState();
 }
 
 class _ManageAddressScreenState extends State<ManageAddressScreen> {
   ManageAddressController controller = Get.put(ManageAddressController());
+
+  @override
+  void initState() {
+    super.initState();
+    controller.houseNoController.text = widget.houseNo?.toString()??"";
+    controller.apartmentController.text = widget.apartment?.toString()??"";
+    controller.landmarkController.text = widget.description?.toString()??"";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +44,29 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
         body: SingleChildScrollView(
           child: AnimatedColumn(
             children: [
-              BaseContainer(
-                leftPadding: 20,
-                rightPadding: 20,
-                topPadding: 10,
-                bottomPadding: 13,
-                bottomMargin: 14,
-                child: ManualAddressListTile(
-                  title: widget.fullAddress?.split(",").first??"",
-                  subtitle: widget.fullAddress?.replaceAll("${widget.fullAddress?.split(",").first}, ", "")??"",
+              Visibility(
+                visible: (widget.isUpdatingMapLocation??false) == false,
+                child: GestureDetector(
+                  onTap: (){
+                    triggerHapticFeedback();
+                    Get.to(() => OnboardingLocationScreen(
+                      isEditProfile: true,
+                      lat: widget.lat,
+                      long: widget.long,
+                      isUpdatingMapLocation: widget.isUpdatingMapLocation,
+                    ));
+                  },
+                  child: BaseContainer(
+                    leftPadding: 20,
+                    rightPadding: 20,
+                    topPadding: 10,
+                    bottomPadding: 13,
+                    bottomMargin: 14,
+                    child: ManualAddressListTile(
+                      title: widget.fullAddress?.split(",").first??"",
+                      subtitle: widget.fullAddress?.replaceAll("${widget.fullAddress?.split(",").first}, ", "")??"",
+                    ),
+                  ),
                 ),
               ),
               BaseContainer(
@@ -98,7 +123,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                       }).toList(),
                     ),*/
                     BaseButton(
-                      title: "Submit",
+                      title: (widget.addressId??"").isEmpty ? "Submit" : "Update",
                       topMargin: 5,
                       onPressed: (){
                         if (controller.houseNoController.text.trim().isEmpty) {
@@ -109,6 +134,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                           showSnackBar(message: "Please Enter Description");
                         }*/else{
                           controller.saveAddress(
+                            addressId: widget.addressId??"",
                             lat: widget.lat??0,
                             lng: widget.long??0,
                             fullAddress: widget.fullAddress??"",
@@ -116,7 +142,7 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                           );
                         }
                       },
-                    )
+                    ),
                   ],
                 )
               ),

@@ -377,10 +377,7 @@ class _HomeTabState extends State<HomeTab> {
                                 padding: const EdgeInsets.only(
                                     left: horizontalScreenPadding),
                                 scrollDirection: Axis.horizontal,
-                                itemCount: (homeTabController
-                                                .allDrivers?.length ??
-                                            0) >
-                                        4
+                                itemCount: (homeTabController.allDrivers?.length ?? 0) > 4
                                     ? 4
                                     : homeTabController.allDrivers?.length ?? 0,
                                 itemBuilder: (context, index) {
@@ -395,15 +392,12 @@ class _HomeTabState extends State<HomeTab> {
                                       clipBehavior: Clip.hardEdge,
                                       children: [
                                         Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 0, horizontal: 10),
+                                          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                                           width: 150,
-                                          margin:
-                                              const EdgeInsets.only(right: 12),
+                                          margin: const EdgeInsets.only(right: 12),
                                           alignment: Alignment.center,
                                           decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
+                                            borderRadius: BorderRadius.circular(15),
                                             color: Colors.white,
                                           ),
                                           child: Column(
@@ -415,10 +409,7 @@ class _HomeTabState extends State<HomeTab> {
                                               BaseText(
                                                 topMargin: 14,
                                                 textAlign: TextAlign.center,
-                                                value: homeTabController
-                                                        .allDrivers?[index]
-                                                        ?.name ??
-                                                    "",
+                                                value: homeTabController.allDrivers?[index]?.name ?? "",
                                                 fontSize: 13,
                                                 maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,

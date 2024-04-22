@@ -63,18 +63,36 @@ class BaseController extends GetxController{
       "service_provider_status": availability,
     };
     try {
-      await BaseApiService()
-          .post(
-              apiEndPoint: ApiEndPoints().providerAvailablity,
-              data: data,
-              showLoader: true)
-          .then((value) async {
+      await BaseApiService().post(apiEndPoint: ApiEndPoints().providerAvailablity, data: data, showLoader: true).then((value) async {
         if (value?.statusCode == 200) {
-          BaseSuccessResponse response =
-              BaseSuccessResponse.fromJson(value?.data);
+          BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
           if (response.success ?? false) {
             isAvailable.value = availability;
+            showSnackBar(message: response.message ?? "", isSuccess: true);
             update();
+          } else {
+            showSnackBar(message: response.message ?? "");
+          }
+        } else {
+          showSnackBar(message: "Something went wrong, please try again");
+        }
+      });
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
+
+  sendDriverLatLng({required double lat, required double lng}) async {
+    Map<String, String> data = {
+      "lat": lat.toString(),
+      "lng": lng.toString(),
+    };
+    try {
+      await BaseApiService().post(apiEndPoint: ApiEndPoints().driverLocationUpdate, data: data, showLoader: false).then((value) async {
+        if (value?.statusCode == 200) {
+          BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
+          if (response.success ?? false) {
+
           } else {
             showSnackBar(message: response.message ?? "");
           }

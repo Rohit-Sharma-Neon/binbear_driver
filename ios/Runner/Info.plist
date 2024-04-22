@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Binbeardriver</string>
+	<string>BinBear Driver</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -22,6 +22,25 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs access to location in the background.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>This app needs access to location when in the background.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>This app needs access to location when open and in the background.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app needs access to photos to upload images to app</string>
+    <key>NSCameraUsageDescription</key>
+    <string>This app needs access to camera to capture images</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+    	<key>NSAllowsArbitraryLoads</key>
+    	<true/>
+    </dict>
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+        <string>dev.flutter.background.refresh</string>
+    </array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

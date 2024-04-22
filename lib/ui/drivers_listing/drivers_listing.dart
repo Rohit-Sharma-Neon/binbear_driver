@@ -15,7 +15,6 @@ import 'package:binbeardriver/ui/base_components/drivers_listing_tile.dart';
 import 'package:binbeardriver/ui/base_components/base_button.dart';
 import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 
-import '../../utils/base_functions.dart';
 
 class DriversListing extends StatefulWidget {
   const DriversListing({super.key});
@@ -55,11 +54,12 @@ class _DriversListingState extends State<DriversListing> {
                   isChecked: false,
                   showEditDeleteButtons: true,
                   onTap: () {
-                    if(homeTabController.listDriver?[index].bookingIds!= null) {
-                      Get.to(() => DriverExactLocationScreen(latLng: controller.testingLatLngList[index],
-                                bookingId:
-                                    homeTabController.listDriver?[index].bookingIds.toString() ?? "",
-                              ));
+                    if((homeTabController.listDriver?[index].bookingIds?.toString()??"").isNotEmpty) {
+                      Get.to(() => DriverExactLocationScreen(
+                        latLng: controller.testingLatLngList[index],
+                        bookingId: homeTabController.listDriver?[index].bookingIds.toString() ?? "",
+                      ),
+                      );
                     }
                     else{
                       Fluttertoast.showToast(msg: "No Booking Assign");

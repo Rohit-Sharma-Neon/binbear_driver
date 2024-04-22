@@ -164,14 +164,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           } else if (!GetUtils.isEmail(
                               controller.emailController.text)) {
                             showSnackBar(message: "Please Enter Valid Email");
-                          } else if (controller
-                              .passwordController.text.isEmpty) {
+                          } else if (controller.passwordController.text.isEmpty) {
                             showSnackBar(message: "Please Enter Password");
-                          } else if (controller.passwordController.text.length <
-                              8) {
-                            showSnackBar(
-                                message:
-                                    "Password Length Can't Be Less Than 8");
+                          } else if (controller.passwordController.text.length < 8) {
+                            showSnackBar(message: "Password Length Can't Be Less Than 8");
                           } else {
                             controller.getResponse();
                           }

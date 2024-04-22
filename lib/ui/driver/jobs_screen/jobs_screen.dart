@@ -1,5 +1,6 @@
 import 'package:binbeardriver/ui/driver/jobs_screen/components/my_jobs_tab_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:get/get.dart';
 import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
 import 'package:binbeardriver/ui/base_components/base_drawer.dart';
@@ -19,6 +20,12 @@ class _JobsScreenState extends State<JobsScreen> {
   JobsController controller = Get.put(JobsController());
   // BookingsController bookingsController = Get.put(BookingsController());
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    // FlutterBackgroundService().invoke('setAsBackground');
+  }
 
   @override
   Widget build(BuildContext context) {

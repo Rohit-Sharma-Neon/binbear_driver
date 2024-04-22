@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:binbeardriver/backend/background_services.dart';
 import 'package:binbeardriver/backend/firebase_notification_service.dart';
 import 'package:binbeardriver/backend/http_overrider.dart';
 import 'package:binbeardriver/utils/base_colors.dart';
@@ -11,7 +12,7 @@ import 'package:scaled_app/scaled_app.dart';
 import 'package:binbeardriver/ui/onboardings/splash/splash_screen.dart';
 
 import 'ui/base_components/base_main_builder.dart';
-void main() {
+void main() async {
   HttpOverrides.global = MyHttpOverrides();
   if (kReleaseMode) {
     debugPrint = (String? message, {int? wrapWidth}) {};

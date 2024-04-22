@@ -4,7 +4,6 @@ import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
-
 import 'package:binbeardriver/ui/base_components/animated_column.dart';
 import 'package:binbeardriver/ui/base_components/base_app_bar.dart';
 import 'package:binbeardriver/ui/base_components/base_button.dart';
@@ -15,8 +14,9 @@ import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.d
 import 'package:binbeardriver/ui/onboardings/location/controller/onboarding_location_controller.dart';
 
 class OnboardingLocationScreen extends StatelessWidget {
-  OnboardingLocationScreen({super.key,this.showSavedAddress, this.isEditProfile});
-   final bool? showSavedAddress;
+  OnboardingLocationScreen({super.key,this.showSavedAddress, this.isEditProfile, this.lat, this.long, this.isUpdatingMapLocation});
+  final bool? showSavedAddress, isUpdatingMapLocation;
+  final double? lat, long;
   final bool? isEditProfile;
   final OnBoardingLocationController controller = Get.put(OnBoardingLocationController());
   final BaseController baseController = Get.find<BaseController>();
@@ -79,21 +79,21 @@ class OnboardingLocationScreen extends StatelessWidget {
                     // ),
                     BaseButton(
                       topMargin: 18,
-                      title: "Add Location",
+                      title: (isEditProfile??false) ? "Update Location" : "Add Location",
                       // onPressed: (){
                       //   Get.to(() =>  ManualAddressScreen(showSavedAddress: showSavedAddress,isEditProfile: isEditProfile ?? false,));
                       // },
-                      onPressed: (){
-                        showBaseLoader();
-                        baseController.getCurrentLocation(showLoader: false).then((value) async {
-                          if ((value?.latitude.toString()??"").isNotEmpty && (value?.longitude.toString()??"").isNotEmpty) {
-                            var placeMarks = await placemarkFromCoordinates(value?.latitude??0, value?.longitude??0);
+                      onPressed: () async {
+                        if (isEditProfile??false) {
+                          if ((lat?.toString()??"").isNotEmpty && (long?.toString()??"").isNotEmpty) {
+                            var placeMarks = await placemarkFromCoordinates(lat??0, long??0);
                             Placemark place = placeMarks[0];
                             String finalAddress = '${place.name}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.country}, ${place.postalCode}';
                             dismissBaseLoader();
                             Get.to(()=> MapViewScreen(
-                              lat: value?.latitude??0,
-                              long: value?.longitude??0,
+                              lat: lat??0,
+                              long: long??0,
+                              isUpdatingMapLocation: isUpdatingMapLocation,
                               fullAddress: finalAddress,
                               mainAddress: place.street,
                               subAddress: "${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.country}, ${place.postalCode}",
@@ -102,7 +102,27 @@ class OnboardingLocationScreen extends StatelessWidget {
                           }else{
                             showSnackBar(message: "Please Try Again!");
                           }
-                        });
+                        }else{
+                          showBaseLoader();
+                          baseController.getCurrentLocation(showLoader: false).then((value) async {
+                            if ((value?.latitude.toString()??"").isNotEmpty && (value?.longitude.toString()??"").isNotEmpty) {
+                              var placeMarks = await placemarkFromCoordinates(value?.latitude??0, value?.longitude??0);
+                              Placemark place = placeMarks[0];
+                              String finalAddress = '${place.name}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.country}, ${place.postalCode}';
+                              dismissBaseLoader();
+                              Get.to(()=> MapViewScreen(
+                                lat: value?.latitude??0,
+                                long: value?.longitude??0,
+                                fullAddress: finalAddress,
+                                mainAddress: place.street,
+                                subAddress: "${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.country}, ${place.postalCode}",
+                                showSavedAddress: showSavedAddress??false,
+                              ));
+                            }else{
+                              showSnackBar(message: "Please Try Again!");
+                            }
+                          });
+                        }
                       },
                     ),
                   ],

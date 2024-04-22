@@ -14,5 +14,3 @@ BinBear Driver Side App
 # git push -u origin mithilesh_branch
 # git push -u origin new_branch
 # git push -u origin shubham_branch
-
-

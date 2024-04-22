@@ -16,6 +16,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:binbeardriver/ui/base_components/base_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DriversMapViewController extends GetxController{
   RxString currentWorkStatus = "0".obs;
@@ -194,10 +195,11 @@ class DriversMapViewController extends GetxController{
     }
   }
 
-  void onButtonTap({required String bookingId, required int index}){
+  Future<void> onButtonTap({required String bookingId, required int index, double? lat, double? lng}) async {
     switch (currentWorkStatus.value) {
       case "1": {
         // 1 -> Accepted
+        launchGoogleMap(lat: lat??0, lng: lng??0);
         updateDriverStatus(bookingId: bookingId, status: "7").then((value) {
           if (value??false) {
             Get.find<JobsController>().list?[index].serviceStatus = "7";
@@ -279,6 +281,15 @@ class DriversMapViewController extends GetxController{
         currentWorkStatus.value = "Pick-Up!";
         break;
       }
+    }
+  }
+
+  void launchGoogleMap({required double lat, required double lng}) async {
+    final Uri url = Uri.parse('https://www.google.com/maps/search/?api=1&query=$lat,$lng');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
     }
   }
 

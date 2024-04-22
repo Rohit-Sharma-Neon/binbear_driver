@@ -32,7 +32,7 @@ class SignUpController extends GetxController{
       "role": "2",
       "password":passwordController.text.trim(),
       "confirm_password":confirmPasswordController.text.trim(),
-      "device_token":"xx",
+      "device_token":"xxxx",
     });
     if ((pickedFile?.path??"").isNotEmpty) {
       data.files.add(MapEntry("id_proof", await dio.MultipartFile.fromFile((pickedFile?.path??""))));

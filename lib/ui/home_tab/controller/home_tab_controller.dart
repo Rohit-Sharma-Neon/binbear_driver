@@ -52,9 +52,7 @@ class HomeTabController extends GetxController {
     isHomeLoading.value = true;
 
     try {
-      await BaseApiService()
-          .get(apiEndPoint: ApiEndPoints().getHomeData, showLoader: false)
-          .then((value) {
+      await BaseApiService().get(apiEndPoint: ApiEndPoints().getHomeData, showLoader: false).then((value) {
         refreshController.refreshCompleted();
         isHomeLoading.value = false;
         if (value?.statusCode == 200) {

@@ -45,7 +45,7 @@ class BaseLocalization extends Translations {
       "You have successfully created\nyour BinBear account! You can\nnow access your account and\nschedule services.": 'You have successfully created\nyour BinBear account! You can\nnow access your account and\nschedule services.',
       // Location Screen
       "Address": 'Address',
-      "Please allow us to fetch your\nlocation, or you can add_edit_driver_screen your\nlocation manually.": 'Please allow us to fetch your\nlocation, or you can add_edit_driver_screen your\nlocation manually.',
+      "Please allow us to fetch your\nlocation, or you can add your\nlocation manually.": 'Please allow us to fetch your\nlocation, or you can add your\nlocation manually.',
       "Enable Location": 'Enable Location',
       "Add Location Manually": 'Add Location Manually',
       "Skip": 'Skip',

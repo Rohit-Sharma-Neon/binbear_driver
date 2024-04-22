@@ -32,7 +32,7 @@ class BaseDrawer extends StatelessWidget {
         ),
         color: Colors.white,
       ),
-      child: SingleChildScrollView( 
+      child: SingleChildScrollView(
         child: Column(
           children: [
             BaseStorage.read(StorageKeys.profilePhoto).toString().isNotEmpty
@@ -61,11 +61,14 @@ class BaseDrawer extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
             const Divider(thickness: 0.6, color: Colors.grey, height: 35),
-            drawerListTiles(
-              title: 'Transactions',
-              onTap: () {
-                Get.to(() => const TransactionsScreen());
-              },
+            Visibility(
+              visible: (GetStorage().read(StorageKeys.isUserDriver) ?? false) == false,
+              child: drawerListTiles(
+                title: 'Transactions',
+                onTap: () {
+                  Get.to(() => const TransactionsScreen());
+                },
+              ),
             ),
             drawerListTiles(
               title: 'Our Story',
@@ -89,7 +92,6 @@ class BaseDrawer extends StatelessWidget {
                 Get.to(() => const AboutAppScreen(type: "Terms & Conditions"));
               },
             ),
-
             drawerListTiles(
               title: 'About Us',
               onTap: () {

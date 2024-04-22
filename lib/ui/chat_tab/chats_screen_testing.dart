@@ -153,10 +153,18 @@ class _ChatsScreenState extends State<ChatsScreen> {
                                               style: const TextStyle(fontSize: 13)),
                                         ],
                                       ),
-                                      Text(it?.lastMessage ?? '',
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(fontSize: 14)),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(it?.lastMessage ?? '',
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(fontSize: 14)),
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Text(it?.bookingId?.toString() ?? '', style: const TextStyle(fontSize: 13)),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),

@@ -60,16 +60,18 @@ class Data {
 
 class DataList {
   DataList({
-      this.id, 
-      this.groupName, 
-      this.type, 
-      this.lastMessage, 
-      this.totalUnread, 
-      this.updatedAt, 
-      this.chatuser,});
+    this.id,
+    this.groupName,
+    this.type,
+    this.lastMessage,
+    this.totalUnread,
+    this.bookingId,
+    this.updatedAt,
+    this.chatuser,});
 
   DataList.fromJson(dynamic json) {
     id = json['id'];
+    bookingId = json['booking_id'];
     groupName = json['group_name'];
     type = json['type'];
     lastMessage = json['last_message'];
@@ -88,6 +90,7 @@ class DataList {
   String? lastMessage;
   num? totalUnread;
   String? updatedAt;
+  String? bookingId;
   List<Chatuser>? chatuser;
 
   Map<String, dynamic> toJson() {
@@ -95,6 +98,7 @@ class DataList {
     map['id'] = id;
     map['group_name'] = groupName;
     map['type'] = type;
+    map['booking_id'] = bookingId;
     map['last_message'] = lastMessage;
     map['total_unread'] = totalUnread;
     map['updated_at'] = updatedAt;

@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:binbeardriver/backend/background_services.dart';
 import 'package:binbeardriver/ui/base_error_screen.dart';
 import 'package:binbeardriver/ui/dashboard_module/dashboard_screen/dashboard_screen.dart';
 import 'package:binbeardriver/ui/driver/jobs_screen/jobs_screen.dart';
@@ -36,6 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await initGetStorage();
+      // await initializeBackgroundService();
       Future.delayed( const Duration(milliseconds: 2700), () async {
         setState(() {
           showFooter = false;

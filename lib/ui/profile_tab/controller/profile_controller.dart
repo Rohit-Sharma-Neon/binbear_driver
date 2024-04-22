@@ -41,17 +41,13 @@ class ProfileController extends GetxController {
   setData() {
     nameController.text = profileData?.value?.name?.toString() ?? "";
     emailController.text = profileData?.value?.email?.toString() ?? "";
-    mobileController.text = MaskTextInputFormatter()
-        .updateMask(
+    mobileController.text = MaskTextInputFormatter().updateMask(
             mask: '(###) ###-####',
-            newValue: TextEditingValue(
-                text: profileData?.value?.mobile?.toString() ?? ""))
-        .text;
-    selectedGender.value =
-        (profileData?.value?.gender?.toString().toLowerCase() ?? "male")
-                .contains("female")
+            newValue: TextEditingValue(text: profileData?.value?.mobile?.toString() ?? "")).text;
+    selectedGender.value = (profileData?.value?.gender?.toString().toLowerCase() ?? "male").contains("female")
             ? "Female"
             : "Male";
+    update();
   }
 
   updateProfile() async {
@@ -109,10 +105,10 @@ class ProfileController extends GetxController {
     });
   }
 
-  getProfileData() async {
+  getProfileData({bool? showLoader}) async {
     isProfileLoading.value = true;
     try {
-      await BaseApiService().get(apiEndPoint: ApiEndPoints().getUserProfile, showLoader: false).then((value) {
+      await BaseApiService().get(apiEndPoint: ApiEndPoints().getUserProfile, showLoader: showLoader??false).then((value) {
         isProfileLoading.value = false;
         refreshController.refreshCompleted();
         if (value?.statusCode == 200) {

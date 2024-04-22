@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:binbeardriver/ui/base_components/base_outlined_button.dart';
+import 'package:binbeardriver/ui/manage_address/manage_address_screen.dart';
 import 'package:binbeardriver/ui/onboardings/location/onboarding_location_screen.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:binbeardriver/ui/base_components/animated_column.dart';
@@ -23,6 +24,7 @@ import 'package:get/get.dart';
 import 'package:binbeardriver/ui/base_components/base_text.dart';
 import 'package:binbeardriver/ui/base_components/base_textfield.dart';
 import 'package:binbeardriver/ui/profile_tab/controller/profile_controller.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -32,7 +34,7 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
 
-  ProfileController controller =Get.isRegistered<ProfileController>()? Get.find<ProfileController>():Get.put(ProfileController());
+  ProfileController controller = Get.isRegistered<ProfileController>() ? Get.find<ProfileController>() : Get.put(ProfileController());
   @override
   void initState() {
     super.initState();
@@ -89,14 +91,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       borderRadius: BorderRadius.circular(100),
                                       child: Image.file(
                                         controller.selectedImage?.value ?? File(""),width: 100,
-                                        height: 100,fit: BoxFit.cover,),
+                                        height: 100,fit: BoxFit.cover,
+                                      ),
                                     );
                                   } else if ((controller.profileData?.value?.profile?.toString() ?? "").isNotEmpty) {
                                     return ClipRRect(
                                       borderRadius: BorderRadius.circular(100),
-                                      child: Image.network(
-                                        controller.profileData?.value?.profile
-                                            ?.toString() ?? "",
+                                      child: Image.network(controller.profileData?.value?.profile?.toString() ?? "",
                                         width: 100,
                                         height: 100,fit: BoxFit.cover,
                                         loadingBuilder: (context, child, loadingProgress) {
@@ -111,7 +112,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     return const BaseDummyProfile(
                                         overflowHeight: 140,
                                         overflowWidth: 190,
-                                        topMargin: 10);
+                                        topMargin: 10,
+                                    );
                                   }
                                 },
                               ),
@@ -309,22 +311,36 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         btnRightPadding: 20,
                         borderRadius: 13,
                         onPressed: () {
-                          Get.to(() => OnboardingLocationScreen(showSavedAddress: false,isEditProfile: true,));
+                          // Get.to(() => OnboardingLocationScreen(showSavedAddress: false, isEditProfile: true));
+                          Get.to(()=> ManageAddressScreen(
+                            isUpdatingMapLocation: false,
+                            addressId: controller.profileData?.value?.address?.id?.toString()??"",
+                            lat: double.parse(controller.profileData?.value?.address?.lat??"0"),
+                            long: double.parse(controller.profileData?.value?.address?.lng??"0"),
+                            fullAddress: controller.profileData?.value?.address?.fullAddress?.toString()??"",
+                            houseNo: controller.profileData?.value?.address?.flatNo?.toString()??"",
+                            apartment: controller.profileData?.value?.address?.apartment?.toString()??"",
+                            description: controller.profileData?.value?.address?.description?.toString()??"",
+                            showSavedAddress: false,
+                          ));
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Obx(() =>  Flexible(
-                                 child: BaseText(
-                                  value:controller.selectedAddressId.isEmpty ?"${controller.profileData?.value?.address?.flatNo.toString() ?? ""}, ${controller.profileData?.value?.address?.fullAddress.toString() ?? ""}": "${controller.selectedAddress.value.fullAddress}",
-                                  fontSize: 14,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  color: BaseColors.secondaryColor,
-                                  fontWeight: FontWeight.w400,
-                                 ),
-                               ),
-                             ),
+                            GetBuilder<ProfileController>(
+                              builder: (ProfileController controller) {
+                                return Flexible(
+                                  child: BaseText(
+                                    value: "${controller.profileData?.value?.address?.flatNo.toString() ?? ""}, ${controller.profileData?.value?.address?.fullAddress.toString() ?? ""}",
+                                    fontSize: 14,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    color: BaseColors.secondaryColor,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                );
+                              },
+                            ),
                             SvgPicture.asset(BaseAssets.icArrowRight)
                           ],
                         ),

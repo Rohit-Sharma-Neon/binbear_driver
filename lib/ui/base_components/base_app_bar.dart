@@ -30,7 +30,19 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: FadeInDown(
           duration: const Duration(milliseconds: 400),
-          child: BaseText(value: title??"", color: (showDrawerIcon??false) ? Colors.white : contentColor, fontSize: (showDrawerIcon??false) ? 18 : titleSize, fontWeight: (showDrawerIcon??false) ? FontWeight.w500 : fontWeight,)),
+          child: BaseText(
+              value: title??"",
+              color: (showDrawerIcon??false)
+                  ? Colors.white
+                  : contentColor,
+              fontSize: (showDrawerIcon??false)
+                  ? 18
+                  : titleSize,
+              fontWeight: (showDrawerIcon??false)
+                  ? FontWeight.w500
+                  : fontWeight,
+          ),
+      ),
       backgroundColor: Colors.transparent,
       titleSpacing: (showDrawerIcon??false) ? 0 : titleSpacing,
       elevation: 0.0,

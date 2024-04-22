@@ -10,9 +10,10 @@ class FirebaseNotificationService {
   Future<void>initFirebase() async {
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
     await FirebaseMessaging.instance.subscribeToTopic("bin_bear_driver_service");
-    FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-    String? token = await firebaseMessaging.getToken();
-    debugPrint("FCM Token -> ${token??""} <-");
+    // FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+    // String? token = await firebaseMessaging.getToken();
+    // debugPrint("FCM Token -> ${token??""} <-");
+
     // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     // flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.requestNotificationsPermission();
     // firebaseMessaging.requestPermission(
