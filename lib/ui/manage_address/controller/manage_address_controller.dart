@@ -18,12 +18,6 @@ class ManageAddressController extends GetxController {
   TextEditingController houseNoController = TextEditingController();
   TextEditingController apartmentController = TextEditingController();
   TextEditingController landmarkController = TextEditingController();
-  List<String> addressTypeList = [
-    "Home",
-    "Work",
-    "Friends & Family",
-    "Other",
-  ];
 
   saveAddress({required double lat, required double lng, required String fullAddress, bool? showSavedAddress, String? addressId}) {
     Map<String, String> data = {

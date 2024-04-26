@@ -76,12 +76,10 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                         );
                       }).toList();
                     },
-                    items:
-                    controller.options.map<DropdownMenuItem<String>>((String value) {
+                    items: controller.options.map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child:
-                        Text(value, style: const TextStyle(fontSize: 15)),
+                        child: Text(value, style: const TextStyle(fontSize: 15)),
                       );
                     }).toList(),
                   ),

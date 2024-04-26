@@ -68,11 +68,15 @@ class _ChatsScreenState extends State<ChatsScreen> {
                     rightMargin: 0,
                     leftMargin: 0,
                     bottomMargin: 10,
-                    controller: TextEditingController(),
+                    controller: messageController.searchController,
                     onCloseTap: () {
                       setState(() {});
                     },
-                    onChanged: (val) {},
+                    onChanged: (val) {
+                      messageController.debouncer.run((){
+                        messageController.emitThreadList();
+                      });
+                    },
                   ),
                   Expanded(
                     child: (data ?? []).isNotEmpty ? ListView.builder(
@@ -129,8 +133,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                                           ),
                                         );
                                       },
-                                    )
-                                         :const Icon(Icons.person),
+                                    ) : const Icon(Icons.person),
                                   ),
                                 ),
                                 const SizedBox(width: 15),
@@ -162,7 +165,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                                                 style: const TextStyle(fontSize: 14)),
                                           ),
                                           const SizedBox(width: 8),
-                                          Text(it?.bookingId?.toString() ?? '', style: const TextStyle(fontSize: 13)),
+                                          Text(it?.bookingId?.toString() ?? '', style: const TextStyle(fontSize: 12, color: Colors.grey)),
                                         ],
                                       ),
                                     ],

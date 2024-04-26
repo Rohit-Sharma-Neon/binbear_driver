@@ -14,10 +14,11 @@ import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.d
 import 'package:binbeardriver/ui/onboardings/location/controller/onboarding_location_controller.dart';
 
 class OnboardingLocationScreen extends StatelessWidget {
-  OnboardingLocationScreen({super.key,this.showSavedAddress, this.isEditProfile, this.lat, this.long, this.isUpdatingMapLocation});
   final bool? showSavedAddress, isUpdatingMapLocation;
   final double? lat, long;
   final bool? isEditProfile;
+  final String? house, apartment, description, addressId, fullAddress;
+  OnboardingLocationScreen({super.key,this.showSavedAddress, this.isEditProfile, this.lat, this.long, this.isUpdatingMapLocation, this.house, this.apartment, this.description, this.addressId, this.fullAddress});
   final OnBoardingLocationController controller = Get.put(OnBoardingLocationController());
   final BaseController baseController = Get.find<BaseController>();
 
@@ -85,23 +86,19 @@ class OnboardingLocationScreen extends StatelessWidget {
                       // },
                       onPressed: () async {
                         if (isEditProfile??false) {
-                          if ((lat?.toString()??"").isNotEmpty && (long?.toString()??"").isNotEmpty) {
-                            var placeMarks = await placemarkFromCoordinates(lat??0, long??0);
-                            Placemark place = placeMarks[0];
-                            String finalAddress = '${place.name}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.country}, ${place.postalCode}';
-                            dismissBaseLoader();
-                            Get.to(()=> MapViewScreen(
-                              lat: lat??0,
-                              long: long??0,
-                              isUpdatingMapLocation: isUpdatingMapLocation,
-                              fullAddress: finalAddress,
-                              mainAddress: place.street,
-                              subAddress: "${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.country}, ${place.postalCode}",
-                              showSavedAddress: showSavedAddress??false,
-                            ));
-                          }else{
-                            showSnackBar(message: "Please Try Again!");
-                          }
+                          Get.off(()=> MapViewScreen(
+                            lat: lat??0,
+                            long: long??0,
+                            isUpdatingMapLocation: isUpdatingMapLocation,
+                            fullAddress: fullAddress??"",
+                            mainAddress: (fullAddress??"").split(",").first,
+                            subAddress: (fullAddress??"").replaceAll(fullAddress??"".split(",").first,""),
+                            showSavedAddress: showSavedAddress??false,
+                            house: house??"",
+                            apartment: apartment??"",
+                            description: description??"",
+                            addressId: addressId??"",
+                          ));
                         }else{
                           showBaseLoader();
                           baseController.getCurrentLocation(showLoader: false).then((value) async {

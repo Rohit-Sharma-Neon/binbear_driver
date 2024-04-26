@@ -132,9 +132,13 @@ class _OtpScreenState extends State<OtpScreen> {
                       fontWeight: FontWeight.w500,
                       onTap: (){
                         if (controller.isResendEnable.value) {
-                          triggerHapticFeedback();
-                          controller.isResendEnable.value = false;
-                          setState(() {});
+                          controller.resendOtp().then((value) => {
+                            if (value) {
+                              triggerHapticFeedback(),
+                              controller.isResendEnable.value = false,
+                              setState(() {}),
+                            }
+                          });
                         }
                       },
                     ),

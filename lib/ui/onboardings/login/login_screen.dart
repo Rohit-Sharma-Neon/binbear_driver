@@ -31,6 +31,12 @@ class _LoginScreenState extends State<LoginScreen> {
   LoginController controller = Get.put(LoginController());
 
   @override
+  void initState() {
+    super.initState();
+    BaseStorage.write(StorageKeys.isUserDriver, false);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BaseScaffoldBackground(
       child: Scaffold(
@@ -72,15 +78,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: SignUpUserTypeSelection(
                                   title: 'Service\nProvider',
                                   imageUrl: BaseAssets.icServiceProvider,
-                                  isChecked:
-                                      controller.selectedUserType.value ==
-                                          "Service Provider",
+                                  isChecked: controller.selectedUserType.value == "Service Provider",
                                   onTap: () {
                                     triggerHapticFeedback();
-                                    controller.selectedUserType.value =
-                                        "Service Provider";
-                                    BaseStorage.write(
-                                        StorageKeys.isUserDriver, false);
+                                    controller.selectedUserType.value = "Service Provider";
+                                    BaseStorage.write(StorageKeys.isUserDriver, false);
                                   },
                                 ),
                               ),
@@ -89,13 +91,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: SignUpUserTypeSelection(
                                   title: 'BinBears',
                                   imageUrl: BaseAssets.icBinBears,
-                                  isChecked:
-                                      controller.selectedUserType.value ==
-                                          "BinBears",
+                                  isChecked: controller.selectedUserType.value == "BinBears",
                                   onTap: () {
                                     triggerHapticFeedback();
-                                    controller.selectedUserType.value =
-                                        "BinBears";
+                                    controller.selectedUserType.value = "BinBears";
                                     BaseStorage.write(StorageKeys.isUserDriver, true);
                                   },
                                 ),

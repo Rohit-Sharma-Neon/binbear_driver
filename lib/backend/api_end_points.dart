@@ -45,4 +45,5 @@ class ApiEndPoints {
   final String resetPassword = "reset_password";
   final String fileUpload = "fileUpload";
   final String driverLocationUpdate = "driver/location/update";
+  final String resendOtp = "resendcode";
 }

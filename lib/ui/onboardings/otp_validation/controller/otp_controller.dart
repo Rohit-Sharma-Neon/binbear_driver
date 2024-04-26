@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:binbeardriver/backend/api_end_points.dart';
 import 'package:binbeardriver/backend/base_api_service.dart';
+import 'package:binbeardriver/backend/base_responses/base_success_response.dart';
 import 'package:binbeardriver/ui/change_password/change_password_screen.dart';
 import 'package:binbeardriver/ui/onboardings/forgot_password/controller/forgot_password_controller.dart';
 import 'package:binbeardriver/ui/onboardings/location/onboarding_location_screen.dart';
@@ -21,14 +22,7 @@ class OtpController extends GetxController {
 
   callVerifyOtpApi() {
     Map<String, String> data = {
-      "mobile_or_email": Get.find<SignUpController>()
-          .mobileController
-          .text
-          .trim()
-          .replaceAll("(", "")
-          .replaceAll(")", "")
-          .replaceAll("-", "")
-          .replaceAll(" ", ""),
+      "mobile_or_email": Get.find<SignUpController>().emailController.text.trim(),
       "verify_type": "email",
       "deviceType" : Platform.isAndroid ? "android" : "ios",
       "deviceId": "device_id",
@@ -98,5 +92,28 @@ class OtpController extends GetxController {
         showSnackBar(message: "Something went wrong, please try again");
       }
     });
+  }
+
+  Future<bool> resendOtp() async {
+    bool returnValue = false;
+    Map<String, String> data = {
+      "email": Get.find<SignUpController>().emailController.text.trim(),
+    };
+    await BaseApiService().post(apiEndPoint: ApiEndPoints().resendOtp, data: data).then((value) {
+      if (value?.statusCode == 200) {
+        BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
+        if (response.success ?? false) {
+          returnValue = true;
+          showSnackBar(message: response.message ?? "", isSuccess: true);
+        } else {
+          returnValue = false;
+          showSnackBar(message: response.message ?? "");
+        }
+      } else {
+        returnValue = false;
+        showSnackBar(message: "Something went wrong, please try again");
+      }
+    });
+    return returnValue;
   }
 }

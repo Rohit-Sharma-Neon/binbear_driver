@@ -1,6 +1,17 @@
 import 'dart:async';
+import 'package:binbeardriver/backend/api_end_points.dart';
+import 'package:binbeardriver/backend/base_api_service.dart';
+import 'package:binbeardriver/backend/base_responses/base_success_response.dart';
+import 'package:binbeardriver/ui/dashboard_module/dashboard_screen/dashboard_screen.dart';
+import 'package:binbeardriver/ui/driver/jobs_screen/jobs_screen.dart';
+import 'package:binbeardriver/ui/onboardings/base_success_screen.dart';
+import 'package:binbeardriver/ui/onboardings/welcome_screen.dart';
+import 'package:binbeardriver/ui/profile_tab/controller/profile_controller.dart';
 import 'package:binbeardriver/utils/base_debouncer.dart';
+import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/base_strings.dart';
+import 'package:binbeardriver/utils/get_storage.dart';
+import 'package:binbeardriver/utils/storage_keys.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,6 +38,37 @@ class MapViewController extends GetxController{
     }
     getSuggestion(searchController.text);
   }
+
+  updateAddress({required double lat, required double lng, required String fullAddress, bool? showSavedAddress, String? addressId, String? house, String? apartment, String? description}) {
+    Map<String, String> data = {
+      "flat_no": house??"",
+      "apartment": apartment??"",
+      "description": description??"",
+      "home_type": "2", // default type is "2" defined by backend
+      "full_address": fullAddress,
+      "lat": lat.toString(),
+      "lng": lng.toString(),
+    };
+    if((addressId??"").isNotEmpty){
+      data["address_id"] = addressId??"";
+    }
+    BaseApiService().post(apiEndPoint: ApiEndPoints().addAddress, data: data).then((value) async {
+      if (value?.statusCode == 200) {
+        BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
+        if (response.success ?? false) {
+          if (showSavedAddress ?? false) {
+            Get.back();
+            Get.find<ProfileController>().getProfileData();
+          }
+        } else {
+          showSnackBar(message: response.message ?? "");
+        }
+      } else {
+        showSnackBar(message: "Something went wrong, please try again");
+      }
+    });
+  }
+
 
   getSuggestion(String input) async {
     dio = Dio();

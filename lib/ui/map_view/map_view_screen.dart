@@ -23,11 +23,9 @@ import 'package:binbeardriver/ui/map_view/controller/map_view_controller.dart';
 
 class MapViewScreen extends StatefulWidget {
   final double? lat, long;
-  final String? mainAddress;
-  final String? subAddress;
-  final String? fullAddress;
+  final String? mainAddress, subAddress, fullAddress, house, apartment, description, addressId;
   final bool? showSavedAddress, isUpdatingMapLocation;
-  const MapViewScreen({super.key, this.lat, this.long, this.mainAddress, this.subAddress, this.fullAddress, this.showSavedAddress, this.isUpdatingMapLocation});
+  const MapViewScreen({super.key, this.lat, this.long, this.mainAddress, this.subAddress, this.fullAddress, this.showSavedAddress, this.isUpdatingMapLocation, this.house, this.apartment, this.description, this.addressId});
 
   @override
   State<MapViewScreen> createState() => _MapViewScreenState();
@@ -37,11 +35,13 @@ class _MapViewScreenState extends State<MapViewScreen> {
 
   final MapViewController controller = Get.put(MapViewController());
   final BaseController baseController = Get.find<BaseController>();
+  LatLng latLng = const LatLng(0, 0);
 
   @override
   void initState() {
     super.initState();
     controller.addMarker(latitude: widget.lat??0, longitude: widget.long??0);
+    latLng = LatLng(widget.lat??0, widget.long??0);
     controller.searchController.clear();
     controller.searchController.text = (widget.fullAddress??"").split(",").first;
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -141,6 +141,7 @@ class _MapViewScreenState extends State<MapViewScreen> {
                                 controller.searchController.text = controller.searchResultList[index]["description"];
                                 await baseController.getLatLngFromAddress(address: controller.searchResultList[index]["description"]).then((value) {
                                   controller.animateToLocation(value: value??const LatLng(0, 0));
+                                  latLng = value ?? LatLng(widget.lat??0, widget.long??0);
                                 });
                                 controller.searchResultList.value = [];
                                 controller.searchResultList.clear();
@@ -247,17 +248,31 @@ class _MapViewScreenState extends State<MapViewScreen> {
                     ),
                   ),
                   BaseButton(
-                    title: "Confirm Location",
+                    title: (widget.addressId??"").isNotEmpty ? "Update Location" : "Confirm Location",
                     topMargin: 20,
                     bottomMargin: 12,
                     onPressed: (){
-                      Get.to(()=> ManageAddressScreen(
-                        isUpdatingMapLocation: widget.isUpdatingMapLocation??false,
-                        lat: widget.lat??0,
-                        long: widget.long??0,
-                        fullAddress: controller.selectedLocation.value,
-                        showSavedAddress: widget.showSavedAddress??false,
-                      ));
+                      if ((widget.addressId??"").isEmpty) {
+                        Get.to(()=> ManageAddressScreen(
+                          isUpdatingMapLocation: widget.isUpdatingMapLocation??false,
+                          lat: widget.lat ?? 0,
+                          long: widget.long ?? 0,
+                          fullAddress: controller.selectedLocation.value,
+                          showSavedAddress: widget.showSavedAddress??false,
+                        ));
+                      }
+                      else{
+                        controller.updateAddress(
+                          addressId: widget.addressId??"",
+                          lat: latLng.latitude,
+                          lng: latLng.longitude,
+                          fullAddress: controller.selectedLocation.value,
+                          showSavedAddress: true,
+                          house: widget.house??"",
+                          apartment: widget.apartment??"",
+                          description: widget.description??"",
+                        );
+                      }
                     },
                   )
                 ],

@@ -19,7 +19,7 @@ class TransactionController extends GetxController{
 
   getTransactionHistory() async {
     Map<String, dynamic> params = {
-      'filter': dropdownValue != null ? options.indexOf(dropdownValue??'') :'',
+      'filter': dropdownValue != null ? options.indexOf(dropdownValue??'')+1 :'',
     };
     try {
       await BaseApiService().post(apiEndPoint: ApiEndPoints().transactionHistory,data: params).then((value){
@@ -41,6 +41,5 @@ class TransactionController extends GetxController{
     } on Exception catch (e) {
       refreshController.refreshCompleted();
     }
-
   }
 }

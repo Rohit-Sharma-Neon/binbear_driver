@@ -27,7 +27,6 @@ class ManageAddressScreen extends StatefulWidget {
 
 class _ManageAddressScreenState extends State<ManageAddressScreen> {
   ManageAddressController controller = Get.put(ManageAddressController());
-
   @override
   void initState() {
     super.initState();
@@ -49,11 +48,16 @@ class _ManageAddressScreenState extends State<ManageAddressScreen> {
                 child: GestureDetector(
                   onTap: (){
                     triggerHapticFeedback();
-                    Get.to(() => OnboardingLocationScreen(
+                    Get.off(() => OnboardingLocationScreen(
                       isEditProfile: true,
                       lat: widget.lat,
                       long: widget.long,
                       isUpdatingMapLocation: widget.isUpdatingMapLocation,
+                      house: widget.houseNo??"",
+                      apartment: widget.apartment??"",
+                      description: widget.description??"",
+                      addressId: widget.addressId??"",
+                      fullAddress: widget.fullAddress??"",
                     ));
                   },
                   child: BaseContainer(

@@ -62,7 +62,7 @@ class BaseDrawer extends StatelessWidget {
             ),
             const Divider(thickness: 0.6, color: Colors.grey, height: 35),
             Visibility(
-              visible: (GetStorage().read(StorageKeys.isUserDriver) ?? false) == false,
+              visible: !(BaseStorage.read(StorageKeys.isUserDriver)??false),
               child: drawerListTiles(
                 title: 'Transactions',
                 onTap: () {
@@ -99,7 +99,7 @@ class BaseDrawer extends StatelessWidget {
               },
             ),
             Visibility(
-              visible: !(GetStorage().read(StorageKeys.isUserDriver) ?? false),
+              visible: !(BaseStorage.read(StorageKeys.isUserDriver) ?? false),
               child: drawerListTiles(
                 title: 'Help & Support',
                 onTap: () {

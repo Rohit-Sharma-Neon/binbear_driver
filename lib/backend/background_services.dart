@@ -1,14 +1,9 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:binbeardriver/utils/notification_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
-
-class BackgroundServices {
-
-}
 
 Future<void> initializeBackgroundService() async {
   final FlutterBackgroundService service = FlutterBackgroundService();

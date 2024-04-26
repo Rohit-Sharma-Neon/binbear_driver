@@ -52,47 +52,8 @@ class _MessageScreenState extends State<MessageScreen> {
   }
   sendMsg(String? txt, type, file) {
     var mFile = type == "TEXT" ? '' : file;
-    //messageController.socket?.emit('SEND_MESSAGE',{messageController.userId, "1", widget.convenienceId, txt, type, mFile }, );
     messageController.socket?.emit('SEND_MESSAGE',{"senderId":messageController.userId,"receiveId":widget.senderId?.toString()??"","roomId":widget.convenienceId,"message":txt,"messageType": type,"messageFile": mFile,"tipId":"0"}, );
   }
-
-  // sendImage(int val) async {
-  //   if(val == 0)
-  //     {
-  //       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-  //       if(image != null)
-  //         {
-  //           file = File(image.path);
-  //
-  //           var v = await context.read<CommonProvider>().fileUpload(file: file);
-  //           if(v != null)
-  //             {
-  //               // print("object :: $v");
-  //               // print("API Response type :: ${v.data?.image}");
-  //               // print("API Response type :: ${v.data?.type}");
-  //               sendMsg("", v.data?.type.toString(), v.data?.image.toString());
-  //             }
-  //           // print("object image Gallery :: $image");
-  //         }
-  //     }
-  //   else
-  //     {
-  //       final image = await ImagePicker().pickImage(source: ImageSource.camera);
-  //       if(image != null)
-  //       {
-  //         file = File(image.path);
-  //         if(context.mounted) {
-  //           var v = await context.read<CommonProvider>().fileUpload(file: file);
-  //           if (v != null) {
-  //             sendMsg("", v.data?.type.toString(), v.data?.image.toString());
-  //           }
-  //         }
-  //         if (kDebugMode) {
-  //           print("object image Camera :: $image");
-  //         }
-  //       }
-  //     }
-  // }
 
   @override
   void dispose() {
@@ -100,6 +61,7 @@ class _MessageScreenState extends State<MessageScreen> {
     messageController.socket?.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return BaseScaffoldBackground(

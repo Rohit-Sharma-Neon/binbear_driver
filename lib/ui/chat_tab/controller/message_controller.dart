@@ -4,6 +4,7 @@ import 'package:binbeardriver/backend/api_end_points.dart';
 import 'package:binbeardriver/backend/base_api_service.dart';
 import 'package:binbeardriver/ui/chat_tab/model/chat_model.dart';
 import 'package:binbeardriver/ui/chat_tab/model/file_upload_response.dart';
+import 'package:binbeardriver/utils/base_debouncer.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:binbeardriver/utils/get_storage.dart';
 import 'package:binbeardriver/utils/storage_keys.dart';
@@ -18,7 +19,9 @@ class MessageController extends GetxController {
   RxList<tcm.DataList>? chatList = <tcm.DataList>[].obs;
   RxBool isLoading = true.obs;
   TextEditingController controller = TextEditingController();
+  TextEditingController searchController = TextEditingController();
   ScrollController? listController = ScrollController();
+  BaseDebouncer debouncer = BaseDebouncer();
   File? file;
 
   RxBool chatUserLoading = false.obs;
@@ -112,7 +115,6 @@ class MessageController extends GetxController {
         );
       });
     }
-
   }
 
   Future<String> getUploadUrl({required File selectedImage}) async {
@@ -136,7 +138,7 @@ class MessageController extends GetxController {
   }
 
   emitThreadList(){
-    socket?.emit("THREADS_LIST", {"senderId" : userId});
+    socket?.emit("THREADS_LIST", {"senderId" : userId, "search": searchController.text.trim()});
   }
 
   disposeSocket(){
