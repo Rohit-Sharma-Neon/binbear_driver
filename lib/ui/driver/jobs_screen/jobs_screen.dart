@@ -1,6 +1,7 @@
+import 'dart:async';
+import 'package:binbeardriver/backend/background_services.dart';
 import 'package:binbeardriver/ui/driver/jobs_screen/components/my_jobs_tab_view.dart';
-import 'package:binbeardriver/utils/get_storage.dart';
-import 'package:binbeardriver/utils/storage_keys.dart';
+import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:get/get.dart';
@@ -16,11 +17,48 @@ class JobsScreen extends StatefulWidget {
   @override
   State<JobsScreen> createState() => _JobsScreenState();
 }
-
-class _JobsScreenState extends State<JobsScreen> {
-
+class _JobsScreenState extends State<JobsScreen> with WidgetsBindingObserver{
   JobsController controller = Get.put(JobsController());
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:{
+        print(state.name);
+        // FlutterBackgroundService().invoke('setAsForeground');
+        break;
+      }
+      case AppLifecycleState.inactive:{
+        print(state.name);
+        break;
+      }
+      case AppLifecycleState.paused:{
+        print(state.name);
+        // FlutterBackgroundService().invoke('setAsBackground');
+        break;
+      }
+      case AppLifecycleState.detached:{
+        print(state.name);
+        break;
+      }
+      case AppLifecycleState.hidden:{
+        print(state.name);
+        break;
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await checkLocationPermission();
+      await checkNotificationPermission();
+      initializeBackgroundService();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +82,20 @@ class _JobsScreenState extends State<JobsScreen> {
             body: TabBarView(
                 controller: controller.tabController,
                 children: const [
-                MyJobsTabview(),
-                MyJobsTabview()
+                  MyJobsTabview(),
+                  MyJobsTabview()
                 ],
-              )
+            ),
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    FlutterBackgroundService().invoke('stopService');
+    super.dispose();
   }
 }

@@ -50,19 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBsbzaKD6bfZVilYw0FzzM2kx8HN-ajlpY',
-    appId: '1:1020023361698:android:5b15f12e807d1624f887fb',
-    messagingSenderId: '1020023361698',
-    projectId: 'binbear-driver',
-    storageBucket: 'binbear-driver.appspot.com',
+    apiKey: 'AIzaSyBIzuGxiVMCfA20Bbz4A4RDq-RzoCx4Y60',
+    appId: '1:689503003476:android:5cc15be9124a5152531ec1',
+    messagingSenderId: '689503003476',
+    projectId: 'binbear-user',
+    storageBucket: 'binbear-user.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCXhWasy22SesJfKRhANxeXlbVJf2M1g-o',
-    appId: '1:1020023361698:ios:a8f29e9be002ca9ef887fb',
-    messagingSenderId: '1020023361698',
-    projectId: 'binbear-driver',
-    storageBucket: 'binbear-driver.appspot.com',
-    iosBundleId: 'com.jploft.binbeardriver',
+    apiKey: 'AIzaSyDIbYzmnLsmeGKmEoOQJNYcbjpeYE_rGgM',
+    appId: '1:689503003476:ios:f4d754e1b5c61543531ec1',
+    messagingSenderId: '689503003476',
+    projectId: 'binbear-user',
+    storageBucket: 'binbear-user.appspot.com',
+    iosBundleId: 'com.jploft.binbeardrivers',
   );
+
 }

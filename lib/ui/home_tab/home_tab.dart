@@ -312,8 +312,7 @@ class _HomeTabState extends State<HomeTab> {
                                         log("picLat========>>>>>>${homeTabController.allbookings?[index]?.pickupAddress?.lat}");
                                         log("picLng========>>>>>>${homeTabController.allbookings?[index]?.pickupAddress?.lng}");
                                         Get.to(ServiceProviderMapViewScreen(
-                                          bookingData: homeTabController
-                                              .allbookings?[index],
+                                          bookingData: homeTabController.allbookings?[index],
                                           showPolyLines: false,
                                           showCurrentPosition: false,
 

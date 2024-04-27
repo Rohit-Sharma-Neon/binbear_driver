@@ -5,6 +5,7 @@ import flutter_local_notifications
 import Firebase
 import FirebaseMessaging
 import FirebaseCore
+import flutter_background_service_ios
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -21,6 +22,7 @@ import FirebaseCore
         UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
     }
     GMSServices.provideAPIKey("AIzaSyB_VFamRk_pFl6r2rW2eCex13FweyndFm0")
+    SwiftFlutterBackgroundServicePlugin.taskIdentifier = "com.jploft.binbeardrivers"
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }

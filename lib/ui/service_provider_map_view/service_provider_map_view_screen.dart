@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:binbeardriver/ui/assign_job_manually/assign_job_manually_screen.dart';
 import 'package:binbeardriver/ui/base_components/base_map_header_shadow.dart';
 import 'package:binbeardriver/ui/bookings_tab/controller/bookings_controller.dart';
@@ -27,12 +29,12 @@ class ServiceProviderMapViewScreen extends StatefulWidget {
       required this.showPolyLines, required this.bookingData});
 
   @override
-  State<ServiceProviderMapViewScreen> createState() =>
-      _ServiceProviderMapViewScreenState();
+  State<ServiceProviderMapViewScreen> createState() => _ServiceProviderMapViewScreenState();
 }
 
-class _ServiceProviderMapViewScreenState
-    extends State<ServiceProviderMapViewScreen> {
+class _ServiceProviderMapViewScreenState extends State<ServiceProviderMapViewScreen> {
+
+  Timer? timer;
   BookingsController controller = Get.isRegistered<BookingsController>()
       ? Get.find<BookingsController>()
       : Get.put(BookingsController());
@@ -42,21 +44,23 @@ class _ServiceProviderMapViewScreenState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       if (widget.showPolyLines == true) {
-        await controller.addMarkersAndPolyLines(
-          southwest: LatLng(
-              double.parse(widget.bookingData?.assignedProviderAddress?.lat
-                      .toString() ??
-                  "0"), double.parse(widget.bookingData?.assignedProviderAddress?.lng
-                      .toString() ??
-                  "0")),
-          northeast: LatLng(
-              double.parse(widget.bookingData?.pickupAddress?.lat ?? "0"), double.parse(widget.bookingData?.pickupAddress?.lng ?? "0"),
-          ),
-        );
-        setState(() {});
+        timer = Timer.periodic(const Duration(seconds: 10), (Timer t) {
+          controller.getUpdatedDriverLocation(bookingId: widget.bookingData?.id?.toString()??"").then((value) async {
+            await controller.addMarkersAndPolyLines(
+              southwest: LatLng(
+                value.latitude,
+                value.longitude,
+              ),
+              northeast: LatLng(
+                double.parse(widget.bookingData?.pickupAddress?.lat ?? "0"),
+                double.parse(widget.bookingData?.pickupAddress?.lng ?? "0"),
+              ),
+            );
+            setState(() {});
+          });
+        });
       } else {
-        await controller.addMarker(
-            latitude:  double.parse(widget.bookingData?.pickupAddress?.lat ?? "0"), longitude: double.parse(widget.bookingData?.pickupAddress?.lng ?? "0"));
+        await controller.addMarker(latitude:  double.parse(widget.bookingData?.pickupAddress?.lat ?? "0"), longitude: double.parse(widget.bookingData?.pickupAddress?.lng ?? "0"));
         setState(() {});
       }
     });
@@ -84,15 +88,14 @@ class _ServiceProviderMapViewScreenState
                   myLocationEnabled: widget.showCurrentPosition,
                   polylines: Set<Polyline>.of(controller.polylines.values),
                   initialCameraPosition: controller.getInitialCameraPosition(
-                      lat:double.parse(
-                          widget.bookingData?.pickupAddress?.lat ?? "0"), long:  double.parse(
-                          widget.bookingData?.pickupAddress?.lng ?? "0")),
+                      lat:double.parse(widget.bookingData?.pickupAddress?.lat ?? "0"),
+                      long:  double.parse(widget.bookingData?.pickupAddress?.lng ?? "0")),
                   onMapCreated: controller.onMapCreated,
                   markers: controller.markers,
                 );
               },
             ),
-            const BaseMapHeaderShadow()
+            const BaseMapHeaderShadow(),
           ],
         ),
         bottomNavigationBar: Stack(
@@ -129,7 +132,7 @@ class _ServiceProviderMapViewScreenState
                         topMargin: 2,
                         value: "${widget.bookingData?.distance ?? ""} miles",
                         fontSize: 11,
-                        color: Color(0xffFBE6D3),
+                        color: const Color(0xff2c2c2c),
                         fontWeight: FontWeight.w400,
                       ),
                       Container(
@@ -208,10 +211,7 @@ class _ServiceProviderMapViewScreenState
                       Expanded(
                         child: BaseText(
                           topMargin: 2,
-                          value: getServiceTitleById(
-                              serviceId:
-                                  widget.bookingData?.categoryId?.toString() ??
-                                      ""),
+                          value: getServiceTitleById(serviceId: widget.bookingData?.categoryId?.toString() ?? ""),
                           fontSize: 13,
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -258,8 +258,6 @@ class _ServiceProviderMapViewScreenState
                   Visibility(
                     visible: controller.tabController.index != 0 && (widget.bookingData?.driverDetail?.name ?? "") != "",
                     child: Column(
-
-
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -305,5 +303,11 @@ class _ServiceProviderMapViewScreenState
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 }

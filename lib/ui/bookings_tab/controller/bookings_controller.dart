@@ -5,6 +5,7 @@ import 'package:binbeardriver/backend/base_api_service.dart';
 import 'package:binbeardriver/backend/base_responses/base_success_response.dart';
 import 'package:binbeardriver/ui/bookings_tab/model/bookings_response.dart';
 import 'package:binbeardriver/ui/onboardings/splash/controller/base_controller.dart';
+import 'package:binbeardriver/ui/service_provider_map_view/model/driver_lat_lng_response.dart';
 import 'package:binbeardriver/utils/base_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -12,20 +13,17 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class BookingsController extends GetxController
-    with GetSingleTickerProviderStateMixin {
+class BookingsController extends GetxController with GetSingleTickerProviderStateMixin {
   late TabController tabController;
   Set<Marker> markers = {};
-  Completer<GoogleMapController> mapCompleter =
-      Completer<GoogleMapController>();
+  Completer<GoogleMapController> mapCompleter = Completer<GoogleMapController>();
   late GoogleMapController mapController;
   late LatLngBounds bound;
   List<LatLng> polylineCoordinates = <LatLng>[];
   late PolylinePoints polylinePoints;
   Map<PolylineId, Polyline> polylines = {};
 
-  addMarkersAndPolyLines(
-      {required LatLng southwest, required LatLng northeast}) async {
+  addMarkersAndPolyLines({required LatLng southwest, required LatLng northeast}) async {
     polylinePoints = PolylinePoints();
     markers.clear();
     polylineCoordinates.clear();
@@ -48,7 +46,7 @@ class BookingsController extends GetxController
     ));
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      "AIzaSyCKM6nu9hXYksgFuz1flo2zQtPRC_lw7NM", // Google Maps API Key
+      "AIzaSyB_VFamRk_pFl6r2rW2eCex13FweyndFm0", // Google Maps API Key
       PointLatLng(southwest.latitude, southwest.longitude),
       PointLatLng(northeast.latitude, northeast.longitude),
       travelMode: TravelMode.driving,
@@ -150,12 +148,7 @@ class BookingsController extends GetxController
         "booking_status": requestIndex.toString(),
       };
       try {
-        await BaseApiService()
-            .post(
-                apiEndPoint: ApiEndPoints().myBookings,
-                data: data,
-                showLoader: false)
-            .then((value) {
+        await BaseApiService().post(apiEndPoint: ApiEndPoints().myBookings, data: data, showLoader: false).then((value) {
           upcomingRefreshController.refreshCompleted();
           pastRefreshController.refreshCompleted();
           if (value?.statusCode == 200) {
@@ -177,6 +170,26 @@ class BookingsController extends GetxController
         pastRefreshController.refreshCompleted();
       }
     }
+  }
+// Get Driver Location
+  Future<LatLng> getUpdatedDriverLocation({required String bookingId}) async {
+    LatLng returnValue = const LatLng(0, 0);
+    Map<String, String> data = {
+      "booking_id": bookingId,
+    };
+    try {
+      await BaseApiService().post(apiEndPoint: ApiEndPoints().getDriverLocation, data: data, showLoader: false).then((value) {
+        if (value?.statusCode == 200) {
+          DriverLatLngResponse response = DriverLatLngResponse.fromJson(value?.data);
+          if (response.success ?? false) {
+            returnValue = LatLng(double.parse(response.data?.lat?.toString()??"0"), double.parse(response.data?.lng?.toString()??"0"));
+          }
+        }
+      });
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+    return returnValue;
   }
 
   //Booking Action(Accept or Reject Bookingt)

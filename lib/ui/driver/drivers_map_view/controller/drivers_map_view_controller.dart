@@ -23,7 +23,6 @@ class DriversMapViewController extends GetxController{
   Rx<File?>? selectedImageFile = File("").obs;
   List<Marker> markers = <Marker>[];
   final Completer<GoogleMapController> mapController = Completer<GoogleMapController>();
-
   List<LatLng> polylineCoordinates = <LatLng>[];
   late PolylinePoints polylinePoints;
   Map<PolylineId, Polyline> polylines = {};
@@ -52,7 +51,7 @@ class DriversMapViewController extends GetxController{
     ));
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      "AIzaSyCKM6nu9hXYksgFuz1flo2zQtPRC_lw7NM", // Google Maps API Key
+      "AIzaSyB_VFamRk_pFl6r2rW2eCex13FweyndFm0", // Google Maps API Key
       PointLatLng(southwest.latitude, southwest.longitude),
       PointLatLng(northeast.latitude, northeast.longitude),
       travelMode: TravelMode.driving,

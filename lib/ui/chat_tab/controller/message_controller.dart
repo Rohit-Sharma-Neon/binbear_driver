@@ -23,10 +23,8 @@ class MessageController extends GetxController {
   ScrollController? listController = ScrollController();
   BaseDebouncer debouncer = BaseDebouncer();
   File? file;
-
   RxBool chatUserLoading = false.obs;
   IO.Socket? socket;
-
   Rx<ChatModel> model = ChatModel().obs;
 
   init(){

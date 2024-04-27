@@ -56,9 +56,7 @@ class BaseController extends GetxController{
 
 
 // Set Availability
-  setAvailabilityApi(
-    String availability,
-  ) async {
+  setAvailabilityApi(String availability) async {
     Map<String, String> data = {
       "service_provider_status": availability,
     };
@@ -82,27 +80,18 @@ class BaseController extends GetxController{
     }
   }
 
-  sendDriverLatLng({required double lat, required double lng}) async {
-    Map<String, String> data = {
-      "lat": lat.toString(),
-      "lng": lng.toString(),
-    };
-    try {
-      await BaseApiService().post(apiEndPoint: ApiEndPoints().driverLocationUpdate, data: data, showLoader: false).then((value) async {
-        if (value?.statusCode == 200) {
-          BaseSuccessResponse response = BaseSuccessResponse.fromJson(value?.data);
-          if (response.success ?? false) {
-
-          } else {
-            showSnackBar(message: response.message ?? "");
-          }
-        } else {
-          showSnackBar(message: "Something went wrong, please try again");
-        }
-      });
-    } on Exception catch (e) {
-      print(e.toString());
-    }
+  sendDriverLatLng() {
+    getCurrentLocation(showLoader: false).then((value) async {
+      Map<String, String> data = {
+        "lat": (value?.latitude??0).toString(),
+        "lng": (value?.longitude??0).toString(),
+      };
+      try {
+        BaseApiService().post(apiEndPoint: ApiEndPoints().driverLocationUpdate, data: data, showLoader: false);
+      } on Exception catch (e) {
+        print(e.toString());
+      }
+    });
   }
 
   getSuggestionsList(String input) {

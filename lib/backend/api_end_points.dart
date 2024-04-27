@@ -46,4 +46,5 @@ class ApiEndPoints {
   final String fileUpload = "fileUpload";
   final String driverLocationUpdate = "driver/location/update";
   final String resendOtp = "resendcode";
+  final String getDriverLocation = "driver/getdriverlocation";
 }
