@@ -21,7 +21,7 @@ import flutter_background_service_ios
     if #available(iOS 10.0, *) {
         UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
     }
-    GMSServices.provideAPIKey("AIzaSyB_VFamRk_pFl6r2rW2eCex13FweyndFm0")
+    GMSServices.provideAPIKey("*************")
     SwiftFlutterBackgroundServicePlugin.taskIdentifier = "com.jploft.binbeardrivers"
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
